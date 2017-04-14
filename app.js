@@ -11,6 +11,7 @@ function createWindow () {
   win = new BrowserWindow({
     width: 1400, 
     height: 700,
+    icon: path.join(__dirname, 'assets/icons/icon.icns')
   })
 
   // and load the index.html of the app.
