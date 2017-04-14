@@ -129,16 +129,52 @@ input:hover {
 
 /* --- Favorite Panel ---*/
 #favorite-panel .content{
-    padding: 1em;
+    /*padding: 1em;*/
+    width: calc(100% - 1.5em);
+    padding-left: 1em;
+    padding-right: 0.5em;
 }
 
 .favorite-entry {
     cursor: pointer;
+    margin-right: 0.5em;
+    margin-bottom: 0.4em;
+    width: calc(16.6666667% - 0.5em);
+    background-color: #f3f3f3;
+    position: relative;
 }
 
 .favorite-entry:hover {
     background-color: #ccf;
 }
+
+.comic-title {
+    font-weight: 400;
+    font-size: 14px;
+    margin: 0;
+}
+
+.comic-host {
+    margin: 0;
+    font-size: 12px;
+    color: #aaa;
+}
+
+.unsubscribe {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 0;
+    padding: 0.2em 0.5em;
+    color: #999;
+    background-color: #eee;
+}
+
+.unsubscribe:hover {
+    color: #333;
+    background-color: #fff;
+}
+
 
 /* --- Read Panel --- */
 

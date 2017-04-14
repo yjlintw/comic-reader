@@ -11,12 +11,12 @@
   <body>
     <div class="pure-g">
       <div class="pure-u-1-12 side-bar">
-        <div class="pure-u-12-12 tab active" id="search-tab" panel="search-panel">Search</div>
-        <div class="pure-u-12-12 tab" id="favorite-tab" panel="favorite-panel">Favorite</div>
+        <div class="pure-u-12-12 tab" id="search-tab" panel="search-panel">Search</div>
+        <div class="pure-u-12-12 tab active" id="favorite-tab" panel="favorite-panel">Favorite</div>
         <div class="pure-u-12-12 tab" id="read-tab" panel="read-panel">Read</div>
       </div>
       <div class="pure-u-11-12 main-area">
-        <div class="panel" id="search-panel">
+        <div class="panel is-hidden" id="search-panel">
           <div class="content search-header">
             <h1>Search</h1>
               <input type="text" class="inputbox" id="search-box">
@@ -25,7 +25,7 @@
           <div class="content" id="search-result">
           </div>
         </div>    
-        <div class="panel is-hidden" id="favorite-panel">
+        <div class="panel" id="favorite-panel">
           <div class="content">
             <h1>Favorite</h1>
             <div id="favorite-list">
