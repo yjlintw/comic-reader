@@ -100,8 +100,44 @@ input:hover {
     font-weight: 300;
 }
 
+.comic-panel .like-btn {
+    width: 100px;
+    height: 100px;
+    z-index: 1000;
+    text-align: center;
+    line-height: 108px;
+    margin: auto 1em;
+    color: #c3c3c3;
+    cursor: pointer;
+    
+}
+
+.comic-panel .like-btn:hover {
+    color: #558;    
+}
+
+.comic-panel .like-btn.subscribed {
+    color: #855;
+}
+.comic-panel .like-btn.subscribed:after {
+    content: "d";
+}
+
 .img-thumb {
     width: 100px;
+}
+
+/* --- Favorite Panel ---*/
+#favorite-panel .content{
+    padding: 1em;
+}
+
+.favorite-entry {
+    cursor: pointer;
+}
+
+.favorite-entry:hover {
+    background-color: #ccf;
 }
 
 /* --- Read Panel --- */

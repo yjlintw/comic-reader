@@ -1,9 +1,10 @@
 var request = require('request');
 
+
 module.exports = {
     chapterGraper: function (title, link) {
         $('#chapter-list-title').text(title);
-        $("#chapter-list").html("");
+        $("#chapter-list").html("loading...");
         request(
         { method: 'GET'
         , uri: link    
@@ -14,7 +15,7 @@ module.exports = {
 
 function chapterParser(error, response, body) {
     var host = response.request.host;
-    
+    $("#chapter-list").html("");  
     switch(host) {
         case "comic.sfacg.com":
             
@@ -96,7 +97,7 @@ function onClickPic() {
 
 function nextPic() {
     currentIdx++;
-    if (currentIdx > picDivIds.length) currentIdx = picDivIds.length - 1;
+    if (currentIdx >= picDivIds.length) currentIdx = picDivIds.length - 1;
     $('html, body').animate({
         scrollTop: $("#" + picDivIds[currentIdx]).offset().top
     }, 100);
@@ -125,30 +126,27 @@ $(function(){
 });
 
 $(document).keydown(function(e) {
-    switch(e.which) {
-        case 33:
-        case 37: // left
-        if (!$('#read-panel').hasClass('is-hidden')){
-            prevPic();
+    if (!$('#read-panel').hasClass('is-hidden')) {
+        switch(e.which) {
+            case 33:
+            case 37: // left
+                prevPic();
+            break;
+
+            case 38: // up
+            break;
+
+            case 34:
+            case 39: // right
+                nextPic();
+            break;
+
+            case 40: // down
+            break;
+
+            default: return; // exit this handler for other keys
         }
-        break;
-
-        case 38: // up
-        break;
-
-        case 34:
-        case 39: // right
-        if (!$('#read-panel').hasClass('is-hidden')){
-            nextPic();
-        }
-        break;
-
-        case 40: // down
-        break;
-
-        default: return; // exit this handler for other keys
-    }
-    if (!$('#read-panel').hasClass('is-hidden')){
+        
         e.preventDefault(); // prevent the default action (scroll / move caret)
     }
 });
