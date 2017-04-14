@@ -1,5 +1,5 @@
 var request = require('request');
-
+var comicparser = require('./comicparser');
 $('#search-box').keyup(function(e){
     if(e.keyCode == 13)
     {
@@ -107,4 +107,5 @@ function creatComicDiv(host, title, imgHtml, link, metadata, description) {
 function selectComic() {
     console.log($(this).attr("title"));
     console.log($(this).attr("link"));
+    comicparser.chapterGraper($(this).attr("title"), $(this).attr("link"));
 }

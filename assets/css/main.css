@@ -3,7 +3,7 @@
     height: 100vh;
 }
 .side-bar {
-    background-color: #333;
+    background-color: #222;
     position: fixed;
     width: 100px;
     height: 100vh
@@ -113,15 +113,46 @@ input:hover {
 }
 
 #chapter-selector {
-    background-color: #003;
+    background-color: #335;
     width: 200px;
     min-height: 100vh;
     border-right: 1px solid #888;
-    padding: 0 0.5em;
     position: fixed;
     overflow-y: scroll;
     top: 0;
     bottom: 0;
+}
+
+#chapter-list-title {
+    padding: 0.2em 1em;
+    font-size: 18px;
+    font-weight: 500;
+    margin: 0;
+    background-color: #333;
+    border-bottom: 1px solid #2e2e2e;
+    position: fixed;
+    width: calc(200px - 2em);
+    overflow: hidden;
+}
+
+#chapter-list {
+    margin-top: 2em;
+}
+
+.chapter-entry {
+    border-bottom: 1px solid #555;
+    padding: 0 1em;
+    cursor: pointer;
+    width: calc(200px - 2em);
+}
+
+.chapter-entry:hover {
+    background-color: #558;
+}
+
+.chapter-entry h2 {
+    font-weight: 400;
+    font-size: 16px;
 }
 
 #read-area {
@@ -131,4 +162,11 @@ input:hover {
     margin-left: calc(200px + 1em);
     padding: 0 0.5em;
 
+}
+
+.comic-page {
+    height: 100vh;
+    margin: 0 auto;
+    display: block;
+    margin-bottom: 0.5em;
 }
