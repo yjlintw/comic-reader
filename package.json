@@ -11,6 +11,7 @@
     "reload": "live-reload app --port 35729"
   },
   "dependencies": {
+    "electron": "^1.6.2",
     "electron-settings": "^3.0.14",
     "request": "^2.81.0"
   }
