@@ -1,4 +1,4 @@
-#Comic Reader
+# Comic Reader
 ## Supporting Host 
 1. SF互動傳媒網 [www.sfacg.com](http://www.sfacg.com)
 2. ...more coming
@@ -12,8 +12,11 @@
 
 ## Screen Shots
 ### Search View
+![searchview](http://i.imgur.com/TARvJGj.png)
 ### Favorite View
+![favoriteview](http://i.imgur.com/j2OSoxt.png)
 ### Read View
+![readview](http://i.imgur.com/kMekkiS.png)
 
 ## TODO::
 1. Keyboard navigation to switch episodes
