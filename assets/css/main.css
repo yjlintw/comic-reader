@@ -150,6 +150,11 @@ input:hover {
     background-color: #558;
 }
 
+.chapter-entry.active {
+    background-color: #755;
+}
+
+
 .chapter-entry h2 {
     font-weight: 400;
     font-size: 16px;

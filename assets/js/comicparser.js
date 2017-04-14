@@ -47,6 +47,9 @@ function selectChapter() {
         , uri: link    
         }
         , comicParser);
+    
+    $('.chapter-entry').removeClass("active");
+    $(this).addClass("active");
 }
 
 function comicParser(error, response, body) {
