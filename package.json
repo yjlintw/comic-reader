@@ -1,0 +1,16 @@
+{
+  "name": "comic-reader",
+  "version": "0.0.1",
+  "description": "A simple comic reader app",
+  "main": "app.js",
+  "devDependencies": {
+    "live-reload": "^1.1.0"
+  },
+  "scripts": {
+    "start": "electron .",
+    "reload": "live-reload app --port 35729"
+  },
+  "dependencies": {
+    "request": "^2.81.0"
+  }
+}

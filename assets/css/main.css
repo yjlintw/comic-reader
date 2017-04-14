@@ -1,0 +1,134 @@
+.pure-g {
+    display: flex;
+    height: 100vh;
+}
+.side-bar {
+    background-color: #333;
+    position: fixed;
+    width: 100px;
+    height: 100vh
+}
+
+.tab {
+    width: 100px;
+    height: 100px;
+    border-bottom: 1px solid #888;
+    color: #eee;
+    text-align: center;
+    line-height: 100px;
+    cursor:pointer;
+}
+
+.tab.active {
+    background-color: #544;
+}
+
+.tab:hover {
+    background-color: #644;
+}
+
+.main-area {
+    margin-left: 100px;
+    width: 100vw;
+}
+
+.content {
+}
+
+.is-hidden {
+    display: none;
+}
+.text-center {
+    text-align: center;
+}
+/* ---- Search Panel ----*/
+.search-header{
+    background-color: #f3f3f3;
+    padding-bottom: 2em;
+    padding: 1em 1.5em;
+}
+
+.inputbox {
+    border: 1px solid #e3e3e3;
+    line-height: 1.5em;
+    padding: 0.4em 0.5em;
+    width: 20em;
+}
+
+input:focus {
+    outline: none;
+    border: 1px solid #ccf;
+    box-shadow: 0px 6px 20px -4px rgba(200, 200, 255, 0.7);
+}
+
+input:hover {
+    outline: none;
+    border: 1px solid #ccf;
+    box-shadow: 0px 6px 20px -1px rgba(200, 200, 255, 0.7);
+}
+
+.search-btn {
+    background-color: #fff;
+    border: 1px solid #e3e3e3;
+    line-height: 1.5em;
+    padding: 0.4em;
+}
+.comic-panel {
+    border-bottom: 1px solid #e3e3e3;
+    padding: 1em 1.5em;
+    width: calc(100% - 3em);
+    cursor: pointer;
+}
+
+.comic-panel:hover {
+    background-color: #eef;
+}
+
+.comic-title {
+    color: #003;
+    font-weight: 600;
+}
+
+.comic-title span {
+    color: #aaa;
+    font-weight: 300;
+    margin-left: 0.5em;
+}
+
+.comic-update {
+    color: #888;
+    font-weight: 300;
+}
+
+.img-thumb {
+    width: 100px;
+}
+
+/* --- Read Panel --- */
+
+#read-panel {
+    background-color: #000;
+    color: #fff;
+    min-height: 100vh;
+}
+
+#chapter-selector {
+    background-color: #003;
+    width: 200px;
+    min-height: 100vh;
+    border-right: 1px solid #888;
+    padding: 0 0.5em;
+    position: fixed;
+    overflow-y: scroll;
+    top: 0;
+    bottom: 0;
+}
+
+#read-area {
+    background-color: #000;
+    width: calc(100% - 200px - 2em);
+    min-height: 100vh;
+    margin-left: calc(200px + 1em);
+    padding: 0 0.5em;
+
+}

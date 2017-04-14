@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Photon</title>
+    <link rel="stylesheet" href="./assets/css/pure-min.css">
+    <link rel="stylesheet" href="./assets/css/main.css">
+
+    <!-- Stylesheets -->
+
+  </head>
+  <body>
+    <div class="pure-g">
+      <div class="pure-u-1-12 side-bar">
+        <div class="pure-u-12-12 tab active" id="search-tab" panel="search-panel">Search</div>
+        <div class="pure-u-12-12 tab" id="favorite-tab" panel="favorite-panel">Favorite</div>
+        <div class="pure-u-12-12 tab" id="read-tab" panel="read-panel">Read</div>
+      </div>
+      <div class="pure-u-11-12 main-area">
+        <div class="panel" id="search-panel">
+          <div class="content search-header">
+            <h1>Search</h1>
+              <input type="text" class="inputbox" id="search-box">
+              <button class="search-btn" id="search-btn">search</button>
+          </div>
+          <div class="content" id="search-result">
+          </div>
+        </div>    
+        <div class="panel is-hidden" id="favorite-panel">
+          <div class="content">
+            <h1>Favorite</h1>
+          </div>
+        </div> 
+        <div class="panel is-hidden" id="read-panel">
+          <div class="content">
+            <div class="pure-u" id="chapter-selector">
+              <h1 class="text-center">Chapters</h1>
+              <div> 
+              </div>
+            </div>
+            <div class="pure-u" id="read-area">
+              <h1>Read</h1>
+              <div>
+              </div>
+            </div>
+          </div>
+        </div> 
+      </div>
+    </div>
+
+    <script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
+    <script src="./assets/js/jquery-3.2.1.min.js"></script>
+    <script>
+      require('./assets/js/switchtab')
+      require('./assets/js/search')
+    </script>
+    <script src="http://localhost:35729/livereload.js?snipver=2"></script>
+    <script>if (window.module) module = window.module;</script>
+  </body>
+</html>
