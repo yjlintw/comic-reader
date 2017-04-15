@@ -12,7 +12,8 @@ module.exports = {
         , chapterParser);
     }
 };
-
+var chapterList = [];
+var curChaptIdx = 0;
 function chapterParser(error, response, body) {
     var host = response.request.host;
     $("#chapter-list").html("");  
@@ -27,12 +28,13 @@ function chapterParser(error, response, body) {
                 var ch_name = $(e).text();
                 var ch_link = $(e).find('a').attr('href');
                 // console.log(ch_link);
-                var obj = $("<div class='pure-u-1 chapter-entry' link='http://" + host + ch_link + "'></div>");
+                var obj = $("<div class='pure-u-1 chapter-entry' idx='"+ i 
+                    + "' id='ch" + i + "' link='http://" + host + ch_link + "'></div>");
                 obj.append("<h2>" + ch_name + "</h2>");
                 obj.click(selectChapter);
 
                 $("#chapter-list").append(obj);
-
+                chapterList.push('ch' + i);
             });
             break;
         default:
@@ -51,7 +53,21 @@ function selectChapter() {
     
     $('.chapter-entry').removeClass("active");
     $(this).addClass("active");
+    curChaptIdx = $(this).attr("idx");
 }
+
+function nextChapter() {
+    curChaptIdx--;
+    if (curChaptIdx < 0) curChaptIdx = 0;
+    $("#" + chapterList[curChaptIdx]).trigger('click');
+}
+
+function prevChapter() {
+    curChaptIdx++;
+    if (curChaptIdx >= chapterList.length) curChaptIdx = chapterList.length - 1;
+    $("#" + chapterList[curChaptIdx]).trigger('click');
+}
+
 
 function comicParser(error, response, body) {
     var host = response.request.host;
@@ -72,6 +88,9 @@ function comicParser(error, response, body) {
             break;
     }
 }
+
+
+
 var picDivIds = [];
 function utilParser (error, response, body) {
     // console.log(error);
@@ -134,6 +153,7 @@ $(document).keydown(function(e) {
             break;
 
             case 38: // up
+                nextChapter();
             break;
 
             case 34:
@@ -142,6 +162,7 @@ $(document).keydown(function(e) {
             break;
 
             case 40: // down
+                prevChapter();
             break;
 
             default: return; // exit this handler for other keys

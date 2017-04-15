@@ -19,7 +19,6 @@
 ![readview](http://i.imgur.com/kMekkiS.png)
 
 ## TODO::
-1. Keyboard navigation to switch episodes
 2. Add favorite button in read view
 3. Track read history
 3. Track new update of favorite comics and provide notifications
