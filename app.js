@@ -1,19 +1,26 @@
-const {app, BrowserWindow} = require('electron')
-const path = require('path')
-const url = require('url')
+const {app, BrowserWindow} = require('electron');
+const path = require('path');
+const url = require('url');
+const settings = require('electron-settings');
 console.log(app.getAppPath())
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
-let win
+let win;
 
 function createWindow () {
   // Create the browser window.
+  var w = 1400;
+  var h = 700;
+  if (settings.has("system.windowsize")) {
+    w = settings.get("system.windowsize.width");
+    h = settings.get("system.windowsize.height");
+  }
   win = new BrowserWindow({
-    width: 1400, 
-    height: 700,
+    width: w, 
+    height: h,
     icon: path.join(__dirname, 'assets/icons/icon.icns')
   })
-
+  // console.log(win.getBounds());
   // and load the index.html of the app.
   win.loadURL(url.format({
     pathname: path.join(__dirname, 'index.html'),
@@ -25,10 +32,20 @@ function createWindow () {
   // win.webContents.openDevTools()
 
   // Emitted when the window is closed.
+  win.on('close', () => {
+    // Dereference the window object, usually you would store windows
+    // in an array if your app supports multi windows, this is the time
+    // when you should delete the corresponding element.
+    var bounds = win.getBounds();
+    settings.set("system.windowsize.width", bounds.width);
+    settings.set("system.windowsize.height", bounds.height);
+  })
+
   win.on('closed', () => {
     // Dereference the window object, usually you would store windows
     // in an array if your app supports multi windows, this is the time
     // when you should delete the corresponding element.
+
     win = null
   })
 }

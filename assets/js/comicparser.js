@@ -1,17 +1,57 @@
 var request = require('request');
-
+const settings = require('electron-settings');
 
 module.exports = {
-    chapterGraper: function (title, link) {
-        $('#chapter-list-title').text(title);
-        $("#chapter-list").html("loading...");
-        request(
-        { method: 'GET'
-        , uri: link    
-        }
-        , chapterParser);
-    }
+    selectComic: function() {
+        console.log("select comic");
+        console.log($(this).attr("title"));
+        console.log($(this).attr("link"));
+        $("#read-area").html("");
+        chapterGraper(
+            $(this).attr("host"),
+            $(this).attr("titlekey"), 
+            $(this).attr("title"), 
+            $(this).attr("link")
+        );
+
+        
+        $("#read-tab").trigger('click');
+    },
+    chapterGraper: chapterGraper
 };
+
+function chapterGraper(host, titlekey, title, link) {
+    $('#chapter-list-title h1').text(title);
+    updateSubscribedIcon(host, titlekey);
+    // console.log(settings.get("comic." + host + "." + titlekey + ".subscribed"))
+    
+
+    $("#chapter-list-title i").click(function() {
+        var flag = settings.get("comic." + host + "." + titlekey + ".subscribed");
+        settings.set("comic." + host + "." + titlekey + ".subscribed", !flag);
+        updateSubscribedIcon(host, titlekey);
+    });
+
+    $("#chapter-list").html("loading...");
+    request(
+    { method: 'GET'
+    , uri: link    
+    }
+    , chapterParser);
+}
+const favorite = require('./favorite.js');
+
+function updateSubscribedIcon(host, titlekey) {
+    if (settings.get("comic." + host + "." + titlekey + ".subscribed")) {
+        $("#chapter-list-title i").removeClass("fa-heart-o");
+        $("#chapter-list-title i").addClass("fa-heart");
+    } else {
+        $("#chapter-list-title i").addClass("fa-heart-o");
+        $("#chapter-list-title i").removeClass("fa-heart");
+    }
+    favorite.updateFavorite();
+}
+
 var chapterList = [];
 var curChaptIdx = 0;
 function chapterParser(error, response, body) {

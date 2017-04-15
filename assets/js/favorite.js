@@ -1,5 +1,5 @@
 const settings = require('electron-settings');
-var comicparser = require('./comicparser');
+const comicparser = require('./comicparser');
 
 module.exports = {
     updateFavorite: updateFavorite
@@ -18,11 +18,13 @@ function updateFavorite() {
             // create favorite comic panel
             var obj = $("<div class='pure-u-4-24 favorite-entry' title='" 
                 + allcomics[host][comic].title + "' + link='" 
-                + allcomics[host][comic].link + "' ></div>");
-            var imgObj = $("<div class='pure-u-10-24'><img src='" 
+                + allcomics[host][comic].link + "' titlekey='" 
+                + comic + "' host='" 
+                + host + "'></div>");
+            var imgObj = $("<div class='pure-u-lg-12-24 pure-u-xl-10-24'><img src='" 
                 + allcomics[host][comic].thumbnail + "'></div>");
             obj.append(imgObj);
-            var desObj = $("<div class='pure-u-14-24'></div>");
+            var desObj = $("<div class='pure-u-lg-12-24 pure-u-xl-14-24'></div>");
             desObj.append("<h2 class='comic-title'>" + allcomics[host][comic].title + "</h2>");
             desObj.append("<p class='comic-host'>from: " + host + "</p>");
             obj.append(desObj);
@@ -37,19 +39,10 @@ function updateFavorite() {
                 });
             })(host, comic);
             obj.append(unsubscribeBtn);
-            
-            obj.click(selectComic);
+            obj.click(comicparser.selectComic);
 
             $('#favorite-list').append(obj);
         }
     }
 }
-
-function selectComic() {
-    console.log($(this).attr("title"));
-    console.log($(this).attr("link"));
-    comicparser.chapterGraper($(this).attr("title"), $(this).attr("link"));
-    $("#read-tab").trigger('click');
-}
-
 $(document).ready(updateFavorite);

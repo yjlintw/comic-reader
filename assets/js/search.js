@@ -1,9 +1,8 @@
 var request = require('request');
-var comicparser = require('./comicparser');
+const comicparser = require('./comicparser');
 var hostTable = require('./hosttable');
-var favorite = require('./favorite');
+const favorite = require('./favorite');
 const settings = require('electron-settings');
-
 $('#search-box').keyup(function(e){
     if(e.keyCode == 13)
     {
@@ -12,7 +11,6 @@ $('#search-box').keyup(function(e){
 });
 
 $('#search-box').bind("enterKey", search)
-
 $("#search-btn").click(search);
 
 String.prototype.toUnicode = function(){
@@ -96,7 +94,11 @@ function handleResponse(error, response, body) {
 function creatComicDiv(host, title, imgHtml, link, metadata, description) {
     // format html element
     // console.log(link);
-    var obj = $("<div class='pure-u-1 comic-panel' title='" + title + "' + link='" + link + "' ></div>");
+    var titleKey = link.substr(link.lastIndexOf('/') + 1);
+    var obj = $("<div class='pure-u-1 comic-panel' title='" + title 
+        + "' + link='" + link 
+        + "' titlekey='" + titleKey + "' host='"
+        + hostTable[host] + "'></div>");
     var imgObj = $("<div class='pure-u-4-24 img-thumb'></div>");
     imgObj.append(imgHtml);
     obj.append(imgObj);
@@ -106,8 +108,8 @@ function creatComicDiv(host, title, imgHtml, link, metadata, description) {
     disObj.append("<div class='comic-description'>" + description + "</div>");
     obj.append(disObj);
 
-    var likeBtn = $("<div class='pure-u-2-24 like-btn'>Subscribe</div>");
-    var titleKey = link.substr(link.lastIndexOf('/') + 1);
+    var likeBtn = $("<div class='pure-u-2-24 like-btn'><i class='fa fa-heart' aria-hidden='true'></i></div>");
+    
     likeBtn.click(function(e){
         e.stopPropagation();
         if ($(this).hasClass('subscribed')) {
@@ -136,14 +138,8 @@ function creatComicDiv(host, title, imgHtml, link, metadata, description) {
         likeBtn.addClass("subscribed");                
     }
     obj.append(likeBtn);
-    obj.click(selectComic);
+    obj.click(comicparser.selectComic);
     return obj;
                 
 }
 
-function selectComic() {
-    console.log($(this).attr("title"));
-    console.log($(this).attr("link"));
-    comicparser.chapterGraper($(this).attr("title"), $(this).attr("link"));
-    $("#read-tab").trigger('click');
-}

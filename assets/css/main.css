@@ -5,17 +5,17 @@
 .side-bar {
     background-color: #222;
     position: fixed;
-    width: 100px;
+    width: 50px;
     height: 100vh
 }
 
 .tab {
-    width: 100px;
-    height: 100px;
+    width: 50px;
+    height: 50px;
     border-bottom: 1px solid #888;
     color: #eee;
     text-align: center;
-    line-height: 100px;
+    line-height: 50px;
     cursor:pointer;
 }
 
@@ -28,7 +28,7 @@
 }
 
 .main-area {
-    margin-left: 100px;
+    margin-left: 50px;
     width: 100vw;
 }
 
@@ -106,7 +106,8 @@ input:hover {
     z-index: 1000;
     text-align: center;
     line-height: 108px;
-    margin: auto 1em;
+    margin: auto 0.5em;
+    font-size: 24px;
     color: #c3c3c3;
     cursor: pointer;
     
@@ -120,7 +121,7 @@ input:hover {
     color: #855;
 }
 .comic-panel .like-btn.subscribed:after {
-    content: "d";
+    /*content: "d";*/
 }
 
 .img-thumb {
@@ -167,7 +168,7 @@ input:hover {
     margin: 0;
     padding: 0.2em 0.5em;
     color: #999;
-    background-color: #eee;
+    background-color: rgba(238,238,238,0.9);
 }
 
 .unsubscribe:hover {
@@ -196,15 +197,27 @@ input:hover {
 }
 
 #chapter-list-title {
-    padding: 0.2em 1em;
+    padding: 0.2em 0.5em;
     font-size: 18px;
     font-weight: 500;
     margin: 0;
     background-color: #333;
     border-bottom: 1px solid #2e2e2e;
     position: fixed;
-    width: calc(200px - 2em);
+    width: calc(200px - 1em);
     overflow: hidden;
+}
+#chapter-list-title div {
+    margin: 0;
+}
+#chapter-list-title h1 {
+    font-size: 18px;
+    font-weight: 500;
+    margin: 0;
+}
+#chapter-list-title i {
+    font-size: 16px;
+    color: #e77;
 }
 
 #chapter-list {
