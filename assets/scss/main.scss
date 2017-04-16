@@ -9,11 +9,12 @@
  **/
 $info-mobile: "only screen and (max-width : 768px)";
 $info-tablet: "only screen and (min-width: 769px)";
-$info-tablet-only: "@media screen and (min-width: 769px) and (max-width: 999px)";
-$info-touch: "@media screen and (max-width: 999px)";
-$info-desktop: "@media screen and (min-width: 1000px)";
-$info-desktop-only: "@media screen and (min-width: 1000px) and (max-width: 1191px)";
-$info-widescreen: "@media screen and (min-width: 1192px)";
+$info-tablet-only: "only screen and (min-width: 769px) and (max-width: 999px)";
+$info-touch: "only screen and (max-width: 999px)";
+$info-desktop: "only screen and (min-width: 1000px)";
+$info-desktop-only: "only screen and (min-width: 1000px) and (max-width: 1191px)";
+$info-widescreen: "only screen and (min-width: 1192px)";
+$info-fullhd: "only screen and (min-width: 1344px)";
 
 /**
   *     General
@@ -90,9 +91,6 @@ body {
         flex-basis: calc(100% - #{$sidebar-width});
         margin-left: $sidebar-width;
     }
-    .content-view {
-        height: 100vh;
-    }
 }
 
 /* ---- Side Bar ---- */
@@ -102,10 +100,13 @@ body {
         display:flex;
         flex-direction: row;
         width: 100%;
-        // flex: 0 0 auto;
+        // flex: 0 0 auto
         position: fixed;
         z-index: 10000;
+        top: 0;
+        transition: top 0.2s;
     }
+    
     @media #{$info-tablet} {
         width: $sidebar-width;
         flex-grow: 0;
@@ -117,7 +118,10 @@ body {
     }
     
     background-color: $sidebar-bg-color;
-    
+    &.nav-up {
+        top: -#{$sidebar-width};
+        
+    }
     .entry {
         @media #{$info-mobile} {
             width: 33.33333%;
@@ -164,6 +168,10 @@ body {
         flex: 1 1 auto;
         align-items: center;
         justify-content: center;
+
+        @media #{$info-mobile} {
+            height: calc(100vh - #{$sidebar-width} - 68px);
+        }
     }
     .loading {
         width: 2em;
@@ -236,4 +244,42 @@ body {
             }
         }
     }
+}
+
+
+#favorite-view {
+    padding: 2em 0;
+    // max-width: 960px
+    @media #{$info-mobile} {
+        padding: 0.5em 0;
+    }
+    .columns {
+        flex-wrap: wrap;
+        align-content: flex-start;
+        margin: auto;
+        @media #{$info-tablet} {
+            width: 647px;
+        }
+        @media #{$info-widescreen} {
+            width: 970.5px;
+        }
+
+        @media #{$info-fullhd} {
+            width: 1294px;
+        }
+
+    }
+}
+
+.favorite-entry.media {
+    @extend .search-result.media;
+    border: 2px solid #fff;
+    // margin: 0 auto;
+    
+
+    @media #{$info-tablet} {
+        width: 323.5px;
+    }
+
+    
 }

@@ -1,5 +1,6 @@
 const values = require("./values");
 var request = require('request');
+var subscriber = require("./subscriber");
 
 /**
  *      Variable Definition
@@ -75,15 +76,15 @@ function searchResponse(error, response, body) {
                 $.map(info, $.trim);
                 var updateinfo = info[1];
                 var description = info.splice(2).join('\n').trim();
-
-                var view = createResultView(imguri, comicTitle, host, updateinfo, description);
+                var titleKey = link.substr(link.lastIndexOf('/') + 1);
+                var view = createResultView(link, titleKey, imguri, comicTitle, host, updateinfo, description);
                 $("#search-results").append(view);
             });
             break;
         default:
             break;
     }
-
+    subscriber.updateUI();
 }
 
 /**
@@ -115,21 +116,26 @@ function lateInit() {
     $("#search-btn").click(search);
 }
 
-function createResultView(imguri, title, host, updateinfo, description) {
+function createResultView(link, titleKey, imguri, title, host, updateinfo, description) {
     var view = $(resultViewStr);
     view.find(".thumbnail img").attr("src", imguri);
     view.find(".comic-name strong").html(title);
     view.find(".comic-name small").html("(" + host +")");
     view.find(".comic-update-info").html(updateinfo);
     view.find(".comic-description").html(description);    
+    
+    view.attr("title", title);
+    view.attr("link", link);
+    view.attr("titlekey", titleKey);
+    view.attr("host", host);
 
     view.click(function() {
-        console.log("click: " + title + ", from: " + host);
+        console.log("search click: " + title + ", from: " + host);
     })
 
     view.find(".subscribe-btn").click(function(e) {
         e.stopPropagation();
-        console.log("click subscribe");
+        subscriber.subscribe(host, titleKey, title, link, imguri);
     });
 
     return view;
