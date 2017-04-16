@@ -4,11 +4,17 @@
   "description": "A simple comic reader app",
   "main": "app.js",
   "devDependencies": {
-    "live-reload": "^1.1.0"
+    "concurrently": "^3.4.0",
+    "livereloadx": "^0.3.9",
+    "node-sass": "^4.5.2",
+    "nodemon": "^1.11.0"
   },
   "scripts": {
     "start": "electron .",
-    "reload": "live-reload app --port 35729"
+    "reload": "livereloadx",
+    "build-css": "node-sass --include-path scss assets/scss/main.scss assets/css/main.css",
+    "watch-css": "nodemon -e scss -x \"npm run build-css\"",
+    "dev": "concurrently --kill-others \"npm run reload\" \"npm run start\" \"npm run watch-css\""
   },
   "dependencies": {
     "electron": "^1.6.2",

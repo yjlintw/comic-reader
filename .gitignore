@@ -1,3 +1,4 @@
 *-darwin-*/
 node_modules/
 *.zip
+legacy/

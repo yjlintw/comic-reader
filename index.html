@@ -2,8 +2,7 @@
 <html>
   <head>
     <title>Comic Reader</title>
-    <link rel="stylesheet" href="./assets/css/pure-min.css">
-    <link rel="stylesheet" href="./assets/css/grids-responsive-min.css">
+    <link rel="stylesheet" href="./assets/css/bulma.css">
     <link rel="stylesheet" href="./assets/css/font-awesome.min.css">
     <link rel="stylesheet" href="./assets/css/main.css">
 
@@ -11,63 +10,20 @@
 
   </head>
   <body>
-    <div class="pure-g">
-      <div class="pure-u-1-12 side-bar">
-        <div class="pure-u-12-12 tab" id="search-tab" panel="search-panel">
-          <i class="fa fa-search" aria-hidden="true"></i>
-        </div>
-        <div class="pure-u-12-12 tab active" id="favorite-tab" panel="favorite-panel">
-          <i class="fa fa-heart" aria-hidden="true"></i>
-        </div>
-        <div class="pure-u-12-12 tab" id="read-tab" panel="read-panel">
-          <i class="fa fa-eye" aria-hidden="true"></i>
-        </div>
-      </div>
-      <div class="pure-u-11-12 main-area">
-        <div class="panel is-hidden" id="search-panel">
-          <div class="content search-header">
-            <h1>Search</h1>
-              <input type="text" class="inputbox" id="search-box">
-              <button class="search-btn" id="search-btn">search</button>
-          </div>
-          <div class="content" id="search-result">
-          </div>
-        </div>    
-        <div class="panel" id="favorite-panel">
-          <div class="content">
-            <h1>Favorite</h1>
-            <div id="favorite-list">
-
-            </div>
-          </div>
-        </div> 
-        <div class="panel is-hidden" id="read-panel">
-          <div class="content">
-            <div class="pure-u" id="chapter-selector">
-              <div class="pure-u-1" id="chapter-list-title">
-                <div class="pure-u-3-24"><i id="read-subscribe-heart" class="fa fa-heart-o" aria-hidden="true"></i></div><div class="pure-u-21-24"><h1>Chapters</h1>
-                </div>
-              </div>
-              <div id="chapter-list"> 
-              </div>
-            </div>
-            <div class="pure-u" id="read-area">
-              <h1>Read</h1>
-              <div>
-              </div>
-            </div>
-          </div>
-        </div> 
+    <div class="tile is-ancestor is-marginless whole-view">
+      <aside class="tile sidebar" id="sidebar">
+      </aside>
+      <div class="tile is-vertical" id="main-view">
+        
       </div>
     </div>
-
     <script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
     <script src="./assets/js/jquery-3.2.1.min.js"></script>
     <script>
-      require('./assets/js/switchtab')
-      require('./assets/js/search')
-      require('./assets/js/favorite')
-      require('./assets/js/comicparser')
+      require("./renderer-process/content-loader");
+      require("./renderer-process/view-switcher");
+      require("./renderer-process/search.js");
+      require("./renderer-process/load-after");
     </script>
     <script src="http://localhost:35729/livereload.js?snipver=2"></script>
     <script>if (window.module) module = window.module;</script>
