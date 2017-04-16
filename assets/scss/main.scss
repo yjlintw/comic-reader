@@ -1,7 +1,29 @@
-/** media query **/
-$information-mobile: "only screen and (max-width : 768px)";
-$information-tablet: "only screen and (min-width: 769px)";
-/** sidebar **/
+/**
+ *      Import
+ **/
+@import "loading";
+
+
+/**
+ *      media query 
+ **/
+$info-mobile: "only screen and (max-width : 768px)";
+$info-tablet: "only screen and (min-width: 769px)";
+$info-tablet-only: "@media screen and (min-width: 769px) and (max-width: 999px)";
+$info-touch: "@media screen and (max-width: 999px)";
+$info-desktop: "@media screen and (min-width: 1000px)";
+$info-desktop-only: "@media screen and (min-width: 1000px) and (max-width: 1191px)";
+$info-widescreen: "@media screen and (min-width: 1192px)";
+
+/**
+  *     General
+  */
+$container-max-width: 960px;
+
+
+/** 
+  *     Sidebar 
+  **/
 // layout
 $sidebar-width: 50px;
 // color
@@ -11,7 +33,22 @@ $sidebar-icon-color: #e3e3e3;
 $sidebar-entry-hover-bg-color: #88a;
 $sidebar-entry-active-bg-color: #776;
 
+/**
+  *     Search View
+  **/
+// layout
+$search-result-thumbnail-width: 100px;
 
+// color
+$search-header-bg-color: #e3e3e3;
+$search-result-bg-color: #f8f8ff;
+$search-result-hover-bg-color: #eef;
+$search-result-grey-color: #888;
+
+$non-subscribe-color: #aaa;
+$non-subscribe-hover-color: #558;
+$subscribed-color: #a00;
+$subscribed-hover-color: #d55;
 /* ---- Utility ----*/
 
 /* ---- Overall area ----*/
@@ -20,26 +57,26 @@ $sidebar-entry-active-bg-color: #776;
 // }
 
 body, html, .whole-view {
-    @media #{$information-mobile} {
+    @media #{$info-mobile} {
         height: 100%;
     }
 }
 
 body {
-    @media #{$information-mobile} {
+    @media #{$info-mobile} {
         // overflow: hidden;
     }
 }
 
 .whole-view {
-    @media #{$information-mobile} {
+    @media #{$info-mobile} {
         display: flex;
         flex-direction: column;
     }
 }
 
 #main-view {
-    @media #{$information-mobile} {
+    @media #{$info-mobile} {
         display: flex;
         margin-top: $sidebar-width;
         // flex: 1 1 auto;
@@ -47,7 +84,7 @@ body {
         // overflow-y: auto;
     }
 
-    @media #{$information-tablet} {
+    @media #{$info-tablet} {
         min-height: 100vh;
         flex-shrink: 0;
         flex-basis: calc(100% - #{$sidebar-width});
@@ -61,7 +98,7 @@ body {
 /* ---- Side Bar ---- */
 // Tabview switcher
 .sidebar {
-    @media #{$information-mobile} {
+    @media #{$info-mobile} {
         display:flex;
         flex-direction: row;
         width: 100%;
@@ -69,7 +106,7 @@ body {
         position: fixed;
         z-index: 10000;
     }
-    @media #{$information-tablet} {
+    @media #{$info-tablet} {
         width: $sidebar-width;
         flex-grow: 0;
         flex-shrink: 0;
@@ -82,7 +119,7 @@ body {
     background-color: $sidebar-bg-color;
     
     .entry {
-        @media #{$information-mobile} {
+        @media #{$info-mobile} {
             width: 33.33333%;
             flex-basis: 33.33333%;
             border-bottom: none;
@@ -119,12 +156,27 @@ body {
 }
 
 /* ---- Search Panel ---- */
+#search-view {
+
+    .loading-bg {
+        background-color: #333;
+        display: flex;
+        flex: 1 1 auto;
+        align-items: center;
+        justify-content: center;
+    }
+    .loading {
+        width: 2em;
+        height: 2em;
+    }
+}
+
 #search-header {
-    background-color: #e3e3e3;
+    background-color: $search-header-bg-color;
     padding: 1em;
 
     .container {
-        max-width: 960px;
+        max-width: $container-max-width;;
     }
     
     .button {
@@ -134,8 +186,8 @@ body {
 
 #search-results{
     // background-color: #eee;
-    max-width: 960px;
-    @media #{$information-tablet} {
+    max-width: $container-max-width;
+    @media #{$info-tablet} {
         padding: 0.5em;
     }
 
@@ -149,15 +201,15 @@ body {
     // border-bottom: 1px solid rgba(219,219,219, 0.3);
     // border-right: 1px solid rgba(219,219,219, 0.3);
 
-    background-color: #f8f8ff;
+    background-color: $search-result-bg-color;
     cursor: pointer;
 
     &:hover {
-        background-color: #eef;
+        background-color: $search-result-hover-bg-color;
     }
 
     .thumbnail {
-        width: 80px;
+        width: $search-result-thumbnail-width;
     }
 
     .content p {
@@ -166,21 +218,21 @@ body {
         
         &.comic-update-info {
             font-size: 0.9em;
-            color: #888;
+            color: $search-result-grey-color;
         }
     }
 
     .subscribe-btn {
         font-size: 1.4em;
-        color: #aaa;
+        color: $non-subscribe-color;
 
         &:hover {
-            color: #558;
+            color: $non-subscribe-hover-color;
         }
         &.subscribed {
-            color: #a00;
+            color: $subscribed-color;
             &:hover {
-                color: #d55;
+                color: $subscribed-hover-color;
             }
         }
     }

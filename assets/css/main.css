@@ -1,5 +1,62 @@
-/** media query **/
-/** sidebar **/
+/**
+ *      Import
+ **/
+@keyframes spin {
+  0% {
+    transform: rotate(0deg); }
+  100% {
+    transform: rotate(360deg); } }
+
+@keyframes pulse {
+  50% {
+    background: white; } }
+
+.loading {
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  border: 0.25rem solid rgba(255, 255, 255, 0.2);
+  border-top-color: white;
+  animation: spin 1s infinite linear; }
+  .loading--double {
+    border-style: double;
+    border-width: .5rem; }
+
+.loading-pulse {
+  position: relative;
+  width: 6px;
+  height: 24px;
+  background: rgba(255, 255, 255, 0.2);
+  animation: pulse 750ms infinite;
+  animation-delay: 250ms; }
+  .loading-pulse:before, .loading-pulse:after {
+    content: '';
+    position: absolute;
+    display: block;
+    height: 16px;
+    width: 6px;
+    background: rgba(255, 255, 255, 0.2);
+    top: 50%;
+    transform: translateY(-50%);
+    animation: pulse 750ms infinite; }
+  .loading-pulse:before {
+    left: -12px; }
+  .loading-pulse:after {
+    left: 12px;
+    animation-delay: 500ms; }
+
+/**
+ *      media query 
+ **/
+/**
+  *     General
+  */
+/** 
+  *     Sidebar 
+  **/
+/**
+  *     Search View
+  **/
 /* ---- Utility ----*/
 /* ---- Overall area ----*/
 @media only screen and (max-width: 768px) {
@@ -69,6 +126,17 @@
       background-color: #776; }
 
 /* ---- Search Panel ---- */
+#search-view .loading-bg {
+  background-color: #333;
+  display: flex;
+  flex: 1 1 auto;
+  align-items: center;
+  justify-content: center; }
+
+#search-view .loading {
+  width: 2em;
+  height: 2em; }
+
 #search-header {
   background-color: #e3e3e3;
   padding: 1em; }
@@ -93,7 +161,7 @@
   .search-result.media:hover {
     background-color: #eef; }
   .search-result.media .thumbnail {
-    width: 80px; }
+    width: 100px; }
   .search-result.media .content p {
     margin-bottom: 0.4em;
     line-height: 1.2em; }

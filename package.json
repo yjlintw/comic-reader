@@ -1,6 +1,6 @@
 {
   "name": "comic-reader",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "description": "A simple comic reader app",
   "main": "app.js",
   "devDependencies": {

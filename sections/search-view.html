@@ -3,15 +3,18 @@
         <div class="container">
             <div class="columns field is-marginless is-mobile">
                 <p class="column control is-11 is-paddingless">
-                    <input class="input" type="text" placeholder="Search a Comic">
+                    <input class="input" id="search-input" type="text" placeholder="Search a Comic">
                 </p>
                 <p class="column control is-1 is-paddingless">
-                    <button class="button">
+                    <button id="search-btn" class="button">
                         <i class="fa fa-search" aria-hidden="true"></i>
                     </button>
                 </p>
             </div>
         </div>
+    </div>
+    <div class="loading-bg is-hidden">
+        <div class="loading"></div>
     </div>
     <div class="tile is-vertical container" id="search-results">
     </div>
