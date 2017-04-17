@@ -5,6 +5,8 @@ var settings = require('electron-settings');
 module.exports = {
     selectComic: selectComic
 }
+
+
 /**
  *      Variable Definition
  */
@@ -67,7 +69,7 @@ function onChaptersGraped(result){
 }
 
 function selectChapter(chLink, chName) {
-    console.log(chLink);
+    // console.log(chLink);
     $("#read-area").html("");
     
     curPageIdx = 0;
@@ -126,14 +128,38 @@ function nextPic() {
 function prevChapter() {
     curChapterIdx--;
     if (curChapterIdx < 0) curChapterIdx = 0;
-    console.log(chapterList[curChapterIdx]);
+    // console.log(chapterList[curChapterIdx]);
     $(chapterList[curChapterIdx]).trigger('click');
+    
+    scrollMiddlePanel();
 }
 
 function nextChapter() {
     curChapterIdx++;
     if (curChapterIdx >= chapterList.length) curChapterIdx = chapterList.length - 1;
     $(chapterList[curChapterIdx]).trigger('click');
+    scrollMiddlePanel();
+}
+
+function scrollMiddlePanel() {
+    var scrollBottom = $(".middle-panel").height() - $("#comic-header").height();
+    console.log(scrollBottom);
+    var e = $(chapterList[curChapterIdx]);
+    console.log(e.offset());
+    console.log(e.height());
+    console.log($("#comic-header").outerHeight());
+
+    if (e.offset().top  + e.height() >= scrollBottom) {
+
+        console.log("offscreen");
+        $(".middle-panel").animate({
+            scrollTop: $(".middle-panel").scrollTop() + e.offset().top - $("#comic-header").outerHeight()
+        }, 100)
+    } else if (e.offset().top < $("#comic-header").outerHeight()) {
+        $(".middle-panel").animate({
+            scrollTop: $(".middle-panel").scrollTop() - $(".middle-panel").height() + $("#comic-header").outerHeight() + e.offset().top
+        }, 100)
+    }
 }
 
 /**
@@ -240,6 +266,7 @@ $(function(){
         }
     });
 });
+
 
 
 /**
