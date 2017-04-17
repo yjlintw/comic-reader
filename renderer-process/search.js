@@ -1,5 +1,4 @@
 const values = require("./values");
-var request = require('request');
 var subscriber = require("./subscriber");
 var comicparser = require("./comic-parser");
 
@@ -22,8 +21,6 @@ String.prototype.toUnicode = function(){
 };
 
 
-
-
 /**
  *      Backend Functionality
  */
@@ -44,46 +41,22 @@ function search() {
     $("#search-results").addClass("is-hidden");
     $("#search-view .loading-bg").removeClass("is-hidden");
     for (var key in values.hosts) {
-        request({
-            method: 'GET',
-            uri: values.hosts[key].searchuri.replace("{search}", searchStr.toUnicode())
-        }, searchResponse);
+        values.hosts[key].parsers.search(searchStr, searchResponse)
         searchFlagDict[values.hosts[key].name] = true;
     }
-    
-
-    // for (var i = 0; i < 10; i++) {
-    //     var view = createResultView(null, i, "host"+i, null, null);
-    //     $("#search-results").append(view);
-    // }
 }
 
-function searchResponse(error, response, body) {
+// function searchResponse(error, response, body) {
+function searchResponse(result, host) {
     $("#search-results").removeClass("is-hidden");
     $("#search-view .loading-bg").addClass("is-hidden");
-    var hostpath = response.request.host;
-    var host = values.hosts[hostpath].name;
+    
     searchFlagDict[host] = false;
 
-    switch(host) {
-        case "sfacg":
-            var tmp = $("#form1", "<div>" + body + "</div>").find("table:nth-of-type(5)");
-            tmp.find("ul").each(function(i, e){
-                var imguri = $(e).find("li:first-child img").attr("src");
-                // console.log(imguri);
-                var comicTitle = $(e).find("li:nth-child(2)").find("a").text();
-                var link = $(e).find("li:nth-child(2)").find("a").attr("href");
-                var info = $(e).find("li:nth-child(2)").text().split("\n");
-                $.map(info, $.trim);
-                var updateinfo = info[1];
-                var description = info.splice(2).join('\n').trim();
-                var titleKey = link.substr(link.lastIndexOf('/') + 1);
-                var view = createResultView(link, titleKey, imguri, comicTitle, host, updateinfo, description);
-                $("#search-results").append(view);
-            });
-            break;
-        default:
-            break;
+    for (var idx in result) {
+        var obj = result[idx];
+        var view = createResultView(obj.link, obj.titleKey, obj.imguri, obj.comicTitle, obj.host, obj.updateinfo, obj.description);
+        $("#search-results").append(view);
     }
     subscriber.updateUI();
 }

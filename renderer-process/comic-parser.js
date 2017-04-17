@@ -1,4 +1,3 @@
-var request = require('request');
 const values = require('./values');
 var subscriber = require('./subscriber');
 
@@ -34,83 +33,38 @@ function selectComic(host, link, title, titleKey, imguri) {
         subscriber.subscribe(host, titleKey, title, link, imguri);
     });
 
-    request({
-        methos: 'GET',
-        uri: link
-    }, onChaptersGraped);
+    values.hostnames[host].parsers.grapeChapters(link, onChaptersGraped);
+
     $(".middle-panel .loading-bg").removeClass("is-hidden");
     subscriber.updateUI();
     $("#tab-read").trigger("click");
 }
 
-function onChaptersGraped(error, response, body){
-    var hostpath = response.request.host;
-    var host = values.chapterhosts[hostpath].name;
+function onChaptersGraped(result){
     $("#chapter-selector").html("");
-    switch(host) {
-        case "sfacg":
-            var tmp = $("table:nth-of-type(9)", "<div>" + body + "</div>").find("ul.serialise_list.Blue_link2");
-            tmp.find("li").each(function(i, e) {
-                var chName = $(e).text();
-                var chLink = "http://" + hostpath + $(e).find('a').attr('href');
-                var domid = "chapter" + i;
-                var view = createChapterEntry(chName, chLink, domid, i);
-                chapterList.push("#"+domid);
-                $("#chapter-selector").append(view);
-
-            });
-        break;
-        default:
-        break;
+    chapterList = new Array(result.length);
+    for (var index in result) {
+        var obj = result[index];
+        var view = createChapterEntry(obj.chName, obj.chLink, obj.domid, obj.index);
+        chapterList[obj.index] = "#" + obj.domid;
+        $("#chapter-selector").append(view);
     }
     $(".middle-panel .loading-bg").addClass("is-hidden");
-
 }
 
 function selectChapter(chLink) {
     console.log(chLink);
     $("#read-area").html("");
     curPageIdx = 0;
-    request({
-        method: 'GET',
-        uri: chLink
-    }, onSingleChapterGraped)
+    values.hostnames[curHost].parsers.loadChapter(chLink, onSingleChapterLoaded);
 }
 
-function onSingleChapterGraped(error, response, body) {
-    var hostpath = response.request.host;
-    var host = values.chapterhosts[hostpath].name;
-
-    switch(host) {
-        case "sfacg":
-            var tmp = $("<div>" + body + "</div>");
-            var pagecount = tmp.find("#pageSel");
-            var scripts = tmp.find("script").eq(1).attr("src");
-
-            request({
-                method: 'GET',
-                uri: "http://" + hostpath + scripts
-            }, utilParser);
-            break;
-        default:
-            break;
-    }
-
-}
-
-
-// this is only for sfacg.com
-function utilParser (error, response, body) {
-    var host = response.request.host;
-    eval(body);
-    pageIds = [];
-    var pichost = hosts[0];
-    for(idx in picAy) {
-        imgurl = "http://" + host+picAy[idx];
-        var id = "pic" + idx;
-        pageIds.push(id);
-        
-        var view = createComicPage(imgurl, id, idx);
+function onSingleChapterLoaded(result) {
+    pageIds = new Array(result.length);
+    for (var index in result) {
+        var obj = result[index];
+        var view = createComicPage(obj.imgurl, obj.id, obj.idx);
+        pageIds[obj.idx] = obj.id;
         $("#read-area").append(view);
     }
 }
