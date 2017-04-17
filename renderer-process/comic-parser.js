@@ -17,6 +17,7 @@ var curChapterIdx = -1;
 var pageContainerStr = "";
 var pageIds = [];
 var curPageIdx = 0;
+var comicSettings = {};
 
 function selectComic(host, link, title, titleKey, imguri) {
     $("#comic-header .comic-title").html(title);
@@ -45,20 +46,22 @@ function selectComic(host, link, title, titleKey, imguri) {
 function onChaptersGraped(result){
     $("#chapter-selector").html("");
     chapterList = new Array(result.length);
-
+    var keyPath = "comic." + curHost + "." + curTitleKey;
+    comicSettings = settings.get(keyPath)
+    var chapters = comicSettings.chapters;
     for (var index in result) {
         var obj = result[index];
         var view = createChapterEntry(obj.chName, obj.chLink, obj.domid, obj.index);
         chapterList[obj.index] = "#" + obj.domid;
-        keyPath = "comic." + curHost + "." + curTitleKey + ".chapters." + obj.chName;
-        if (!settings.has(keyPath)) {
-            settings.set(keyPath, {
+        
+        if (!(obj.chName in chapters)) {
+            chapters[obj.chName] = {
                 read: false
-            });
+            }
         }
         $("#chapter-selector").append(view);
     }
-    settings.set("comic." + curHost + "." + curTitleKey + ".newestchapter", result[0].chName);
+    comicSettings.newestchapter = result[0].chName;
     updateChapterList();
     $(".middle-panel .loading-bg").addClass("is-hidden");
 }
@@ -66,9 +69,7 @@ function onChaptersGraped(result){
 function selectChapter(chLink, chName) {
     console.log(chLink);
     $("#read-area").html("");
-    var keyPath = "comic." + curHost + "." + curTitleKey + ".chapters." + chName + ".read";
-    settings.set(keyPath, true);
-    settings.set("comic." + curHost + "." + curTitleKey + ".lastread", chName);
+    
     curPageIdx = 0;
     values.hostnames[curHost].parsers.loadChapter(chLink, onSingleChapterLoaded);
     updateChapterList();
@@ -87,11 +88,12 @@ function onSingleChapterLoaded(result) {
 function updateChapterList() {
     $(".chapter-entry").each(function(i, e) {
         var chName = $(e).text();
-        var keyPath = "comic." + curHost + "." + curTitleKey + ".chapters." + chName + ".read";
-        if (settings.get(keyPath)) {
+        if (comicSettings.chapters[chName].read) {
             $(e).addClass("read");
         }
     });
+    var keyPath = "comic." + curHost + "." + curTitleKey;
+    settings.set(keyPath, comicSettings);
 }
 
 /**
@@ -172,8 +174,6 @@ function createChapterEntry(chName, chLink, domid, index) {
 }
 
 function createComicPage(imguri, id, idx) {
-    // var obj = $("<div class='pure-u-1 comic-page-container' idx='" + idx + "' id='pic" + idx + "'></div>");
-        // obj.append("<img class='comic-page' src='" + imgurl + "'>");
         var view = $(pageContainerStr);
         view.attr("id", id);
         view.attr("idx", idx);

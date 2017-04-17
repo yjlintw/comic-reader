@@ -32,12 +32,10 @@ function register(host, comicTitleKey, comicTitle, link, thumbnailURI, subscribe
 
 function subscribe(host, comicTitleKey, comicTitle, link, thumbnailURI) {
     var keyPath = "comic." + host + "." + comicTitleKey;
-    if (settings.has(keyPath)) {
-        if (settings.get(keyPath + ".subscribed")) {
-            settings.set(keyPath + ".subscribed", false);
-        } else {
-            settings.set(keyPath + ".subscribed", true);
-        }
+    var comicSettings = settings.get(keyPath);
+    if (comicSettings) {
+        comicSettings.subscribed = !comicSettings.subScribed;
+        settings.set(keyPath, comicSettings);
     } else {
         register(host, comicTitleKey, comicTitle, link, thumbnailURI, true)
     }
@@ -48,9 +46,10 @@ function subscribe(host, comicTitleKey, comicTitle, link, thumbnailURI) {
 
 function unsubscribe(host, comicTitleKey) {
     var keyPath = "comic." + host + "." + comicTitleKey;
-    console.log(keyPath);
-    if (settings.has(keyPath)) {
-        settings.set(keyPath + ".subscribed", false);
+    var comicSettings = settings.get(keyPath);
+    if (comicSettings) {
+        comicSettings.subscribed = false;
+        settings.set(keyPath + comicSettings);
         updateSubscribeUIStatus();
     }
 }
@@ -71,9 +70,7 @@ function updateSearchSubscribeUI() {
         var host = dom.attr("host");
         var titleKey = dom.attr("titlekey");
         var keyPath = "comic." + host + "." + titleKey;
-        var isSubscribed = (
-            settings.has(keyPath) &&
-            settings.get(keyPath + ".subscribed"));
+        var isSubscribed = settings.get(keyPath + ".subscribed");
         
         if (isSubscribed) {
             dom.find(".subscribe-btn").addClass("subscribed");
@@ -108,9 +105,7 @@ function updateReadSubscribeUI() {
     var host = dom.attr("host");
     var titleKey = dom.attr("titlekey");
     var keyPath = "comic." + host + "." + titleKey;
-    var isSubscribed = (
-        settings.has(keyPath) &&
-        settings.get(keyPath + ".subscribed"));
+    var isSubscribed = settings.get(keyPath + ".subscribed");
 
     if (isSubscribed) {
         dom.find(".subscribe-btn").addClass("subscribed");
