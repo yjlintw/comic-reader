@@ -110,6 +110,7 @@ function updateChapterList() {
  */
 
 function prevPic() {
+    if (!$("#" + pageIds[curPageIdx]).offset()) return;
     curPageIdx--;
     if (curPageIdx < 0) curPageIdx = 0;
     $('html, body').animate({
@@ -118,6 +119,7 @@ function prevPic() {
 }
 
 function nextPic() {
+    if (!$("#" + pageIds[curPageIdx]).offset()) return;
     curPageIdx++;
     if (curPageIdx >= pageIds.length) curPageIdx = pageIds.length -1;;
     $('html, body').animate({
@@ -145,8 +147,8 @@ function scrollMiddlePanel() {
     var scrollBottom = $(".middle-panel").height() - $("#comic-header").height();
     console.log(scrollBottom);
     var e = $(chapterList[curChapterIdx]);
-    console.log(e.offset());
-    console.log(e.height());
+    // console.log(e.offset());
+    // console.log(e.height());
     console.log($("#comic-header").outerHeight());
 
     if (e.offset().top  + e.height() >= scrollBottom) {
