@@ -1,3 +1,3 @@
 $(document).ready(function() {
-    $("#tab-read").trigger("click");
+    $("#tab-favorite").trigger("click");
 });
