@@ -145,15 +145,8 @@ function nextChapter() {
 
 function scrollMiddlePanel() {
     var scrollBottom = $(".middle-panel").height() - $("#comic-header").height();
-    console.log(scrollBottom);
     var e = $(chapterList[curChapterIdx]);
-    // console.log(e.offset());
-    // console.log(e.height());
-    console.log($("#comic-header").outerHeight());
-
     if (e.offset().top  + e.height() >= scrollBottom) {
-
-        console.log("offscreen");
         $(".middle-panel").animate({
             scrollTop: $(".middle-panel").scrollTop() + e.offset().top - $("#comic-header").outerHeight()
         }, 100)
