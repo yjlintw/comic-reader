@@ -142,11 +142,11 @@ function onChapterGraped(error, response, body) {
  * @param {*} callback 
  */
 
-function loadChapter(chLink, callback) {
+function loadChapter(chLink, chName, callback) {
     request({
         method: 'GET',
         uri: chLink
-    }, onSingleChapterLoaded.bind({callback:callback}))    
+    }, onSingleChapterLoaded.bind({callback:callback, chName: chName}))    
 
 }
 
@@ -157,7 +157,7 @@ function onSingleChapterLoaded(error, response, body) {
     request({
         method: 'GET',
         uri: "http://" + hostpath + scripts
-    }, utilParser.bind({callback:this.callback}));
+    }, utilParser.bind({callback:this.callback, chName: this.chName}));
 }
 
 function utilParser (error, response, body) {
@@ -176,6 +176,6 @@ function utilParser (error, response, body) {
         result.push(obj);
     }
 
-    this.callback(result);
+    this.callback(result, this.chName);
     
 }

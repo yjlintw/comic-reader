@@ -71,11 +71,14 @@ function selectChapter(chLink, chName) {
     $("#read-area").html("");
     
     curPageIdx = 0;
-    values.hostnames[curHost].parsers.loadChapter(chLink, onSingleChapterLoaded);
-    updateChapterList();
+    values.hostnames[curHost].parsers.loadChapter(chLink, chName, onSingleChapterLoaded);
+    
 }
 
-function onSingleChapterLoaded(result) {
+function onSingleChapterLoaded(result, chName) {
+    if (chName != $(chapterList[curChapterIdx]).text()) {
+        return;
+    }
     pageIds = new Array(result.length);
     for (var index in result) {
         var obj = result[index];
@@ -83,6 +86,10 @@ function onSingleChapterLoaded(result) {
         pageIds[obj.idx] = obj.id;
         $("#read-area").append(view);
     }
+
+    comicSettings.chapters[chName].read = true;
+    comicSettings.lastread = chName;
+    updateChapterList();
 }
 
 function updateChapterList() {
