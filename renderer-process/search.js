@@ -1,6 +1,7 @@
 const values = require("./values");
 var request = require('request');
 var subscriber = require("./subscriber");
+var comicparser = require("./comic-parser");
 
 /**
  *      Variable Definition
@@ -130,7 +131,7 @@ function createResultView(link, titleKey, imguri, title, host, updateinfo, descr
     view.attr("host", host);
 
     view.click(function() {
-        console.log("search click: " + title + ", from: " + host);
+        comicparser.selectComic(host, link, title, titleKey, imguri);
     })
 
     view.find(".subscribe-btn").click(function(e) {

@@ -11,7 +11,7 @@ $(window).scroll(function(event){
 });
 
 setInterval(function() {
-    if (didScroll && $(".sidebar").css("position") == "fixed") {
+    if (didScroll && $(".float-menu").css("position") == "fixed") {
         hasScrolled();
         didScroll = false;
     }
@@ -28,11 +28,11 @@ function hasScrolled() {
     // This is necessary so you never see what is "behind" the navbar.
     if (st > lastScrollTop && st > navbarHeight){
         // Scroll Down
-        $('aside').removeClass('nav-down').addClass('nav-up');
+        $('.float-menu').removeClass('nav-down').addClass('nav-up');
     } else {
         // Scroll Up
         if(st + $(window).height() < $(document).height()) {
-            $('aside').removeClass('nav-up').addClass('nav-down');
+            $('.float-menu').removeClass('nav-up').addClass('nav-down');
         }
     }
     

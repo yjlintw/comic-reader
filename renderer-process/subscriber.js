@@ -1,11 +1,12 @@
 const values = require("./values");
 const settings = require("electron-settings");
-
 module.exports = {
     subscribe: subscribe,
     updateUI: updateSubscribeUIStatus
 
 }
+
+var comicparser = require("./comic-parser");
 
 /**
  *      Variable Definition
@@ -50,6 +51,7 @@ function updateComicInfo(host, comicTitleKey) {
 function updateSubscribeUIStatus() {
     updateSearchSubscribeUI();
     updateFavoriteSubscribeUI();
+    updateReadSubscribeUI();
 }
 
 function updateSearchSubscribeUI() {
@@ -90,6 +92,23 @@ function updateFavoriteSubscribeUI() {
 
 }
 
+function updateReadSubscribeUI() {
+    var dom = $("#comic-header");
+    var host = dom.attr("host");
+    var titleKey = dom.attr("titlekey");
+    var keyPath = "comic." + host + "." + titleKey;
+    var isSubscribed = (
+        settings.has(keyPath) &&
+        settings.get(keyPath + ".subscribed"));
+
+    if (isSubscribed) {
+        dom.find(".subscribe-btn").addClass("subscribed");
+    } else {
+        dom.find(".subscribe-btn").removeClass("subscribed");
+    }
+    
+}
+
 
 
 
@@ -128,6 +147,8 @@ function createFavEntry(link, titleKey, imguri, title, host) {
 
     view.click(function(e){
         console.log("fav click:" + title + ", from:" + host);
+        comicparser.selectComic(host, link, title, titleKey, imguri);
+
     });
 
     return view;

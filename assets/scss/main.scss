@@ -50,6 +50,14 @@ $non-subscribe-color: #aaa;
 $non-subscribe-hover-color: #558;
 $subscribed-color: #a00;
 $subscribed-hover-color: #d55;
+
+/**
+  *     Read View
+  */
+// layout
+$chapter-selector-width: 250px;
+
+
 /* ---- Utility ----*/
 
 /* ---- Overall area ----*/
@@ -96,15 +104,23 @@ body {
 /* ---- Side Bar ---- */
 // Tabview switcher
 .sidebar {
+    
     @media #{$info-mobile} {
-        display:flex;
-        flex-direction: row;
-        width: 100%;
-        // flex: 0 0 auto
-        position: fixed;
-        z-index: 10000;
-        top: 0;
-        transition: top 0.2s;
+        &.float-menu {
+            display:flex;
+            flex-direction: row;
+            width: 100%;
+            // flex: 0 0 auto
+            position: fixed;
+            z-index: 10000;
+            top: 0;
+            transition: top 0.2s;
+
+            &.nav-up {
+                top: -#{$sidebar-width};
+            
+            }
+        }
     }
     
     @media #{$info-tablet} {
@@ -118,10 +134,7 @@ body {
     }
     
     background-color: $sidebar-bg-color;
-    &.nav-up {
-        top: -#{$sidebar-width};
-        
-    }
+    
     .entry {
         @media #{$info-mobile} {
             width: 33.33333%;
@@ -282,4 +295,140 @@ body {
     }
 
     
+}
+
+#read-view {
+    
+    .middle-panel {
+        @media #{$info-mobile} {
+            height: calc(100vh - #{$sidebar-width});
+            width: 100vw;
+            top: $sidebar-width;
+
+        }
+        @media #{$info-tablet} {
+            height: 100vh;
+            width: $chapter-selector-width;
+            position: fixed;
+            overflow-y: auto;
+            border-left: 1px solid #c3c3c3;
+            border-right: 1px solid #c3c3c3;
+        }
+
+        position: fixed;
+
+        #comic-header {
+            @media #{$info-mobile} {
+                &.float-menu {
+                    position: fixed;
+                    height: $sidebar-width;
+                    width: 100%;
+                    transition: top 0.2s;
+                    top: $sidebar-width;
+                    // margin-top: $sidebar-width;
+                    &.nav-up {
+                        top: -#{$sidebar-width};
+                    }
+                }
+            }
+
+            @media #{$info-tablet} {
+                width: $chapter-selector-width;
+                position: fixed;
+                left: $sidebar-width;
+                height: $sidebar-width;
+                // border-right: 1px solid #e3e3e3;
+            }
+            background-color: #fff;
+            border-bottom: 1px solid #e3e3e3;   
+            display: flex;
+
+            .level-item {
+                margin: 0;
+            }
+
+            .subscribe-btn {
+                line-height: 1em;
+                cursor: pointer;
+                &.subscribed {
+                    color: #a00;
+                }
+            }
+        }
+
+        .loading-bg {
+            @media #{$info-mobile} {
+                height: calc(100vh - #{$sidebar-width} - 68px);
+            }
+            @media #{$info-tablet} {
+                width: $chapter-selector-width;
+                position: fixed;
+                height: calc(100vh - #{$sidebar-width});
+                background-color: rgba(0,0,0,0.8);
+                margin-top: $sidebar-width;
+            }
+            z-index: 10000;
+
+            .loading {
+                width: 4em;
+                height: 4em;
+                margin: auto;
+                vertical-align: middle;
+                position: absolute;
+                top: 50%;
+                left: calc(50% - 2em);
+            }
+        }
+        
+
+        #chapter-selector {
+            @media #{$info-mobile} {
+                height: calc(100vh - #{$sidebar-width}*2);
+                
+                overflow-y: auto;
+            }
+            @media #{$info-tablet} {
+                width: $chapter-selector-width;
+            }
+            margin-top: $sidebar-width;
+            padding: 0;
+            background-color: #fff;
+            .chapter-entry {
+                border-bottom: 1px solid #e3e3e3;
+                cursor: pointer;
+
+                &.active{
+                    background-color: #ddf;
+                }
+
+                &:hover {
+                    background-color: #ccf;
+                }
+            }
+        }
+    }
+
+    #read-area {
+        @media #{$info-mobile} {
+            margin-top: $sidebar-width;
+            min-height: calc(100vh - #{$sidebar-width} * 2);
+        }
+        @media #{$info-tablet} {
+            margin-left: $chapter-selector-width;
+            min-height: 100vh;
+        }
+        background-color: #000;
+        color: #fff;
+        padding: 0;
+        .comic-page-container {
+            // height: 100vh;
+            // background-color: #aaa;
+            margin-bottom: 1em;
+            img {
+                height: 100vh;
+                display: block;
+                margin: 0 auto;
+            }
+        }
+    }
 }

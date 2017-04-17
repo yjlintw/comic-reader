@@ -57,6 +57,9 @@
 /**
   *     Search View
   **/
+/**
+  *     Read View
+  */
 /* ---- Utility ----*/
 /* ---- Overall area ----*/
 @media only screen and (max-width: 768px) {
@@ -84,14 +87,16 @@
 .sidebar {
   background-color: #000; }
   @media only screen and (max-width: 768px) {
-    .sidebar {
+    .sidebar.float-menu {
       display: flex;
       flex-direction: row;
       width: 100%;
       position: fixed;
       z-index: 10000;
       top: 0;
-      transition: top 0.2s; } }
+      transition: top 0.2s; }
+      .sidebar.float-menu.nav-up {
+        top: -50px; } }
   @media only screen and (min-width: 769px) {
     .sidebar {
       width: 50px;
@@ -101,8 +106,6 @@
       height: 100vh;
       flex-direction: column;
       position: fixed; } }
-  .sidebar.nav-up {
-    top: -50px; }
   .sidebar .entry {
     height: 50px;
     flex-grow: 0;
@@ -206,3 +209,102 @@
   @media only screen and (min-width: 769px) {
     .favorite-entry.media {
       width: 323.5px; } }
+
+#read-view .middle-panel {
+  position: fixed; }
+  @media only screen and (max-width: 768px) {
+    #read-view .middle-panel {
+      height: calc(100vh - 50px);
+      width: 100vw;
+      top: 50px; } }
+  @media only screen and (min-width: 769px) {
+    #read-view .middle-panel {
+      height: 100vh;
+      width: 250px;
+      position: fixed;
+      overflow-y: auto;
+      border-left: 1px solid #c3c3c3;
+      border-right: 1px solid #c3c3c3; } }
+  #read-view .middle-panel #comic-header {
+    background-color: #fff;
+    border-bottom: 1px solid #e3e3e3;
+    display: flex; }
+    @media only screen and (max-width: 768px) {
+      #read-view .middle-panel #comic-header.float-menu {
+        position: fixed;
+        height: 50px;
+        width: 100%;
+        transition: top 0.2s;
+        top: 50px; }
+        #read-view .middle-panel #comic-header.float-menu.nav-up {
+          top: -50px; } }
+    @media only screen and (min-width: 769px) {
+      #read-view .middle-panel #comic-header {
+        width: 250px;
+        position: fixed;
+        left: 50px;
+        height: 50px; } }
+    #read-view .middle-panel #comic-header .level-item {
+      margin: 0; }
+    #read-view .middle-panel #comic-header .subscribe-btn {
+      line-height: 1em;
+      cursor: pointer; }
+      #read-view .middle-panel #comic-header .subscribe-btn.subscribed {
+        color: #a00; }
+  #read-view .middle-panel .loading-bg {
+    z-index: 10000; }
+    @media only screen and (max-width: 768px) {
+      #read-view .middle-panel .loading-bg {
+        height: calc(100vh - 50px - 68px); } }
+    @media only screen and (min-width: 769px) {
+      #read-view .middle-panel .loading-bg {
+        width: 250px;
+        position: fixed;
+        height: calc(100vh - 50px);
+        background-color: rgba(0, 0, 0, 0.8);
+        margin-top: 50px; } }
+    #read-view .middle-panel .loading-bg .loading {
+      width: 4em;
+      height: 4em;
+      margin: auto;
+      vertical-align: middle;
+      position: absolute;
+      top: 50%;
+      left: calc(50% - 2em); }
+  #read-view .middle-panel #chapter-selector {
+    margin-top: 50px;
+    padding: 0;
+    background-color: #fff; }
+    @media only screen and (max-width: 768px) {
+      #read-view .middle-panel #chapter-selector {
+        height: calc(100vh - 50px*2);
+        overflow-y: auto; } }
+    @media only screen and (min-width: 769px) {
+      #read-view .middle-panel #chapter-selector {
+        width: 250px; } }
+    #read-view .middle-panel #chapter-selector .chapter-entry {
+      border-bottom: 1px solid #e3e3e3;
+      cursor: pointer; }
+      #read-view .middle-panel #chapter-selector .chapter-entry.active {
+        background-color: #ddf; }
+      #read-view .middle-panel #chapter-selector .chapter-entry:hover {
+        background-color: #ccf; }
+
+#read-view #read-area {
+  background-color: #000;
+  color: #fff;
+  padding: 0; }
+  @media only screen and (max-width: 768px) {
+    #read-view #read-area {
+      margin-top: 50px;
+      min-height: calc(100vh - 50px * 2); } }
+  @media only screen and (min-width: 769px) {
+    #read-view #read-area {
+      margin-left: 250px;
+      min-height: 100vh; } }
+  #read-view #read-area .comic-page-container {
+    margin-bottom: 1em; }
+    #read-view #read-area .comic-page-container img {
+      height: 100vh;
+      display: block;
+      margin: 0 auto; }
