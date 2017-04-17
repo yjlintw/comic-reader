@@ -12,11 +12,11 @@ module.exports = {
 var chapterEntryStr = "";
 var curHost = "";
 var curTitleKey = "";
-var curChapterList = [];
+var chapterList = [];
 var curChapterIdx = -1;
 var pageContainerStr = "";
 var pageIds = [];
-var curPageId = 0;
+var curPageIdx = 0;
 
 function selectComic(host, link, title, titleKey, imguri) {
     $("#comic-header .comic-title").html(title);
@@ -26,9 +26,9 @@ function selectComic(host, link, title, titleKey, imguri) {
     $("#comic-header").attr("titlekey", titleKey);
     curHost = host;
     curTitleKey = titleKey;
-    curChapterList = [];
+    chapterList = [];
     curChapterIdx = -1;
-
+    $("#read-area").html("");
     $("#comic-header .subscribe-btn").click(function(e) {
         e.stopPropagation();
         subscriber.subscribe(host, titleKey, title, link, imguri);
@@ -53,9 +53,9 @@ function onChaptersGraped(error, response, body){
             tmp.find("li").each(function(i, e) {
                 var chName = $(e).text();
                 var chLink = "http://" + hostpath + $(e).find('a').attr('href');
-                var domid = "#chapter" + i;
+                var domid = "chapter" + i;
                 var view = createChapterEntry(chName, chLink, domid, i);
-                curChapterList.push(domid);
+                chapterList.push("#"+domid);
                 $("#chapter-selector").append(view);
 
             });
@@ -70,11 +70,11 @@ function onChaptersGraped(error, response, body){
 function selectChapter(chLink) {
     console.log(chLink);
     $("#read-area").html("");
+    curPageIdx = 0;
     request({
         method: 'GET',
         uri: chLink
     }, onSingleChapterGraped)
-
 }
 
 function onSingleChapterGraped(error, response, body) {
@@ -115,6 +115,38 @@ function utilParser (error, response, body) {
     }
 }
 
+/**
+ *      Navigation
+ */
+
+function prevPic() {
+    curPageIdx--;
+    if (curPageIdx < 0) curPageIdx = 0;
+    $('html, body').animate({
+        scrollTop: $("#" + pageIds[curPageIdx]).offset().top
+    }, 100);
+}
+
+function nextPic() {
+    curPageIdx++;
+    if (curPageIdx >= pageIds.length) curPageIdx = pageIds.length -1;;
+    $('html, body').animate({
+        scrollTop: $("#" + pageIds[curPageIdx]).offset().top
+    }, 100)
+}
+
+function prevChapter() {
+    curChapterIdx--;
+    if (curChapterIdx < 0) curChapterIdx = 0;
+    console.log(chapterList[curChapterIdx]);
+    $(chapterList[curChapterIdx]).trigger('click');
+}
+
+function nextChapter() {
+    curChapterIdx++;
+    if (curChapterIdx >= chapterList.length) curChapterIdx = chapterList.length - 1;
+    $(chapterList[curChapterIdx]).trigger('click');
+}
 
 /**
  *      Initialization / UI
@@ -153,6 +185,9 @@ function createChapterEntry(chName, chLink, domid, index) {
             toggleChapterSelector();
         }
         selectChapter(chLink);
+        $(".chapter-entry").removeClass("active");
+        $(this).addClass("active");
+        curChapterIdx = index;
     });
     return view;
 }
@@ -164,6 +199,10 @@ function createComicPage(imguri, id, idx) {
         view.attr("id", id);
         view.attr("idx", idx);
         view.find("img").attr("src", imguri);
+        view.click(function() {
+            curPageIdx = idx;
+            nextPic();
+        });
         return view;
 }
 
@@ -175,9 +214,53 @@ function toggleChapterSelector() {
     }
 }
 
+
+
+function onKeydown(e) {
+    if (!$('#read-panel').hasClass('is-hidden')) {
+        switch(e.which) {
+            case 33:
+            case 37: // left
+                prevPic();
+            break;
+
+            case 38: // up
+                nextChapter();
+            break;
+
+            case 34:
+            case 39: // right
+                nextPic();
+            break;
+
+            case 40: // down
+                prevChapter();
+            break;
+
+            default: return; // exit this handler for other keys
+        }
+        
+        e.preventDefault(); // prevent the default action (scroll / move caret)
+    }
+}
+
+$(function(){
+    $(window).bind('scroll', function() {
+        if (!$('#read-panel').hasClass('is-hidden')){
+            curPageId = 0;
+            var height = $(window).height();
+            var pos = $(window).scrollTop();
+            curPageId = Math.round(pos / height);
+        }
+    });
+});
+
+
 /**
  *      Main Scripts
  */
 
 init();
 $(document).ready(lateInit);
+
+$(document).keydown(onKeydown);
