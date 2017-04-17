@@ -1,5 +1,6 @@
 const values = require('./values');
 var subscriber = require('./subscriber');
+var settings = require('electron-settings');
 
 module.exports = {
     selectComic: selectComic
@@ -27,6 +28,7 @@ function selectComic(host, link, title, titleKey, imguri) {
     curTitleKey = titleKey;
     chapterList = [];
     curChapterIdx = -1;
+    subscriber.register(host, titleKey, title, link, imguri);
     $("#read-area").html("");
     $("#comic-header .subscribe-btn").click(function(e) {
         e.stopPropagation();
@@ -43,20 +45,33 @@ function selectComic(host, link, title, titleKey, imguri) {
 function onChaptersGraped(result){
     $("#chapter-selector").html("");
     chapterList = new Array(result.length);
+
     for (var index in result) {
         var obj = result[index];
         var view = createChapterEntry(obj.chName, obj.chLink, obj.domid, obj.index);
         chapterList[obj.index] = "#" + obj.domid;
+        keyPath = "comic." + curHost + "." + curTitleKey + ".chapters." + obj.chName;
+        if (!settings.has(keyPath)) {
+            settings.set(keyPath, {
+                read: false
+            });
+        }
         $("#chapter-selector").append(view);
     }
+    settings.set("comic." + curHost + "." + curTitleKey + ".newestchapter", result[0].chName);
+    updateChapterList();
     $(".middle-panel .loading-bg").addClass("is-hidden");
 }
 
-function selectChapter(chLink) {
+function selectChapter(chLink, chName) {
     console.log(chLink);
     $("#read-area").html("");
+    var keyPath = "comic." + curHost + "." + curTitleKey + ".chapters." + chName + ".read";
+    settings.set(keyPath, true);
+    settings.set("comic." + curHost + "." + curTitleKey + ".lastread", chName);
     curPageIdx = 0;
     values.hostnames[curHost].parsers.loadChapter(chLink, onSingleChapterLoaded);
+    updateChapterList();
 }
 
 function onSingleChapterLoaded(result) {
@@ -67,6 +82,16 @@ function onSingleChapterLoaded(result) {
         pageIds[obj.idx] = obj.id;
         $("#read-area").append(view);
     }
+}
+
+function updateChapterList() {
+    $(".chapter-entry").each(function(i, e) {
+        var chName = $(e).text();
+        var keyPath = "comic." + curHost + "." + curTitleKey + ".chapters." + chName + ".read";
+        if (settings.get(keyPath)) {
+            $(e).addClass("read");
+        }
+    });
 }
 
 /**
@@ -138,7 +163,7 @@ function createChapterEntry(chName, chLink, domid, index) {
             // toggle chapter selector
             toggleChapterSelector();
         }
-        selectChapter(chLink);
+        selectChapter(chLink, chName);
         $(".chapter-entry").removeClass("active");
         $(this).addClass("active");
         curChapterIdx = index;

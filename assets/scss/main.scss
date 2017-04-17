@@ -233,7 +233,7 @@ body {
         width: $search-result-thumbnail-width;
     }
 
-    .content p {
+    .conten p {
         margin-bottom: 0.4em;
         line-height: 1.2em;
         
@@ -288,12 +288,20 @@ body {
     @extend .search-result.media;
     border: 2px solid #fff;
     // margin: 0 auto;
-    
+    overflow: hidden;
+    .media-left {
+        margin-right: 0.2em;
+    }
 
+    p {
+        margin: 0;
+    }    
+    .level {
+        margin: 0.5em 0;
+    }
     @media #{$info-tablet} {
         width: 323.5px;
     }
-
     
 }
 
@@ -397,12 +405,16 @@ body {
                 border-bottom: 1px solid #e3e3e3;
                 cursor: pointer;
 
-                &.active{
-                    background-color: #ddf;
-                }
-
                 &:hover {
                     background-color: #ccf;
+                }
+
+                &.read {
+                    background-color: #fdd;
+                }
+
+                &.active {
+                    background-color: #ddf;
                 }
             }
         }

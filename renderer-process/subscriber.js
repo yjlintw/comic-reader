@@ -1,6 +1,7 @@
 const values = require("./values");
 const settings = require("electron-settings");
 module.exports = {
+    register: register,
     subscribe: subscribe,
     updateUI: updateSubscribeUIStatus
 
@@ -14,6 +15,21 @@ var comicparser = require("./comic-parser");
 var favEntryViewStr = "";
 
 
+function register(host, comicTitleKey, comicTitle, link, thumbnailURI, subscribed=false) {
+    var keyPath = "comic." + host + "." + comicTitleKey;
+    if (!settings.has(keyPath)) {
+        settings.set(keyPath, {
+            "title": comicTitle,
+            "link": link,
+            "thumbnail": thumbnailURI,
+            "subscribed": subscribed,
+            "lastread": "",
+            "chapters": {},
+            "newestchapter": ""
+        });
+    }
+}
+
 function subscribe(host, comicTitleKey, comicTitle, link, thumbnailURI) {
     var keyPath = "comic." + host + "." + comicTitleKey;
     if (settings.has(keyPath)) {
@@ -23,12 +39,7 @@ function subscribe(host, comicTitleKey, comicTitle, link, thumbnailURI) {
             settings.set(keyPath + ".subscribed", true);
         }
     } else {
-        settings.set(keyPath, {
-            "title": comicTitle,
-            "link": link,
-            "thumbnail": thumbnailURI,
-            "subscribed": true,
-        });
+        register(host, comicTitleKey, comicTitle, link, thumbnailURI, true)
     }
 
     updateSubscribeUIStatus();
@@ -132,7 +143,10 @@ function createFavEntry(link, titleKey, imguri, title, host) {
     view.find("img").attr("src", imguri);
     view.find(".comic-name strong").text(title);
     view.find(".comic-name small").text(host);
-
+    var lastread = settings.get("comic." + host + "." + titleKey + ".lastread");
+    var newest = settings.get("comic." + host + "." + titleKey + ".newestchapter");
+    view.find(".last-read strong").text(lastread);
+    view.find(".newest strong").text(newest)
     view.attr("title", title);
     view.attr("link", link);
     view.attr("titlekey", titleKey);

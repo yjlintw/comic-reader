@@ -1,3 +1,5 @@
+var subscriber = require("./subscriber");
+
 // Scroll behavior
 
 // Hide Header on on scroll down
@@ -46,6 +48,7 @@ function onTabEntryClick() {
     $($(this).attr("associate-view")).removeClass("is-hidden");
     $(".sidebar .entry").removeClass("active");
     $(this).addClass("active");
+    subscriber.updateUI();
 }
 
 

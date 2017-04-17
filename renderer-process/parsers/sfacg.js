@@ -46,8 +46,26 @@ module.exports = {
 }
 
 var host = "sfacg";
-var searchuri = "http://s.sfacg.com/?Key={search}&S=1&SS=0";
+var searchuri = "http://s.sfacg.com/?Key={search}&S=0&SS=0";
 
+
+/**
+ * Search comic books
+ * @param {string} searchTerm: Keywords to search
+ * @param {function} callback(result, host)
+ *        
+ *        result {Array}: List of obj (see below) that contains information about the comic
+ *        host {String}: name of the host
+ * 
+ *        obj {Object}:
+ *          link {String}
+ *          titleKey {String}
+ *          imguri {String}
+ *          comicTitle {String}
+ *          host {String}
+ *          updateinfo {String}
+ *          description {String}
+ */
 function search(searchTerm, callback) {
     request({
         method: "GET",
@@ -82,6 +100,13 @@ function searchResponse(error, response, body) {
     this.callback(result, host);
 }
 
+
+/**
+ * 
+ * @param {*} link 
+ * @param {*} callback 
+ */
+
 function grapeChapters(link, callback) {
     request({
         methos: 'GET',
@@ -109,6 +134,13 @@ function onChapterGraped(error, response, body) {
 
     this.callback(result);
 }
+
+
+/**
+ * 
+ * @param {*} chLink 
+ * @param {*} callback 
+ */
 
 function loadChapter(chLink, callback) {
     request({
