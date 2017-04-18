@@ -50,6 +50,9 @@ It will do automatically sass watching and compiling when there is a change made
 to the sass files. It also run a livereloadx server. Once any of the file under 
 the project folder is changed, it will automatically refresh the app.
 
+More detailed documentation is here:
+[Wiki](https://github.com/yjlintw/comic-reader/wiki/App-Architecture)
+
 
 
 ## TODO::
