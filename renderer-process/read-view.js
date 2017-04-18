@@ -220,11 +220,11 @@ function nextChapter() {
 function scrollMiddlePanel() {
     var scrollBottom = $(".middle-panel").height() - $("#comic-header").height();
     var e = $(chapterList[curChapterIdx]);
-    if (e.offset().top  + e.height() >= scrollBottom) {
+    if (e.offset() && e.offset().top  + e.height() >= scrollBottom) {
         $(".middle-panel").animate({
             scrollTop: $(".middle-panel").scrollTop() + e.offset().top - $("#comic-header").outerHeight()
         }, 100)
-    } else if (e.offset().top < $("#comic-header").outerHeight()) {
+    } else if (e.offset() && e.offset().top < $("#comic-header").outerHeight()) {
         $(".middle-panel").animate({
             scrollTop: $(".middle-panel").scrollTop() - $(".middle-panel").height() + $("#comic-header").outerHeight() + e.offset().top
         }, 100)
@@ -354,7 +354,7 @@ function toggleLoadingAnimation(shown) {
  * @param {KeyEvent} e 
  */
 function onKeydown(e) {
-    if (!$('#read-panel').hasClass('is-hidden')) {
+    if (!$('#read-view').hasClass('is-hidden')) {
         switch(e.which) {
             case 33:
             case 37: // left
