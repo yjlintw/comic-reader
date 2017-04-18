@@ -73,6 +73,10 @@ function search(searchTerm, callback) {
     }, searchResponse.bind({callback:callback}));
 }
 
+/**
+ * HTML request callback function. Response from search
+ * @param see npm request module
+ */
 function searchResponse(error, response, body) {
     var tmp = $("#form1", "<div>" + body + "</div>").find("table:nth-of-type(5)");
     var result = [];
@@ -103,10 +107,18 @@ function searchResponse(error, response, body) {
 
 /**
  * 
- * @param {*} link 
- * @param {*} callback 
+ * @param {String} link 
+ * @param {function} callback (result)
+ * 
+ * 
+ *      {List}  result: List of obj (see below)
+ *      {Object} obj
+ *            {String} chName: Chapter's name
+ *            {String} chLink: URL to the chapter
+ *            {String} domid : HTML DOM object id
+ *            {int}    index : index
+ *      
  */
-
 function grapeChapters(link, callback) {
     request({
         methos: 'GET',
@@ -138,10 +150,14 @@ function onChapterGraped(error, response, body) {
 
 /**
  * 
- * @param {*} chLink 
- * @param {*} callback 
+ * @param {String} chLink : Link to the chapter 
+ * @param {String} chName : Chapter name (User-readable)
+ * @param {function} callback(result, chName)
+ *      @param result: list of obj contains information for images to load
+ *          {String} imgurl: Image URL
+ *          {String} id    : HTML DOM object id
+ *          {int}    idx   : index
  */
-
 function loadChapter(chLink, chName, callback) {
     request({
         method: 'GET',
@@ -150,6 +166,10 @@ function loadChapter(chLink, chName, callback) {
 
 }
 
+/**
+ * Load the page to find the javascript file location that contains info we need
+ * @param see npm request module
+ */
 function onSingleChapterLoaded(error, response, body) {
     var tmp = $("<div>" + body + "</div>");
     var scripts = tmp.find("script").eq(1).attr("src");
@@ -160,6 +180,15 @@ function onSingleChapterLoaded(error, response, body) {
     }, utilParser.bind({callback:this.callback, chName: this.chName}));
 }
 
+/**
+ * Load the javascript that stored int the target website.
+ * The javascript contains information included:
+ *      @param {Array} hosts : list of server that we can use in String format
+ *      @param {Array} picAy : list of image url in String format
+ * 
+ * invoke the callback function that was passed in from loacChapter(...)
+ * @param see npm request module
+ */
 function utilParser (error, response, body) {
     var host = response.request.host;
     eval(body);

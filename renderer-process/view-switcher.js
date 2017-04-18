@@ -1,4 +1,17 @@
-var subscriber = require("./subscriber");
+/**
+ *      view-switcher.js
+ * 
+ *      Control the behavior of view switching and sidebar
+ *      See: ../sections/sidebar.html
+ */
+
+var searchview = require('./search-view');
+var favoriteview = require('./favorite-view');
+var readview = require('./read-view');
+
+module.exports = {
+    tabswitch: tabswitch
+}
 
 // Scroll behavior
 
@@ -41,14 +54,36 @@ function hasScrolled() {
     lastScrollTop = st;
 }
 
+/**
+ * Switch active panel
+ * @param {int} index 
+ */
+function tabswitch(index) {
+    switch (index) {
+        case 0:
+            $("#tab-favorite").trigger("click");
+            break;
+        case 1:
+            $("#tab-search").trigger("click");
+            break;
+        case 2:
+            $("#tab-read").trigger("click");
+            break;
+    }
+}
 
-
+/**
+ * Callback function when sidebar tab is clicked
+ */
 function onTabEntryClick() {
     $(".content-view").addClass("is-hidden");
     $($(this).attr("associate-view")).removeClass("is-hidden");
     $(".sidebar .entry").removeClass("active");
     $(this).addClass("active");
-    subscriber.updateUI();
+
+    searchview.updateSubscribeUI();
+    favoriteview.updateSubscribeUI();
+    readview.updateSubscribeUI();
 }
 
 

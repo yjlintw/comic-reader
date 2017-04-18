@@ -2,7 +2,12 @@ module.exports = {
     toUnicode : toUnicode
 }
 
-
+/**
+ * Convert an input string to Unicode format
+ * @param {String} str 
+ * 
+ * @return {String} string in unicode format
+ */
 function toUnicode(str){
     var result = "";
     for(var i = 0; i < str.length; i++){

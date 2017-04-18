@@ -1,3 +1,9 @@
+/**
+ * Things to load after everything is loaded
+ */
+
+var viewswitcher = require("./view-switcher");
+
 $(document).ready(function() {
-    $("#tab-favorite").trigger("click");
+    viewswitcher.tabswitch(0);
 });

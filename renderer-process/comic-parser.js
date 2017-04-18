@@ -1,6 +1,19 @@
+/**
+ *      Comic Parser
+ *      comic-parser.js
+ * 
+ *      Grape the chapter info and image contents from the website using 
+ *      site-specific parsers
+ */
+
+
 const values = require('./values');
 var subscriber = require('./subscriber');
 var settings = require('electron-settings');
+var searchview = require('./search-view');
+var favoriteview = require('./favorite-view');
+var readview = require('./read-view');
+var viewswitcher = require("./view-switcher");
 
 module.exports = {
     selectComic: selectComic
@@ -10,151 +23,132 @@ module.exports = {
 /**
  *      Variable Definition
  */
-
-var chapterEntryStr = "";
-var curHost = "";
-var curTitleKey = "";
-var chapterList = [];
-var curChapterIdx = -1;
-var pageContainerStr = "";
-var pageIds = [];
-var curPageIdx = 0;
+// variable to store the settings. Preventing frequently I/O operations
 var comicSettings = {};
 
+/**
+ * Set information for selected comic and grape chapters-info
+ * @param {String} host     : Host name
+ * @param {String} link     : Link to the comic
+ * @param {String} title    : Comic's name (human-readable)
+ * @param {String} titleKey : Unique key for the comic
+ * @param {String} imguri   : thumbnail/cover photo 's url
+ */
 function selectComic(host, link, title, titleKey, imguri) {
-    $("#comic-header .comic-title").html(title);
-    $("#comic-header").attr("host", host);
-    $("#comic-header").attr("link", link);
-    $("#comic-header").attr("title", title);
-    $("#comic-header").attr("titlekey", titleKey);
-    curHost = host;
-    curTitleKey = titleKey;
-    chapterList = [];
-    curChapterIdx = -1;
+    readview.setCurrentComic(host, titleKey, title, link, imguri);
     subscriber.register(host, titleKey, title, link, imguri);
-    $("#read-area").html("");
-    $("#comic-header .subscribe-btn").click(function(e) {
-        e.stopPropagation();
-        subscriber.subscribe(host, titleKey, title, link, imguri);
-    });
 
+    readview.clearReadArea();
     values.hostnames[host].parsers.grapeChapters(link, onChaptersGraped);
 
-    $(".middle-panel .loading-bg").removeClass("is-hidden");
+    // -- UI update --
+    // Enable the loading screen
+    readview.toggleLoadingAnimation(true);
+    // update the subscription indicators' UI
     subscriber.updateUI();
-    $("#tab-read").trigger("click");
+    // Make read-view active
+    viewswitcher.tabswitch(2);
 }
 
+/**
+ * Callback function when chapter info is graped
+ * @param {Object} result : list of object
+ *      @param {String} result.chName : Chapter name (human-readable)
+ *      @param {String} result.chLink : url to the chapter
+ *      @param {String} domid         : HTML DOM id to the chapter selector entry 
+ *      @param {int}    index         : index in the chapter list
+ */
 function onChaptersGraped(result){
-    $("#chapter-selector").html("");
-    chapterList = new Array(result.length);
-    var keyPath = "comic." + curHost + "." + curTitleKey;
+    // clear the chapter selector
+    readview.clearChapterSelector();
+
+    // create an empty chapter list with size of the length of the result
+    var chapterList = new Array(result.length);
+
+    // Get information from settings
+    var keyPath = "comic." + readview.getCurHost() 
+                    + "." + readview.getCurTitleKey();
     comicSettings = settings.get(keyPath)
     var chapters = comicSettings.chapters;
+    
     for (var index in result) {
         var obj = result[index];
-        var view = createChapterEntry(obj.chName, obj.chLink, obj.domid, obj.index);
+        var view = readview.createChapterEntry(obj.chName, obj.chLink, obj.domid, obj.index);
         chapterList[obj.index] = "#" + obj.domid;
         
+        // if it is a new chapter, update the setting files
         if (!(obj.chName in chapters)) {
             chapters[obj.chName] = {
                 read: false
             }
         }
-        $("#chapter-selector").append(view);
+
+        // add new ui to the screen
+        readview.appendNewChapter(view);
     }
+    // Pass information to the read view
+    readview.setChapterList(chapterList);
+
+    // update the newest chapter 
+    // TODO: sloppy method, should implement with a different way later
     comicSettings.newestchapter = result[0].chName;
+
+    // update the read-history UI
     updateChapterList();
-    $(".middle-panel .loading-bg").addClass("is-hidden");
+
+    // disable the loading UI
+    readview.toggleLoadingAnimation(false);
 }
 
+
+/**
+ * Select one chapter to load
+ * @param {String} chLink : URL to the chapter
+ * @param {String} chName : Chapter name. Human-readable.
+ */
 function selectChapter(chLink, chName) {
-    // console.log(chLink);
-    $("#read-area").html("");
+
+    readview.clearReadArea();
     
     curPageIdx = 0;
-    values.hostnames[curHost].parsers.loadChapter(chLink, chName, onSingleChapterLoaded);
+    values.hostnames[readview.getCurHost()].parsers.loadChapter(chLink, chName, onSingleChapterLoaded);
     
 }
 
+
+/**
+ * Callback function when one single chapter is loaded
+ * @param {list} result : list of objects
+ *      @param {String} imgurl : image url
+ *      @param {String} id     : HTML DOM object id for that image
+ *      @param {int}    idx    : index in the image array
+ * @param {String} chName : Chapter name. Human-readable
+ */
 function onSingleChapterLoaded(result, chName) {
-    if (chName != $(chapterList[curChapterIdx]).text()) {
+    if (chName != $(readview.getChapterList()[readview.getChIdx()]).text()) {
         return;
     }
-    pageIds = new Array(result.length);
+    var pageIds = new Array(result.length);
     for (var index in result) {
         var obj = result[index];
-        var view = createComicPage(obj.imgurl, obj.id, obj.idx);
+        var view = readview.createComicPage(obj.imgurl, obj.id, obj.idx);
         pageIds[obj.idx] = obj.id;
-        $("#read-area").append(view);
+        readview.appendNewPage(view);
     }
-
+    readview.setPageIds(pageIds);
     comicSettings.chapters[chName].read = true;
     comicSettings.lastread = chName;
     updateChapterList();
 }
 
-function updateChapterList() {
-    $(".chapter-entry").each(function(i, e) {
-        var chName = $(e).text();
-        if (comicSettings.chapters[chName].read) {
-            $(e).addClass("read");
-        }
-    });
-    var keyPath = "comic." + curHost + "." + curTitleKey;
-    settings.set(keyPath, comicSettings);
-}
 
 /**
- *      Navigation
+ * Update read-history UI indicator
  */
-
-function prevPic() {
-    if (!$("#" + pageIds[curPageIdx]).offset()) return;
-    curPageIdx--;
-    if (curPageIdx < 0) curPageIdx = 0;
-    $('html, body').animate({
-        scrollTop: $("#" + pageIds[curPageIdx]).offset().top
-    }, 100);
-}
-
-function nextPic() {
-    if (!$("#" + pageIds[curPageIdx]).offset()) return;
-    curPageIdx++;
-    if (curPageIdx >= pageIds.length) curPageIdx = pageIds.length -1;;
-    $('html, body').animate({
-        scrollTop: $("#" + pageIds[curPageIdx]).offset().top
-    }, 100)
-}
-
-function prevChapter() {
-    curChapterIdx--;
-    if (curChapterIdx < 0) curChapterIdx = 0;
-    // console.log(chapterList[curChapterIdx]);
-    $(chapterList[curChapterIdx]).trigger('click');
-    
-    scrollMiddlePanel();
-}
-
-function nextChapter() {
-    curChapterIdx++;
-    if (curChapterIdx >= chapterList.length) curChapterIdx = chapterList.length - 1;
-    $(chapterList[curChapterIdx]).trigger('click');
-    scrollMiddlePanel();
-}
-
-function scrollMiddlePanel() {
-    var scrollBottom = $(".middle-panel").height() - $("#comic-header").height();
-    var e = $(chapterList[curChapterIdx]);
-    if (e.offset().top  + e.height() >= scrollBottom) {
-        $(".middle-panel").animate({
-            scrollTop: $(".middle-panel").scrollTop() + e.offset().top - $("#comic-header").outerHeight()
-        }, 100)
-    } else if (e.offset().top < $("#comic-header").outerHeight()) {
-        $(".middle-panel").animate({
-            scrollTop: $(".middle-panel").scrollTop() - $(".middle-panel").height() + $("#comic-header").outerHeight() + e.offset().top
-        }, 100)
-    }
+function updateChapterList() {
+    readview.updateChapterList(comicSettings);
+    var keyPath = "comic." + readview.getCurHost() + "." + readview.getCurTitleKey();
+    settings.set(keyPath, comicSettings);
 }
 
 /**
@@ -162,106 +156,15 @@ function scrollMiddlePanel() {
  */
 
 function init() {
-    $.get('./sections/chapter-entry.html', function(result) {
-        chapterEntryStr = result;
-    });
+    searchview.bindSelectComic(selectComic);
+    favoriteview.bindSelectComic(selectComic);
 
-    $.get('./sections/page.html', function(result) {
-        pageContainerStr = result;
-    })
+    readview.bindSelectChapter(selectChapter);
 }
 
 function lateInit() {
-    // comic header click behavior in mobile view
-    $("#comic-header").click(function(e) {
-        if ($("#comic-header").css("top") == "50px") {
-            // toggle chapter selector
-            toggleChapterSelector();
-        }
-    })
+    
 }
-
-function createChapterEntry(chName, chLink, domid, index) {
-    var view = $(chapterEntryStr);
-    view.attr("link", chLink);
-    view.attr("idx", index);
-    view.attr("id", domid);
-
-    view.html(chName);
-    view.click(function(){
-        if ($("#comic-header").css("top") == "50px") {
-            // toggle chapter selector
-            toggleChapterSelector();
-        }
-        selectChapter(chLink, chName);
-        $(".chapter-entry").removeClass("active");
-        $(this).addClass("active");
-        curChapterIdx = index;
-    });
-    return view;
-}
-
-function createComicPage(imguri, id, idx) {
-        var view = $(pageContainerStr);
-        view.attr("id", id);
-        view.attr("idx", idx);
-        view.find("img").attr("src", imguri);
-        view.click(function() {
-            curPageIdx = idx;
-            nextPic();
-        });
-        return view;
-}
-
-function toggleChapterSelector() {
-    if ($("#chapter-selector").hasClass("is-hidden-mobile")) {
-        $("#chapter-selector").removeClass("is-hidden-mobile");
-    } else {
-        $("#chapter-selector").addClass("is-hidden-mobile");
-    }
-}
-
-
-
-function onKeydown(e) {
-    if (!$('#read-panel').hasClass('is-hidden')) {
-        switch(e.which) {
-            case 33:
-            case 37: // left
-                prevPic();
-            break;
-
-            case 38: // up
-                nextChapter();
-            break;
-
-            case 34:
-            case 39: // right
-                nextPic();
-            break;
-
-            case 40: // down
-                prevChapter();
-            break;
-
-            default: return; // exit this handler for other keys
-        }
-        
-        e.preventDefault(); // prevent the default action (scroll / move caret)
-    }
-}
-
-$(function(){
-    $(window).bind('scroll', function() {
-        if (!$('#read-panel').hasClass('is-hidden')){
-            curPageId = 0;
-            var height = $(window).height();
-            var pos = $(window).scrollTop();
-            curPageId = Math.round(pos / height);
-        }
-    });
-});
-
 
 
 /**
@@ -270,5 +173,3 @@ $(function(){
 
 init();
 $(document).ready(lateInit);
-
-$(document).keydown(onKeydown);

@@ -1,5 +1,22 @@
+/**
+ *      Subscriber
+ *      subscriber.js
+ * 
+ *      Manage all the subscription behavior
+ */
+
+
+// TODO::
+//      Move the detailed comic subscription information to a different file
+
+
 const values = require("./values");
 const settings = require("electron-settings");
+var favoriteview = require('./favorite-view')
+var searchview = require('./search-view');
+var readview = require('./read-view');
+
+
 module.exports = {
     register: register,
     subscribe: subscribe,
@@ -7,14 +24,21 @@ module.exports = {
 
 }
 
-var comicparser = require("./comic-parser");
-
 /**
  *      Variable Definition
  */
-var favEntryViewStr = "";
 
 
+/**
+ * Register a comic. Save the info for a comic, but do not subscribe it. 
+ * @param {String} host           : Host name
+ * @param {String} comicTitleKey  : Unique key for the comic. the key can be 
+ *                                  reused if the comic is from a different host
+ * @param {String} comicTitle     : Comic's name. (Human-readable)
+ * @param {String} link           : Link to the comic
+ * @param {String} thumbnailURI   : thumbnail / cover photo 's url 
+ * @param {String} subscribed     : status of subscription
+ */
 function register(host, comicTitleKey, comicTitle, link, thumbnailURI, subscribed=false) {
     var keyPath = "comic." + host + "." + comicTitleKey;
     if (!settings.has(keyPath)) {
@@ -30,11 +54,15 @@ function register(host, comicTitleKey, comicTitle, link, thumbnailURI, subscribe
     }
 }
 
+/**
+ * Toggle the subscription status
+ * @param see register(...) 
+ */
 function subscribe(host, comicTitleKey, comicTitle, link, thumbnailURI) {
     var keyPath = "comic." + host + "." + comicTitleKey;
     var comicSettings = settings.get(keyPath);
     if (comicSettings) {
-        comicSettings.subscribed = !comicSettings.subScribed;
+        comicSettings.subscribed = !comicSettings.subscribed;
         settings.set(keyPath, comicSettings);
     } else {
         register(host, comicTitleKey, comicTitle, link, thumbnailURI, true)
@@ -44,12 +72,16 @@ function subscribe(host, comicTitleKey, comicTitle, link, thumbnailURI) {
 
 }
 
+/**
+ * Unsubscribe the comic
+ * @param see register(...)
+ */
 function unsubscribe(host, comicTitleKey) {
     var keyPath = "comic." + host + "." + comicTitleKey;
     var comicSettings = settings.get(keyPath);
     if (comicSettings) {
         comicSettings.subscribed = false;
-        settings.set(keyPath + comicSettings);
+        settings.set(keyPath, comicSettings);
         updateSubscribeUIStatus();
     }
 }
@@ -58,109 +90,33 @@ function updateComicInfo(host, comicTitleKey) {
 
 }
 
+/**
+ * Refresh subscription indicators' UI
+ */
 function updateSubscribeUIStatus() {
-    updateSearchSubscribeUI();
-    updateFavoriteSubscribeUI();
-    updateReadSubscribeUI();
+    searchview.updateSubscribeUI();
+    favoriteview.updateSubscribeUI();
+    readview.updateSubscribeUI();
 }
-
-function updateSearchSubscribeUI() {
-    $(".search-result").each(function(i, e) {
-        var dom = $(e);
-        var host = dom.attr("host");
-        var titleKey = dom.attr("titlekey");
-        var keyPath = "comic." + host + "." + titleKey;
-        var isSubscribed = settings.get(keyPath + ".subscribed");
-        
-        if (isSubscribed) {
-            dom.find(".subscribe-btn").addClass("subscribed");
-        } else {
-            dom.find(".subscribe-btn").removeClass("subscribed");
-        }
-    });  
-}
-
-function updateFavoriteSubscribeUI() {
-    $("#favorite-contents").html("");
-    var comics = settings.get("comic");
-
-    for (var host in comics) {
-        for (var titleKey in comics[host]) {
-            if (comics[host][titleKey].subscribed) {
-                var link = comics[host][titleKey].link;
-                var imguri = comics[host][titleKey].thumbnail;
-                var title = comics[host][titleKey].title;
-
-                var view = createFavEntry(link, titleKey, imguri, title, host);
-
-                $("#favorite-contents").append(view);
-            }
-        }
-    }
-
-}
-
-function updateReadSubscribeUI() {
-    var dom = $("#comic-header");
-    var host = dom.attr("host");
-    var titleKey = dom.attr("titlekey");
-    var keyPath = "comic." + host + "." + titleKey;
-    var isSubscribed = settings.get(keyPath + ".subscribed");
-
-    if (isSubscribed) {
-        dom.find(".subscribe-btn").addClass("subscribed");
-    } else {
-        dom.find(".subscribe-btn").removeClass("subscribed");
-    }
-    
-}
-
-
-
 
 /**
  *      Initialized
  */
 
 function init () {
-    $.get('./sections/favorite-entry.html', function(result) {
-        favEntryViewStr = result;
-    })
+    searchview.bindSubscribe(subscribe);
+
+    favoriteview.bindRegister(register);
+    favoriteview.bindSubscribe(subscribe);
+    favoriteview.bindUnsubscribe(unsubscribe);
+
+    
+    readview.bindSubscribe(subscribe);
 }
 
 // init when documen is ready
 function lateInit() {
     updateSubscribeUIStatus();
-}
-
-function createFavEntry(link, titleKey, imguri, title, host) {
-    var view = $(favEntryViewStr);
-    view.find("img").attr("src", imguri);
-    view.find(".comic-name strong").text(title);
-    view.find(".comic-name small").text(host);
-    var lastread = settings.get("comic." + host + "." + titleKey + ".lastread");
-    var newest = settings.get("comic." + host + "." + titleKey + ".newestchapter");
-    view.find(".last-read strong").text(lastread);
-    view.find(".newest strong").text(newest)
-    view.attr("title", title);
-    view.attr("link", link);
-    view.attr("titlekey", titleKey);
-    view.attr("host", host);
-
-    view.find(".subscribe-btn").click(function(e){
-        e.stopPropagation();
-        console.log(host);
-        console.log(titleKey);
-        unsubscribe(host, titleKey);
-    });
-
-    view.click(function(e){
-        console.log("fav click:" + title + ", from:" + host);
-        comicparser.selectComic(host, link, title, titleKey, imguri);
-
-    });
-
-    return view;
 }
 
 /**
