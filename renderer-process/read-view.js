@@ -343,7 +343,7 @@ function onKeydown(e) {
             break;
 
             case 38: // up
-                nextChapter();
+                prevChapter();
             break;
 
             case 34:
@@ -352,7 +352,7 @@ function onKeydown(e) {
             break;
 
             case 40: // down
-                prevChapter();
+                nextChapter();
             break;
 
             default: return; // exit this handler for other keys

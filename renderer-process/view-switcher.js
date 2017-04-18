@@ -20,13 +20,16 @@ var didScroll;
 var lastScrollTop = 0;
 var delta = 5;
 var navbarHeight = $('aside').outerHeight();
-
 $(window).scroll(function(event){
-    didScroll = true;
+    didScroll = ($(".sidebar.float-menu").css("flex-direction") == "row")
 });
 
+$(window).resize(function(event){
+    $('.float-menu').removeClass('nav-up').addClass('nav-down');
+})
+
 setInterval(function() {
-    if (didScroll && $(".float-menu").css("position") == "fixed") {
+    if (didScroll) {
         hasScrolled();
         didScroll = false;
     }
