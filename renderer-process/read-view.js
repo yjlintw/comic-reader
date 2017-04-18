@@ -64,6 +64,8 @@ var chapterList = [];
 var curPageIdx = 0;
 var curChapterIdx = -1;
 
+var didscroll = false;
+
 
 // Action Binding
 
@@ -151,30 +153,42 @@ function updateChapterList(comicSettings) {
  * Scroll to previous pic
  */
 function prevPic() {
-    if ($("#" + pageIds[curPageIdx]).offset()) {
-        curPageIdx--;
+
+    if (didscroll) {
+        didscroll = false;
+        var height = $(window).height();
+        var pos = $(window).scrollTop();
+        curPageIdx = Math.ceil(pos / height);
     }
+    curPageIdx--;
     if (curPageIdx < 0) curPageIdx = 0;
     
-    $('html, body').animate({
-        scrollTop: $("#" + pageIds[curPageIdx]).offset().top
-    }, 100);
+    if ($("#" + pageIds[curPageIdx]).offset() !== undefined ) { 
+    
+        $('html, body').animate({
+            scrollTop: $("#" + pageIds[curPageIdx]).offset().top
+        }, 100);
+    }
 }
 
 /**
  * Scroll to next pic
  */
 function nextPic() {
-    // console.log(pageIds.length);
-    // console.log(curPageIdx);
-
-    if ($("#" + pageIds[curPageIdx]).offset()) {
-        curPageIdx++;
+    if (didscroll) {
+        didscroll = false;
+        var height = $(window).height();
+        var pos = $(window).scrollTop();
+        curPageIdx = Math.floor(pos / height);
     }
+    curPageIdx++;
+    
     if (curPageIdx >= pageIds.length) curPageIdx = pageIds.length -1;;
-    $('html, body').animate({
-        scrollTop: $("#" + pageIds[curPageIdx]).offset().top
-    }, 100)
+    if ($("#" + pageIds[curPageIdx]).offset() !== undefined) {
+        $('html, body').animate({
+            scrollTop: $("#" + pageIds[curPageIdx]).offset().top
+        }, 100)
+    }
 }
 
 /**
@@ -371,12 +385,17 @@ function onKeydown(e) {
  * Bind window scroll to update current page index
  */
 $(function(){
-    $(window).bind('scroll', function() {
+    $(window).bind('mousewheel', function(e){
         if (!$('#read-panel').hasClass('is-hidden')){
-            curPageIdx = 0;
-            var height = $(window).height();
-            var pos = $(window).scrollTop();
-            curPageIdx = Math.round(pos / height);
+            // curPageIdx = 0;
+            // var height = $(window).height();
+            // var pos = $(window).scrollTop();
+            // console.log("scroll: " + height + "," + pos + "," +curPageIdx);
+            // curPageIdx = Math.round(pos / height);
+            // console.log("scrolled: " + curPageIdx);
+            didscroll = true;
+            // console.log("scroll");
+
         }
     });
 });
