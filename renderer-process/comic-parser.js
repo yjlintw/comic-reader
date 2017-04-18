@@ -2,7 +2,7 @@
  *      Comic Parser
  *      comic-parser.js
  * 
- *      Grape the chapter info and image contents from the website using 
+ *      Grab the chapter info and image contents from the website using 
  *      site-specific parsers
  */
 
@@ -27,7 +27,7 @@ module.exports = {
 var comicSettings = {};
 
 /**
- * Set information for selected comic and grape chapters-info
+ * Set information for selected comic and grab chapters-info
  * @param {String} host     : Host name
  * @param {String} link     : Link to the comic
  * @param {String} title    : Comic's name (human-readable)
@@ -39,7 +39,7 @@ function selectComic(host, link, title, titleKey, imguri) {
     subscriber.register(host, titleKey, title, link, imguri);
 
     readview.clearReadArea();
-    values.hostnames[host].parsers.grapeChapters(link, onChaptersGraped);
+    values.hostnames[host].parsers.grabChapters(link, onChaptersGrabbed);
 
     // -- UI update --
     // Enable the loading screen
@@ -51,14 +51,14 @@ function selectComic(host, link, title, titleKey, imguri) {
 }
 
 /**
- * Callback function when chapter info is graped
+ * Callback function when chapter info is grabbed
  * @param {Object} result : list of object
  *      @param {String} result.chName : Chapter name (human-readable)
  *      @param {String} result.chLink : url to the chapter
  *      @param {String} domid         : HTML DOM id to the chapter selector entry 
  *      @param {int}    index         : index in the chapter list
  */
-function onChaptersGraped(result){
+function onChaptersGrabbed(result){
     // clear the chapter selector
     readview.clearChapterSelector();
 
