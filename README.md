@@ -9,7 +9,7 @@ An Electron app's for manga/comic reading.
 5. Keyboard navigation (Left/Right change images; Up/Down change chapters)
 6. Read history
 
-## Supporting Host 
+## Supported Host 
 1. SF互動傳媒網 [www.sfacg.com](http://www.sfacg.com)
 2. ...more coming
 
@@ -35,6 +35,7 @@ Please remove the settings file at
 ![Imgur](http://i.imgur.com/shPfT2s.png)
 
 ## TODO::
+1. Define behavior in mobile view
 1. Track new update of favorite comics and provide notifications
 2. Revamp UI
 3. Different view mode (original size, fit screen-width)
