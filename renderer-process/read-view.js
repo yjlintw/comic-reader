@@ -151,9 +151,11 @@ function updateChapterList(comicSettings) {
  * Scroll to previous pic
  */
 function prevPic() {
-    if (!$("#" + pageIds[curPageIdx]).offset()) return;
-    curPageIdx--;
+    if ($("#" + pageIds[curPageIdx]).offset()) {
+        curPageIdx--;
+    }
     if (curPageIdx < 0) curPageIdx = 0;
+    
     $('html, body').animate({
         scrollTop: $("#" + pageIds[curPageIdx]).offset().top
     }, 100);
@@ -163,9 +165,12 @@ function prevPic() {
  * Scroll to next pic
  */
 function nextPic() {
-    if (!$("#" + pageIds[curPageIdx]).offset()) return;
+    // console.log(pageIds.length);
     // console.log(curPageIdx);
-    curPageIdx++;
+
+    if ($("#" + pageIds[curPageIdx]).offset()) {
+        curPageIdx++;
+    }
     if (curPageIdx >= pageIds.length) curPageIdx = pageIds.length -1;;
     $('html, body').animate({
         scrollTop: $("#" + pageIds[curPageIdx]).offset().top
