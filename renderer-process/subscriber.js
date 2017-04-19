@@ -62,14 +62,17 @@ function register(host, comicTitleKey, comicTitle, link, thumbnailURI, subscribe
  */
 function subscribe(host, comicTitleKey, comicTitle, link, thumbnailURI) {
     var keyPath = "comic." + host + "." + comicTitleKey;
-    var comicSettings = settings.get(keyPath);
-    if (comicSettings) {
-        comicSettings.subscribed = !comicSettings.subscribed;
-        settings.set(keyPath, comicSettings);
+    var comicData = settings.get(keyPath);
+    if (comicData) {
+        
+        comicData.subscribed = !comicData.subscribed;
+        settings.set(keyPath, comicData);
     } else {
         register(host, comicTitleKey, comicTitle, link, thumbnailURI, true)
     }
-
+    if (comicData.subscribed) {
+        checkUpdateSingle(host, comicTitleKey);
+    }
     updateSubscribeUIStatus();
 
 }
@@ -80,35 +83,67 @@ function subscribe(host, comicTitleKey, comicTitle, link, thumbnailURI) {
  */
 function unsubscribe(host, comicTitleKey) {
     var keyPath = "comic." + host + "." + comicTitleKey;
-    var comicSettings = settings.get(keyPath);
-    if (comicSettings) {
-        comicSettings.subscribed = false;
-        settings.set(keyPath, comicSettings);
+    var comicData = settings.get(keyPath);
+    if (comicData) {
+        comicData.subscribed = false;
+        settings.set(keyPath, comicData);
         updateSubscribeUIStatus();
     }
 }
 
-function checkUpdate() {
-    var comicSettings = settings.get('comic');
-    async.eachOf(comicSettings, function(hostDict, host, callback) {
-        async.eachOf(hostDict, function(comics, comicTitleKey, callback){
-            values.hostnames[host].parsers.grabChapters(comics.link,onChaptersGrabbed.bind({
-                    comicSettings: comicSettings,
-                    host: host,
-                    comicTitleKey: comicTitleKey,
-                    callback: callback
-                }));
-        }, function() {
-            callback();
-        })
-    }, onAllComicsUpdateChecked.bind({comicSettings:comicSettings}));
-}
-function onDone() {
-    console.log("onDone");
+/**
+ * [Async] Check updates for a single comic.
+ * @param {String} host 
+ * @param {String} comicTitleKey 
+ */
+function checkUpdateSingle(host, comicTitleKey) {
+    var allComicData = settings.get('comic');
+    async.apply(values.hostnames[host].parsers.grabChapters(allComicData[host][comicTitleKey].link,onChaptersGrabbed.bind({
+                        allComicData: allComicData,
+                        host: host,
+                        comicTitleKey: comicTitleKey,
+                        callback: onAllComicsUpdateChecked
+                    })));
 }
 
+/**
+ * [Async] Check updates for all subscribed comics
+ */
+function checkUpdate() {
+    var alllComicData = settings.get('comic');
+    async.eachOf(alllComicData, function(hostDict, host, callback1) {
+        async.eachOf(hostDict, function(comics, comicTitleKey, callback2){
+            if (alllComicData[host][comicTitleKey].subscribed) {
+                values.hostnames[host].parsers.grabChapters(comics.link,onChaptersGrabbed.bind({
+                        alllComicData: alllComicData,
+                        host: host,
+                        comicTitleKey: comicTitleKey,
+                        callback: callback2
+                    }));
+            }
+        }, function() {
+            callback1();
+        })
+    }, onAllComicsUpdateChecked.bind({alllComicData:alllComicData}));
+}
+
+/**
+ * Callback when one chapter is grabbed.
+ * @param {Array} result :list of obj (see below)
+ *          {Object} obj:
+ *            {String} chName: Chapter's name
+ *            {String} chLink: URL to the chapter
+ *            {String} domid : HTML DOM object id
+ *            {int}    index : index
+ * @param {JSON} this.allComicData
+ * @param {JSON} this.host
+ * @param {JSON} this.comicTitleKey
+ * @param {JSON} this.callback : must invoke callback at the end of the function
+ *                               when the job is finished.
+ *              
+ */
 function onChaptersGrabbed(result) {
-    var comic = this.comicSettings[this.host][this.comicTitleKey];
+    var comic = this.alllComicData[this.host][this.comicTitleKey];
     var chapters = comic.chapters;
     if (result.length != Object.keys(chapters).length) {
         comic.hasupdate = true;
@@ -123,12 +158,15 @@ function onChaptersGrabbed(result) {
         }
     }
     comic.newestchapter = result[0].chName;
-    // console.log(this.comicSettings);
     this.callback();
 }
 
+/**
+ * Callback when all update check in done.
+ * @param {JSON} this.allComicData
+ */
 function onAllComicsUpdateChecked() {
-    settings.set("comic", this.comicSettings);
+    settings.set("comic", this.alllComicData);
     updateSubscribeUIStatus();
 }
 

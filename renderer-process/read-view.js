@@ -134,12 +134,12 @@ function updateSubscribeUI() {
 
 /**
  * update chapter list
- * @param {Object} comicSettings 
+ * @param {Object} allComicData 
  */
-function updateChapterList(comicSettings) {
+function updateChapterList(allComicData) {
     $(".chapter-entry").each(function(i, e) {
         var chName = $(e).text();
-        if (comicSettings.chapters[chName].read) {
+        if (allComicData.chapters[chName].read) {
             $(e).addClass("read");
         }
     });
