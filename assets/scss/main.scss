@@ -2,10 +2,11 @@
  *      Import
  **/
 @import "loading";
+@import url('https://fonts.googleapis.com/css?family=Raleway');
 
 
 /**
- *      media query 
+ *      media query
  **/
 $info-mobile: "only screen and (max-width : 768px)";
 $info-tablet: "only screen and (min-width: 769px)";
@@ -22,17 +23,17 @@ $info-fullhd: "only screen and (min-width: 1344px)";
 $container-max-width: 960px;
 
 
-/** 
-  *     Sidebar 
+/**
+  *     Sidebar
   **/
 // layout
 $sidebar-width: 50px;
 // color
-$sidebar-bg-color: #000;
-$sidebar-divider-color: #ccc;
-$sidebar-icon-color: #e3e3e3;
-$sidebar-entry-hover-bg-color: #88a;
-$sidebar-entry-active-bg-color: #776;
+$sidebar-bg-color: #1f2b3d;
+$sidebar-divider-color: #2b3b55;
+$sidebar-icon-color: #fff;
+$sidebar-entry-hover-bg-color: #26344b;
+$sidebar-entry-active-bg-color: #17C4BB;
 
 /**
   *     Search View
@@ -41,7 +42,7 @@ $sidebar-entry-active-bg-color: #776;
 $search-result-thumbnail-width: 100px;
 
 // color
-$search-header-bg-color: #e3e3e3;
+$search-header-bg-color: #34495e;
 $search-result-bg-color: #f8f8ff;
 $search-result-hover-bg-color: #eef;
 $search-result-grey-color: #888;
@@ -66,6 +67,7 @@ $chapter-selector-width: 250px;
 // }
 
 body, html, .whole-view {
+    font-family: Arial,"文泉驛正黑","WenQuanYi Zen Hei","儷黑 Pro","LiHei Pro","微軟正黑體","Microsoft JhengHei",sans-serif;
     @media #{$info-mobile} {
         height: 100%;
     }
@@ -104,7 +106,7 @@ body {
 /* ---- Side Bar ---- */
 // Tabview switcher
 .sidebar {
-    
+
     @media #{$info-mobile} {
         &.float-menu {
             display:flex;
@@ -118,11 +120,11 @@ body {
 
             &.nav-up {
                 top: -#{$sidebar-width};
-            
+
             }
         }
     }
-    
+
     @media #{$info-tablet} {
         width: $sidebar-width;
         flex-grow: 0;
@@ -132,9 +134,9 @@ body {
         flex-direction: column;
         position:fixed;
     }
-    
+
     background-color: $sidebar-bg-color;
-    
+
     .entry {
         @media #{$info-mobile} {
             width: 33.33333%;
@@ -155,26 +157,59 @@ body {
         justify-content: center;
 
         // color
-        border-bottom: 1px solid $sidebar-divider-color;
+        border-bottom: 1px solid #121b29;
+        border-top: 1px solid $sidebar-divider-color;
         color: $sidebar-icon-color;
         font-size: 24px;
 
         // gesture
         cursor: pointer;
 
+        //divider
+
+
         &:hover {
             background-color: $sidebar-entry-hover-bg-color;
+            border-bottom: 0px;
         }
 
         &.active {
-            background-color: $sidebar-entry-active-bg-color;            
+            background-color: $sidebar-entry-active-bg-color;
+            border: 0px;
         }
     }
 }
 
 /* ---- Search Panel ---- */
 #search-view {
+    h2{
+      font-size: 35px;
+      font-family: 'Raleway', sans-serif;
+      color: #4991fc;
 
+      span{
+        color: #fc5fa1;
+      }
+    }
+    .input{
+      border-radius: 5px 0 0 5px;
+      height: 40px;
+      box-shadow: none;
+      background: #2c3e50;
+      color: #fff;
+      &:hover{
+        box-shadow: 0px;
+        border: 0px;
+      }
+      &:focus{
+        box-shadow: 0px;
+        border: 0px;
+      }
+      &:active{
+        box-shadow: 0px;
+        border: 0px;
+      }
+    }
     .loading-bg {
         background-color: #333;
         display: flex;
@@ -199,9 +234,28 @@ body {
     .container {
         max-width: $container-max-width;;
     }
-    
+
     .button {
         width: 100%;
+        border-radius: 0 5px 5px 0;
+        height: 40px;
+        left: -6px;
+        background: #2c3e50;
+        border-left: 0px;
+        color: #425c77;
+        border: 0px;
+        &:hover{
+          box-shadow: 0px;
+          border: 0px;
+        }
+        &:focus{
+          box-shadow: 0px;
+          border: 0px;
+        }
+        &:active{
+          box-shadow: 0px;
+          border: 0px;
+        }
     }
 }
 
@@ -236,7 +290,7 @@ body {
     .conten p {
         margin-bottom: 0.4em;
         line-height: 1.2em;
-        
+
         &.comic-update-info {
             font-size: 0.9em;
             color: $search-result-grey-color;
@@ -295,18 +349,18 @@ body {
 
     p {
         margin: 0;
-    }    
+    }
     .level {
         margin: 0.5em 0;
     }
     @media #{$info-tablet} {
         width: 323.5px;
     }
-    
+
 }
 
 #read-view {
-    
+
     .middle-panel {
         @media #{$info-mobile} {
             height: calc(100vh - #{$sidebar-width});
@@ -348,7 +402,7 @@ body {
                 // border-right: 1px solid #e3e3e3;
             }
             background-color: #fff;
-            border-bottom: 1px solid #e3e3e3;   
+            border-bottom: 1px solid #e3e3e3;
             display: flex;
 
             .level-item {
@@ -387,12 +441,12 @@ body {
                 left: calc(50% - 2em);
             }
         }
-        
+
 
         #chapter-selector {
             @media #{$info-mobile} {
                 height: calc(100vh - #{$sidebar-width}*2);
-                
+
                 overflow-y: auto;
             }
             @media #{$info-tablet} {

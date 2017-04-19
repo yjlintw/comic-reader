@@ -1,6 +1,8 @@
+@charset "UTF-8";
 /**
  *      Import
  **/
+@import url("https://fonts.googleapis.com/css?family=Raleway");
 @keyframes spin {
   0% {
     transform: rotate(0deg); }
@@ -46,13 +48,13 @@
     animation-delay: 500ms; }
 
 /**
- *      media query 
+ *      media query
  **/
 /**
   *     General
   */
-/** 
-  *     Sidebar 
+/**
+  *     Sidebar
   **/
 /**
   *     Search View
@@ -62,9 +64,11 @@
   */
 /* ---- Utility ----*/
 /* ---- Overall area ----*/
-@media only screen and (max-width: 768px) {
-  body, html, .whole-view {
-    height: 100%; } }
+body, html, .whole-view {
+  font-family: Arial,"文泉驛正黑","WenQuanYi Zen Hei","儷黑 Pro","LiHei Pro","微軟正黑體","Microsoft JhengHei",sans-serif; }
+  @media only screen and (max-width: 768px) {
+    body, html, .whole-view {
+      height: 100%; } }
 
 @media only screen and (max-width: 768px) {
   .whole-view {
@@ -85,7 +89,7 @@
 
 /* ---- Side Bar ---- */
 .sidebar {
-  background-color: #000; }
+  background-color: #1f2b3d; }
   @media only screen and (max-width: 768px) {
     .sidebar.float-menu {
       display: flex;
@@ -113,8 +117,9 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    border-bottom: 1px solid #ccc;
-    color: #e3e3e3;
+    border-bottom: 1px solid #121b29;
+    border-top: 1px solid #2b3b55;
+    color: #fff;
     font-size: 24px;
     cursor: pointer; }
     @media only screen and (max-width: 768px) {
@@ -123,13 +128,38 @@
         flex-basis: 33.33333%;
         border-bottom: none; }
         .sidebar .entry:not(:last-child) {
-          border-right: 1px solid #ccc; } }
+          border-right: 1px solid #2b3b55; } }
     .sidebar .entry:hover {
-      background-color: #88a; }
+      background-color: #26344b;
+      border-bottom: 0px; }
     .sidebar .entry.active {
-      background-color: #776; }
+      background-color: #17C4BB;
+      border: 0px; }
 
 /* ---- Search Panel ---- */
+#search-view h2 {
+  font-size: 35px;
+  font-family: 'Raleway', sans-serif;
+  color: #4991fc; }
+  #search-view h2 span {
+    color: #fc5fa1; }
+
+#search-view .input {
+  border-radius: 5px 0 0 5px;
+  height: 40px;
+  box-shadow: none;
+  background: #2c3e50;
+  color: #fff; }
+  #search-view .input:hover {
+    box-shadow: 0px;
+    border: 0px; }
+  #search-view .input:focus {
+    box-shadow: 0px;
+    border: 0px; }
+  #search-view .input:active {
+    box-shadow: 0px;
+    border: 0px; }
+
 #search-view .loading-bg {
   background-color: #333;
   display: flex;
@@ -145,12 +175,28 @@
   height: 2em; }
 
 #search-header {
-  background-color: #e3e3e3;
+  background-color: #34495e;
   padding: 1em; }
   #search-header .container {
     max-width: 960px; }
   #search-header .button {
-    width: 100%; }
+    width: 100%;
+    border-radius: 0 5px 5px 0;
+    height: 40px;
+    left: -6px;
+    background: #2c3e50;
+    border-left: 0px;
+    color: #425c77;
+    border: 0px; }
+    #search-header .button:hover {
+      box-shadow: 0px;
+      border: 0px; }
+    #search-header .button:focus {
+      box-shadow: 0px;
+      border: 0px; }
+    #search-header .button:active {
+      box-shadow: 0px;
+      border: 0px; }
 
 #search-results {
   max-width: 960px; }
