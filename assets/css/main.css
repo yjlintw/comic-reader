@@ -149,7 +149,8 @@ body, html, .whole-view {
   height: 40px;
   box-shadow: none;
   background: #2c3e50;
-  color: #fff; }
+  color: #fff;
+  border: 0px; }
   #search-view .input:hover {
     box-shadow: 0px;
     border: 0px; }
