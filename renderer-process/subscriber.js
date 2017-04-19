@@ -15,13 +15,13 @@ const settings = require("electron-settings");
 var favoriteview = require('./favorite-view')
 var searchview = require('./search-view');
 var readview = require('./read-view');
-
+var async = require('async');
 
 module.exports = {
     register: register,
     subscribe: subscribe,
-    updateUI: updateSubscribeUIStatus
-
+    updateUI: updateSubscribeUIStatus,
+    checkUpdate: checkUpdate
 }
 
 /**
@@ -48,10 +48,13 @@ function register(host, comicTitleKey, comicTitle, link, thumbnailURI, subscribe
             "thumbnail": thumbnailURI,
             "subscribed": subscribed,
             "lastread": "",
+            "lastpage": "",
             "chapters": {},
-            "newestchapter": ""
+            "newestchapter": "",
+            "hasupdate": true
         });
     }
+    return settings.get(keyPath);
 }
 
 /**
@@ -60,14 +63,17 @@ function register(host, comicTitleKey, comicTitle, link, thumbnailURI, subscribe
  */
 function subscribe(host, comicTitleKey, comicTitle, link, thumbnailURI) {
     var keyPath = "comic." + host + "." + comicTitleKey;
-    var comicSettings = settings.get(keyPath);
-    if (comicSettings) {
-        comicSettings.subscribed = !comicSettings.subscribed;
-        settings.set(keyPath, comicSettings);
+    var comicData = settings.get(keyPath);
+    if (comicData) {
+        
+        comicData.subscribed = !comicData.subscribed;
+        settings.set(keyPath, comicData);
     } else {
-        register(host, comicTitleKey, comicTitle, link, thumbnailURI, true)
+        comicData = register(host, comicTitleKey, comicTitle, link, thumbnailURI, true)
     }
-
+    if (comicData.subscribed) {
+        checkUpdateSingle(host, comicTitleKey);
+    }
     updateSubscribeUIStatus();
 
 }
@@ -78,16 +84,97 @@ function subscribe(host, comicTitleKey, comicTitle, link, thumbnailURI) {
  */
 function unsubscribe(host, comicTitleKey) {
     var keyPath = "comic." + host + "." + comicTitleKey;
-    var comicSettings = settings.get(keyPath);
-    if (comicSettings) {
-        comicSettings.subscribed = false;
-        settings.set(keyPath, comicSettings);
+    var comicData = settings.get(keyPath);
+    if (comicData) {
+        comicData.subscribed = false;
+        settings.set(keyPath, comicData);
         updateSubscribeUIStatus();
     }
 }
 
-function updateComicInfo(host, comicTitleKey) {
+/**
+ * [Async] Check updates for a single comic.
+ * @param {String} host 
+ * @param {String} comicTitleKey 
+ */
+function checkUpdateSingle(host, comicTitleKey) {
+    console.log("---- Start checking for one comic's updates ----")
+    var allComicData = settings.get('comic');
+    async.apply(values.hostnames[host].parsers.grabChapters(allComicData[host][comicTitleKey].link,onChaptersGrabbed.bind({
+                        allComicData: allComicData,
+                        host: host,
+                        comicTitleKey: comicTitleKey,
+                        callback: onAllComicsUpdateChecked
+                    })));
+}
 
+/**
+ * [Async] Check updates for all subscribed comics
+ */
+function checkUpdate() {
+    console.log("---- Start checking for updates ----")
+    var allComicData = settings.get('comic');
+    async.eachOf(allComicData, function(hostDict, host, callback1) {
+        async.eachOf(hostDict, function(comics, comicTitleKey, callback2){
+            if (allComicData[host][comicTitleKey].subscribed) {
+                values.hostnames[host].parsers.grabChapters(comics.link,onChaptersGrabbed.bind({
+                        allComicData: allComicData,
+                        host: host,
+                        comicTitleKey: comicTitleKey,
+                        callback: callback2
+                    }));
+            } else {
+                callback2();
+            }
+        }, function() {
+            callback1();
+        })
+    }, onAllComicsUpdateChecked.bind({allComicData:allComicData}));
+}
+
+/**
+ * Callback when one chapter is grabbed.
+ * @param {Array} result :list of obj (see below)
+ *          {Object} obj:
+ *            {String} chName: Chapter's name
+ *            {String} chLink: URL to the chapter
+ *            {String} domid : HTML DOM object id
+ *            {int}    index : index
+ * @param {JSON} this.allComicData
+ * @param {JSON} this.host
+ * @param {JSON} this.comicTitleKey
+ * @param {JSON} this.callback : must invoke callback at the end of the function
+ *                               when the job is finished.
+ *              
+ */
+function onChaptersGrabbed(result) {
+    console.log("---One Comic Update Checked---")
+    var comic = this.allComicData[this.host][this.comicTitleKey];
+    var chapters = comic.chapters;
+    if (result.length != Object.keys(chapters).length) {
+        comic.hasupdate = true;
+    }
+    
+    for (var index in result) {
+        var obj = result[index];
+        if (!(obj.chName in chapters)) {
+            chapters[obj.chName] = {
+                read: false
+            }
+        }
+    }
+    comic.newestchapter = result[0].chName;
+    this.callback();
+}
+
+/**
+ * Callback when all update check in done.
+ * @param {JSON} this.allComicData
+ */
+function onAllComicsUpdateChecked() {
+    console.log("---- All updates checked ----")
+    settings.set("comic", this.allComicData);
+    updateSubscribeUIStatus();
 }
 
 /**

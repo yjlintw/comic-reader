@@ -302,6 +302,10 @@ body {
     @media #{$info-tablet} {
         width: 323.5px;
     }
+
+    &.hasupdate {
+        background-color: #edd;
+    }
     
 }
 
