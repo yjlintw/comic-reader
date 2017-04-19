@@ -24,7 +24,7 @@ module.exports = {
  *      Variable Definition
  */
 // variable to store the settings. Preventing frequently I/O operations
-var comicSettings = {};
+var allComicData = {};
 
 /**
  * Set information for selected comic and grab chapters-info
@@ -68,8 +68,8 @@ function onChaptersGrabbed(result){
     // Get information from settings
     var keyPath = "comic." + readview.getCurHost() 
                     + "." + readview.getCurTitleKey();
-    comicSettings = settings.get(keyPath)
-    var chapters = comicSettings.chapters;
+    allComicData = settings.get(keyPath)
+    var chaptesData = allComicData.chapters;
     
     for (var index in result) {
         var obj = result[index];
@@ -91,8 +91,8 @@ function onChaptersGrabbed(result){
 
     // update the newest chapter 
     // TODO: sloppy method, should implement with a different way later
-    comicSettings.newestchapter = result[0].chName;
-    comicSettings.hasupdate = false;
+    allComicData.newestchapter = result[0].chName;
+    allComicData.hasupdate = false;
 
     // update the read-history UI
     updateChapterList();
@@ -137,8 +137,8 @@ function onSingleChapterLoaded(result, chName) {
         readview.appendNewPage(view);
     }
     readview.setPageIds(pageIds);
-    comicSettings.chapters[chName].read = true;
-    comicSettings.lastread = chName;
+    allComicData.chapters[chName].read = true;
+    allComicData.lastread = chName;
     updateChapterList();
 }
 
@@ -147,9 +147,9 @@ function onSingleChapterLoaded(result, chName) {
  * Update read-history UI indicator
  */
 function updateChapterList() {
-    readview.updateChapterList(comicSettings);
+    readview.updateChapterList(allComicData);
     var keyPath = "comic." + readview.getCurHost() + "." + readview.getCurTitleKey();
-    settings.set(keyPath, comicSettings);
+    settings.set(keyPath, allComicData);
 }
 
 /**
