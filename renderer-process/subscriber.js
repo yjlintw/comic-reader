@@ -16,6 +16,7 @@ var favoriteview = require('./favorite-view')
 var searchview = require('./search-view');
 var readview = require('./read-view');
 var async = require('async');
+var notifier = require('node-notifier');
 
 module.exports = {
     register: register,
@@ -27,7 +28,7 @@ module.exports = {
 /**
  *      Variable Definition
  */
-
+var notification;
 
 /**
  * Register a comic. Save the info for a comic, but do not subscribe it. 
@@ -153,6 +154,11 @@ function onChaptersGrabbed(result) {
     var chapters = comic.chapters;
     if (result.length != Object.keys(chapters).length) {
         comic.hasupdate = true;
+        notifier.notify({
+            title: 'Comic Reader',
+            message: comic.title + ' has new updates ',
+            wait: false
+        })
     }
     
     for (var index in result) {
