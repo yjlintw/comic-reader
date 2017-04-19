@@ -92,6 +92,7 @@ function onChaptersGrabbed(result){
     // update the newest chapter 
     // TODO: sloppy method, should implement with a different way later
     comicSettings.newestchapter = result[0].chName;
+    comicSettings.hasupdate = false;
 
     // update the read-history UI
     updateChapterList();

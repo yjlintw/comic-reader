@@ -3,7 +3,9 @@
  */
 
 var viewswitcher = require("./view-switcher");
+var subscriber = require("./subscriber");
 
 $(document).ready(function() {
     viewswitcher.tabswitch(0);
+    subscriber.checkUpdate();
 });
