@@ -15,13 +15,13 @@ const settings = require("electron-settings");
 var favoriteview = require('./favorite-view')
 var searchview = require('./search-view');
 var readview = require('./read-view');
-
+var async = require('async');
 
 module.exports = {
     register: register,
     subscribe: subscribe,
-    updateUI: updateSubscribeUIStatus
-
+    updateUI: updateSubscribeUIStatus,
+    checkUpdate: checkUpdate
 }
 
 /**
@@ -48,8 +48,10 @@ function register(host, comicTitleKey, comicTitle, link, thumbnailURI, subscribe
             "thumbnail": thumbnailURI,
             "subscribed": subscribed,
             "lastread": "",
+            "lastpage": "",
             "chapters": {},
-            "newestchapter": ""
+            "newestchapter": "",
+            "hasupdate": true
         });
     }
 }
@@ -86,8 +88,48 @@ function unsubscribe(host, comicTitleKey) {
     }
 }
 
-function updateComicInfo(host, comicTitleKey) {
+function checkUpdate() {
+    var comicSettings = settings.get('comic');
+    async.eachOf(comicSettings, function(hostDict, host, callback) {
+        async.eachOf(hostDict, function(comics, comicTitleKey, callback){
+            values.hostnames[host].parsers.grabChapters(comics.link,onChaptersGrabbed.bind({
+                    comicSettings: comicSettings,
+                    host: host,
+                    comicTitleKey: comicTitleKey,
+                    callback: callback
+                }));
+        }, function() {
+            callback();
+        })
+    }, onAllComicsUpdateChecked.bind({comicSettings:comicSettings}));
+}
+function onDone() {
+    console.log("onDone");
+}
 
+function onChaptersGrabbed(result) {
+    var comic = this.comicSettings[this.host][this.comicTitleKey];
+    var chapters = comic.chapters;
+    if (result.length != Object.keys(chapters).length) {
+        comic.hasupdate = true;
+    }
+    
+    for (var index in result) {
+        var obj = result[index];
+        if (!(obj.chName in chapters)) {
+            chapters[obj.chName] = {
+                read: false
+            }
+        }
+    }
+    comic.newestchapter = result[0].chName;
+    // console.log(this.comicSettings);
+    this.callback();
+}
+
+function onAllComicsUpdateChecked() {
+    settings.set("comic", this.comicSettings);
+    updateSubscribeUIStatus();
 }
 
 /**
