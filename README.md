@@ -34,6 +34,27 @@ Please remove the settings file at
 #### ReadView - Mobile
 ![Imgur](http://i.imgur.com/shPfT2s.png)
 
+
+# For Developers:
+First install all the dependencies by using the following line
+
+```
+npm install
+```
+
+To execute the code use:
+```
+npm run dev
+```
+It will do automatically sass watching and compiling when there is a change made
+to the sass files. It also run a livereloadx server. Once any of the file under 
+the project folder is changed, it will automatically refresh the app.
+
+More detailed documentation is here:
+[Wiki](https://github.com/yjlintw/comic-reader/wiki/App-Architecture)
+
+
+
 ## TODO::
 1. Define behavior in mobile view
 1. Track new update of favorite comics and provide notifications

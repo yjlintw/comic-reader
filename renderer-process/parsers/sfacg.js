@@ -15,7 +15,7 @@
  *              updateinfo
  *              description
  * 
- *      *   Function: grapeChapters(searchResponse, callback)
+ *      *   Function: GrabChapters(searchResponse, callback)
  *          function callback(result)
  *          result is a list of obj contains following
  *          fields:
@@ -41,7 +41,7 @@ const util = require("../util");
 
 module.exports = {
     search: search,
-    grapeChapters: grapeChapters,
+    grabChapters: grabChapters,
     loadChapter: loadChapter
 }
 
@@ -119,14 +119,14 @@ function searchResponse(error, response, body) {
  *            {int}    index : index
  *      
  */
-function grapeChapters(link, callback) {
+function grabChapters(link, callback) {
     request({
         methos: 'GET',
         uri: link
-    }, onChapterGraped.bind({callback: callback}));
+    }, onChapterGrabbed.bind({callback: callback}));
 }
 
-function onChapterGraped(error, response, body) {
+function onChapterGrabbed(error, response, body) {
     var hostpath = response.request.host;
     var tmp = $("table:nth-of-type(9)", "<div>" + body + "</div>").find("ul.serialise_list.Blue_link2");
     var result = [];
