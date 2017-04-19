@@ -69,7 +69,7 @@ function onChaptersGrabbed(result){
     var keyPath = "comic." + readview.getCurHost() 
                     + "." + readview.getCurTitleKey();
     allComicData = settings.get(keyPath)
-    var chaptesData = allComicData.chapters;
+    var chaptersData = allComicData.chapters;
     
     for (var index in result) {
         var obj = result[index];
@@ -77,8 +77,8 @@ function onChaptersGrabbed(result){
         chapterList[obj.index] = "#" + obj.domid;
         
         // if it is a new chapter, update the setting files
-        if (!(obj.chName in chapters)) {
-            chapters[obj.chName] = {
+        if (!(obj.chName in chaptersData)) {
+            chaptersData[obj.chName] = {
                 read: false
             }
         }
