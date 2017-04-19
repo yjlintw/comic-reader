@@ -60,6 +60,9 @@ function updateSubscribeUI() {
 
                 var view = createFavEntry(link, titleKey, imguri, title, host);
 
+                if (comics[host][titleKey].hasupdate) {
+                    view.addClass("hasupdate");
+                }
                 $("#favorite-contents").append(view);
             }
         }

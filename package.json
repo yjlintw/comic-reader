@@ -17,8 +17,10 @@
     "dev": "concurrently --kill-others \"npm run reload\" \"npm run start\" \"npm run watch-css\""
   },
   "dependencies": {
+    "async": "^2.3.0",
     "electron": "^1.6.2",
     "electron-settings": "^3.0.14",
+    "node-schedule": "^1.2.1",
     "request": "^2.81.0"
   }
 }

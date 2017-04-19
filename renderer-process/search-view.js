@@ -118,7 +118,7 @@ function updateSubscribeUI() {
         var titleKey = dom.attr("titlekey");
         // var keyPath = "comic." + host + "." + titleKey;
         
-        if (comics[host] && comics[host][titleKey] && comics[host][titleKey].subscribed) {
+        if (comics && comics[host] && comics[host][titleKey] && comics[host][titleKey].subscribed) {
             dom.find(".subscribe-btn").addClass("subscribed");
         } else {
             dom.find(".subscribe-btn").removeClass("subscribed");
