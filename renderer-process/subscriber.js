@@ -54,6 +54,7 @@ function register(host, comicTitleKey, comicTitle, link, thumbnailURI, subscribe
             "hasupdate": true
         });
     }
+    return settings.get(keyPath);
 }
 
 /**
@@ -68,7 +69,7 @@ function subscribe(host, comicTitleKey, comicTitle, link, thumbnailURI) {
         comicData.subscribed = !comicData.subscribed;
         settings.set(keyPath, comicData);
     } else {
-        register(host, comicTitleKey, comicTitle, link, thumbnailURI, true)
+        comicData = register(host, comicTitleKey, comicTitle, link, thumbnailURI, true)
     }
     if (comicData.subscribed) {
         checkUpdateSingle(host, comicTitleKey);
@@ -97,6 +98,7 @@ function unsubscribe(host, comicTitleKey) {
  * @param {String} comicTitleKey 
  */
 function checkUpdateSingle(host, comicTitleKey) {
+    console.log("---- Start checking for one comic's updates ----")
     var allComicData = settings.get('comic');
     async.apply(values.hostnames[host].parsers.grabChapters(allComicData[host][comicTitleKey].link,onChaptersGrabbed.bind({
                         allComicData: allComicData,
@@ -110,21 +112,24 @@ function checkUpdateSingle(host, comicTitleKey) {
  * [Async] Check updates for all subscribed comics
  */
 function checkUpdate() {
-    var alllComicData = settings.get('comic');
-    async.eachOf(alllComicData, function(hostDict, host, callback1) {
+    console.log("---- Start checking for updates ----")
+    var allComicData = settings.get('comic');
+    async.eachOf(allComicData, function(hostDict, host, callback1) {
         async.eachOf(hostDict, function(comics, comicTitleKey, callback2){
-            if (alllComicData[host][comicTitleKey].subscribed) {
+            if (allComicData[host][comicTitleKey].subscribed) {
                 values.hostnames[host].parsers.grabChapters(comics.link,onChaptersGrabbed.bind({
-                        alllComicData: alllComicData,
+                        allComicData: allComicData,
                         host: host,
                         comicTitleKey: comicTitleKey,
                         callback: callback2
                     }));
+            } else {
+                callback2();
             }
         }, function() {
             callback1();
         })
-    }, onAllComicsUpdateChecked.bind({alllComicData:alllComicData}));
+    }, onAllComicsUpdateChecked.bind({allComicData:allComicData}));
 }
 
 /**
@@ -143,7 +148,8 @@ function checkUpdate() {
  *              
  */
 function onChaptersGrabbed(result) {
-    var comic = this.alllComicData[this.host][this.comicTitleKey];
+    console.log("---One Comic Update Checked---")
+    var comic = this.allComicData[this.host][this.comicTitleKey];
     var chapters = comic.chapters;
     if (result.length != Object.keys(chapters).length) {
         comic.hasupdate = true;
@@ -166,7 +172,8 @@ function onChaptersGrabbed(result) {
  * @param {JSON} this.allComicData
  */
 function onAllComicsUpdateChecked() {
-    settings.set("comic", this.alllComicData);
+    console.log("---- All updates checked ----")
+    settings.set("comic", this.allComicData);
     updateSubscribeUIStatus();
 }
 
