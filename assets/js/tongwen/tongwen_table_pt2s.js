@@ -1,4 +1,6 @@
-TongWen.addT2STable({
+module.exports = {
+// TongWen.addT2STable({
+T2STable: {
 "专着":"专著",
 "亲着":"亲著",
 "卓着":"卓著",
@@ -86,4 +88,5 @@ TongWen.addT2STable({
 "郭子干":"郭子乾",
 "颇着":"颇著",
 "鲇鱼":"鲶鱼"
-});
+}
+}

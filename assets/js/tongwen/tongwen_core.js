@@ -14,7 +14,9 @@
  * 11  DOCUMENT_FRAGMENT_NODE
  * 12  NOTATION_NODE
  ****************************/
-
+module.exports = {
+	TongWen : TongWen
+}
 // code from https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array/indexOf
 if (!Array.prototype.indexOf) {
 	Array.prototype.indexOf = function (searchElement /*, fromIndex */) {
@@ -49,7 +51,7 @@ if (!Array.prototype.indexOf) {
 	}
 }
 
-var TongWen = (function () {
+function TongWen () {
 	"use strict";
 	var
 		version  = '0.4',       // 版本
@@ -382,4 +384,4 @@ var TongWen = (function () {
 		extensionAction    : extensionAction
 	};
 
-}());
+}
