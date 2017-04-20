@@ -168,8 +168,9 @@ function onChapterGrabbed(error, response, body) {
         var chName = $(e).find('a').text();
         var chLink = $(e).find('a').attr('href');
         var chGroup = "cr_main";
-        var linkChunks = chLink.split("/");
-        var domid = linkChunks[linkChunks.length-2];
+        var linkChunks = $(e).find('a').attr('href').split('/');
+        var lastIndex = linkChunks.length;
+        var domid = linkChunks[lastIndex-1] == ""? linkChunks[lastIndex-2]:linkChunks[lastIndex-1];
         var chKey = domid;
         // console.log(chName + ":" + chLink + ":" + chGroup + ":" + domid);
 
@@ -220,8 +221,9 @@ function loadChapter(chLink, chGroup, chKey, callback) {
  * @param see npm request module
  */
 function onSingleChapterLoaded(error, response, body) {
+    console.log(this.chKey);
     var tmp = $("<div>" + body + "</div>");
-    var find_script = tmp.find('.redfont_input:nth-child(2)').attr('href').split("'");
+    var find_script = tmp.find('#pull option:nth-child(2)').attr('value').split("'");
     var chapNum = find_script[1];
     var numPages = find_script[3];
     var imgTemplate = tmp.find("#caonima").attr("src");
@@ -230,6 +232,7 @@ function onSingleChapterLoaded(error, response, body) {
     var result = [];
     for (var i = 1; i <= numPages; i++) {
         var src = img[0] + pid + util.pad(i, 3) + '.jpg'; 
+        console.log(src);
         var id = 'pic' + i;
         var obj = {
             imgurl: src,
