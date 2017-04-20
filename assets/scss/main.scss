@@ -427,7 +427,7 @@ body {
             }
 
             @media #{$info-tablet} {
-                width: calc(#{$chapter-selector-width} - 18px);
+                width: #{$chapter-selector-width};
                 position: fixed;
                 left: $sidebar-width;
                 height: $sidebar-width;

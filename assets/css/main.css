@@ -319,7 +319,7 @@ body, html, .whole-view {
           top: -50px; } }
     @media only screen and (min-width: 769px) {
       #read-view .middle-panel #comic-header {
-        width: calc(250px - 18px);
+        width: 250px;
         position: fixed;
         left: 50px;
         height: 50px; } }
