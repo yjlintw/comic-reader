@@ -18,7 +18,10 @@ function createWindow () {
   win = new BrowserWindow({
     width: w, 
     height: h,
-    icon: path.join(__dirname, 'assets/icons/icon.icns')
+    icon: path.join(__dirname, 'assets/icons/icon.icns'),
+    webPreferences: {
+      blinkFeatures: 'OverlayScrollbars'
+    }
   })
   // console.log(win.getBounds());
   // and load the index.html of the app.
