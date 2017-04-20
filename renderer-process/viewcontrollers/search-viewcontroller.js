@@ -6,7 +6,6 @@
  *      ../sections/search-result-entry.html,
  *      ./search-controller.js
  */
-const settings = require('electron-settings')
 module.exports = {
     createResultView: createResultView,
     getSearchQuery: getSearchQuery,
@@ -108,22 +107,19 @@ function loadingUI(shown) {
 
 /**
  * Update subscription UI indicator
- * TODO:: prevent from directly manipulation the settings file
  */
-function updateSubscribeUI() {
-    var comics = settings.get("comic");
+function updateSubscribeUI(allComicData) {
     $(".search-result").each(function(i, e) {
         var dom = $(e);
         var host = dom.attr("host");
         var titleKey = dom.attr("titlekey");
         // var keyPath = "comic." + host + "." + titleKey;
         
-        if (comics && comics[host] && comics[host][titleKey] && comics[host][titleKey].subscribed) {
+        if (allComicData && allComicData[host] && allComicData[host][titleKey] && allComicData[host][titleKey].subscribed) {
             dom.find(".subscribe-btn").addClass("subscribed");
         } else {
             dom.find(".subscribe-btn").removeClass("subscribed");
         }
-        // settings.get(keyPath + ".subscribed");
     });  
 }
 

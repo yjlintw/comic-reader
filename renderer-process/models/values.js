@@ -6,8 +6,8 @@
  */
 
 
-var sfacg = require("./parsers/sfacg");
-var _8comic = require("./parsers/8comic");
+var sfacg = require("../parsers/sfacg");
+var _8comic = require("../parsers/8comic");
 
 module.exports = {
     // from host path

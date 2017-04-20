@@ -7,10 +7,10 @@
  */
 
 
-const values = require("./values");
+const values = require("./models/values");
 var subscriber = require("./subscriber");
 var comicparser = require("./comic-parser");
-var searchview = require("./search-view");
+var searchViewController = require("./viewcontrollers/search-viewcontroller");
 
 /**
  *      Variable Definition
@@ -53,13 +53,13 @@ function search() {
     if (isSearching()) return; // if still in the middle of searching, abort
     
     // get the search query from input box
-    var searchStr = searchview.getSearchQuery(); 
+    var searchStr = searchViewController.getSearchQuery(); 
 
     // clear the previous search results
-    searchview.clearSearchResults();
+    searchViewController.clearSearchResults();
 
     // Show loading animiation
-    searchview.loadingUI(true);
+    searchViewController.loadingUI(true);
 
     // Send requests using parsers
     for (var key in values.hosts) {
@@ -79,7 +79,7 @@ function search() {
  */
 function searchResponse(result, host) {
     // Remove loading animation
-    searchview.loadingUI(false);
+    searchViewController.loadingUI(false);
     
     // set search flag false
     searchFlagDict[host] = false;
@@ -87,8 +87,8 @@ function searchResponse(result, host) {
     // construct UI element
     for (var idx in result) {
         var obj = result[idx];
-        var view = searchview.createResultView(obj.link, obj.titleKey, obj.imguri, obj.comicTitle, obj.host, obj.updateinfo, obj.description);
-        searchview.appendNewResult(view);
+        var view = searchViewController.createResultView(obj.link, obj.titleKey, obj.imguri, obj.comicTitle, obj.host, obj.updateinfo, obj.description);
+        searchViewController.appendNewResult(view);
     }
 
     // Update subscribe status
@@ -106,7 +106,7 @@ function init() {
     for (var key in values.hosts) {
         searchFlagDict[values.hosts[key].name] = false;
     }
-    searchview.bindSearch(search);
+    searchViewController.bindSearch(search);
 }
 
 // init when document is ready

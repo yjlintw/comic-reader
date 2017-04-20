@@ -10,14 +10,14 @@
 //      Move the detailed comic subscription information to a different file
 
 
-const values = require("./values");
-const settings = require("electron-settings");
-var favoriteview = require('./favorite-view')
-var searchview = require('./search-view');
-var readview = require('./read-view');
 var async = require('async');
+const settings = require("electron-settings");
 var notifier = require('node-notifier');
-const translator = require('./translate-view');
+const values = require("./models/values");
+var favoriteview = require('./viewcontrollers/favorite-viewcontroller')
+var searchViewController = require('./viewcontrollers/search-viewcontroller');
+var readViewController = require('./viewcontrollers/read-viewcontroller');
+const translateViewController = require('./viewcontrollers/translate-viewcontroller');
 
 module.exports = {
     register: register,
@@ -200,10 +200,11 @@ function onAllComicsUpdateChecked() {
  * Refresh subscription indicators' UI
  */
 function updateSubscribeUIStatus() {
-    searchview.updateSubscribeUI();
-    favoriteview.updateSubscribeUI();
-    readview.updateSubscribeUI();
-    translator.translate();
+    allComicData = settings.get('comic');
+    searchViewController.updateSubscribeUI(allComicData);
+    favoriteview.updateSubscribeUI(allComicData);
+    readViewController.updateSubscribeUI(allComicData);
+    translateViewController.translate();
 
 }
 
@@ -212,14 +213,14 @@ function updateSubscribeUIStatus() {
  */
 
 function init () {
-    searchview.bindSubscribe(subscribe);
+    searchViewController.bindSubscribe(subscribe);
 
     favoriteview.bindRegister(register);
     favoriteview.bindSubscribe(subscribe);
     favoriteview.bindUnsubscribe(unsubscribe);
 
     
-    readview.bindSubscribe(subscribe);
+    readViewController.bindSubscribe(subscribe);
 }
 
 // init when documen is ready

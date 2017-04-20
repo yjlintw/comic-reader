@@ -7,11 +7,11 @@ function include(f) {
   eval.apply(global, [read(f)]);
 }
 
-var t = require('../assets/js/tongwen/tongwen_core');
-const table1 = require('../assets/js/tongwen/tongwen_table_ps2t.js');
-const table2 = require('../assets/js/tongwen/tongwen_table_pt2s.js');
-const table3 = require('../assets/js/tongwen/tongwen_table_s2t.js');
-const table4 = require('../assets/js/tongwen/tongwen_table_t2s.js');
+var t = require('../tongwen/tongwen_core');
+const table1 = require('../tongwen/tongwen_table_ps2t.js');
+const table2 = require('../tongwen/tongwen_table_pt2s.js');
+const table3 = require('../tongwen/tongwen_table_s2t.js');
+const table4 = require('../tongwen/tongwen_table_t2s.js');
 var TongWen = t.TongWen();
 TongWen.addS2TTable(table1.S2TTable);
 TongWen.addT2STable(table2.T2STable);

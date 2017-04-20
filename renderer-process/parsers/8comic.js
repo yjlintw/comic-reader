@@ -232,7 +232,7 @@ function onSingleChapterLoaded(error, response, body) {
     var result = [];
     for (var i = 1; i <= numPages; i++) {
         var src = img[0] + pid + util.pad(i, 3) + '.jpg'; 
-        console.log(src);
+        // console.log(src);
         var id = 'pic' + i;
         var obj = {
             imgurl: src,

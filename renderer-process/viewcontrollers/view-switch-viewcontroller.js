@@ -5,7 +5,7 @@
  *      See: ../sections/sidebar.html
  */
 
-var subscriber = require('./subscriber'); 
+var subscriber = require('../subscriber'); 
 
 module.exports = {
     tabswitch: tabswitch

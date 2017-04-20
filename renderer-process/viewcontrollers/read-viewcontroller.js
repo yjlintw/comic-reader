@@ -8,8 +8,6 @@
  *      ./comic-parser.js
  */
 
-const settings = require('electron-settings');
-
 
 module.exports = {
     // create new elements
@@ -116,13 +114,14 @@ function setCurrentComic(host, titleKey, title, link, imguri) {
  * Update the UI indication of subscription
  * TODO:: separate settings from view
  */
-function updateSubscribeUI() {
+function updateSubscribeUI(allComicData) {
     var dom = $("#comic-header");
     var host = dom.attr("host");
     var titleKey = dom.attr("titlekey");
-    var keyPath = "comic." + host + "." + titleKey;
     
-    var isSubscribed = settings.get(keyPath + ".subscribed");
+    var isSubscribed = allComicData[host] 
+        && allComicData[host][titleKey] 
+        && allComicData[host][titleKey].subscribed;
 
     if (isSubscribed) {
         dom.find(".subscribe-btn").addClass("subscribed");

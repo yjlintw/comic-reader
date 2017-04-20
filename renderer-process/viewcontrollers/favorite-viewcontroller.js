@@ -1,14 +1,11 @@
 /**
  *      Favorite View
- *      favorite-view.js
+ *      favorite-viewcontroller.js
  * 
  *      See Also: ../sections/favorite-view.html,
  *      ../sections/favorite-entry.html,
  *      ./subscriber.js
  */
-
-const settings = require("electron-settings");
-
 
 module.exports = {
     updateSubscribeUI: updateSubscribeUI,
@@ -47,20 +44,21 @@ function bindSelectComic(func) {
 /**
  * Update subscription indicator UI
  */
-function updateSubscribeUI() {
+function updateSubscribeUI(allComicData) {
     $("#favorite-contents").html("");
-    var comics = settings.get("comic");
 
-    for (var host in comics) {
-        for (var titleKey in comics[host]) {
-            if (comics[host][titleKey].subscribed) {
-                var link = comics[host][titleKey].link;
-                var imguri = comics[host][titleKey].thumbnail;
-                var title = comics[host][titleKey].title;
+    for (var host in allComicData) {
+        for (var titleKey in allComicData[host]) {
+            var comicData = allComicData[host][titleKey];
+            if (comicData.subscribed) {
+                var link = comicData.link;
+                var imguri = comicData.thumbnail;
+                var title = comicData.title;
+                var lastread = comicData.lastread;
+                var newest = comicData.newestchapter;
+                var view = createFavEntry(link, titleKey, imguri, title, host, lastread, newest);
 
-                var view = createFavEntry(link, titleKey, imguri, title, host);
-
-                if (comics[host][titleKey].hasupdate) {
+                if (allComicData[host][titleKey].hasupdate) {
                     view.addClass("hasupdate");
                 }
                 $("#favorite-contents").append(view);
@@ -78,13 +76,11 @@ function updateSubscribeUI() {
  * @param {String} title     : comic's name (human-readable)
  * @param {String} host      : host name
  */
-function createFavEntry(link, titleKey, imguri, title, host) {
+function createFavEntry(link, titleKey, imguri, title, host, lastread, newest) {
     var view = $(favEntryViewStr);
     view.find("img").attr("src", imguri);
     view.find(".comic-name strong").text(title);
     view.find(".comic-name small").text(host);
-    var lastread = settings.get("comic." + host + "." + titleKey + ".lastread");
-    var newest = settings.get("comic." + host + "." + titleKey + ".newestchapter");
     view.find(".last-read strong").text(lastread);
     view.find(".newest strong").text(newest)
     view.attr("title", title);

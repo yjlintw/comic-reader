@@ -7,14 +7,14 @@
  */
 
 
-const values = require('./values');
-var subscriber = require('./subscriber');
 var settings = require('electron-settings');
-var searchview = require('./search-view');
-var favoriteview = require('./favorite-view');
-var readview = require('./read-view');
-var viewswitcher = require("./view-switcher");
-var transltor = require("./translate-view");
+const values = require('./models/values');
+var subscriber = require('./subscriber');
+var searchViewController = require('./viewcontrollers/search-viewcontroller');
+var favViewController = require('./viewcontrollers/favorite-viewcontroller');
+var readViewController = require('./viewcontrollers/read-viewcontroller');
+var viewSwitchViewController = require("./viewcontrollers/view-switch-viewcontroller");
+var translateViewController = require("./viewcontrollers/translate-viewcontroller");
 
 module.exports = {
     selectComic: selectComic
@@ -36,19 +36,19 @@ var comicData = {};
  * @param {String} imguri   : thumbnail/cover photo 's url
  */
 function selectComic(host, link, title, titleKey, imguri) {
-    readview.setCurrentComic(host, titleKey, title, link, imguri);
+    readViewController.setCurrentComic(host, titleKey, title, link, imguri);
     subscriber.register(host, titleKey, title, link, imguri);
 
-    readview.clearReadArea();
+    readViewController.clearReadArea();
     values.hostnames[host].parsers.grabChapters(titleKey, link, onChaptersGrabbed);
 
     // -- UI update --
     // Enable the loading screen
-    readview.toggleLoadingAnimation(true);
+    readViewController.toggleLoadingAnimation(true);
     // update the subscription indicators' UI
     subscriber.updateUI();
     // Make read-view active
-    viewswitcher.tabswitch(2);
+    viewSwitchViewController.tabswitch(2);
 }
 
 /**
@@ -61,20 +61,20 @@ function selectComic(host, link, title, titleKey, imguri) {
  */
 function onChaptersGrabbed(result, newest){
     // clear the chapter selector
-    readview.clearChapterSelector();
+    readViewController.clearChapterSelector();
 
     // create an empty chapter list with size of the length of the result
     var chapterList = new Array(result.length);
 
     // Get information from settings
-    var keyPath = "comic." + readview.getCurHost() 
-                    + "." + readview.getCurTitleKey();
+    var keyPath = "comic." + readViewController.getCurHost() 
+                    + "." + readViewController.getCurTitleKey();
     comicData = settings.get(keyPath)
     var chaptersData = comicData.chapters;
     
     for (var index in result) {
         var obj = result[index];
-        var view = readview.createChapterEntry(obj.chGroup, obj.chKey, obj.chName, obj.chLink, obj.domid, obj.index);
+        var view = readViewController.createChapterEntry(obj.chGroup, obj.chKey, obj.chName, obj.chLink, obj.domid, obj.index);
         chapterList[obj.index] = "#" + obj.domid;
         
         // if it is a new chapter, update the setting files
@@ -89,10 +89,10 @@ function onChaptersGrabbed(result, newest){
         }
 
         // add new ui to the screen
-        readview.appendNewChapter(view);
+        readViewController.appendNewChapter(view);
     }
     // Pass information to the read view
-    readview.setChapterList(chapterList);
+    readViewController.setChapterList(chapterList);
 
     // update the newest chapter 
     // TODO: sloppy method, should implement with a different way later
@@ -102,9 +102,9 @@ function onChaptersGrabbed(result, newest){
     // update the read-history UI
     updateChapterList();
 
-    transltor.translate();
+    translateViewController.translate();
     // disable the loading UI
-    readview.toggleLoadingAnimation(false);
+    readViewController.toggleLoadingAnimation(false);
 }
 
 
@@ -116,10 +116,10 @@ function onChaptersGrabbed(result, newest){
  */
 function selectChapter(chLink, chGroup, chKey) {
 
-    readview.clearReadArea();
+    readViewController.clearReadArea();
     
     curPageIdx = 0;
-    values.hostnames[readview.getCurHost()].parsers.loadChapter(chLink, chGroup, chKey, onSingleChapterLoaded);
+    values.hostnames[readViewController.getCurHost()].parsers.loadChapter(chLink, chGroup, chKey, onSingleChapterLoaded);
     
 }
 
@@ -134,17 +134,17 @@ function selectChapter(chLink, chGroup, chKey) {
  * @param {String} chKey   : Chapter's unique key
  */
 function onSingleChapterLoaded(result, chGroup, chKey) {
-    if (chKey != $(readview.getChapterList()[readview.getChIdx()]).attr("chKey")) {
+    if (chKey != $(readViewController.getChapterList()[readViewController.getChIdx()]).attr("chKey")) {
         return;
     }
     var pageIds = new Array(result.length);
     for (var index in result) {
         var obj = result[index];
-        var view = readview.createComicPage(obj.imgurl, obj.id, obj.idx);
+        var view = readViewController.createComicPage(obj.imgurl, obj.id, obj.idx);
         pageIds[obj.idx] = obj.id;
-        readview.appendNewPage(view);
+        readViewController.appendNewPage(view);
     }
-    readview.setPageIds(pageIds);
+    readViewController.setPageIds(pageIds);
     console.log("read");
     comicData.chapters[chGroup][chKey].read = true;
     comicData.lastread = comicData.chapters[chGroup][chKey].name;
@@ -156,8 +156,8 @@ function onSingleChapterLoaded(result, chGroup, chKey) {
  * Update read-history UI indicator
  */
 function updateChapterList() {
-    readview.updateChapterList(comicData);
-    var keyPath = "comic." + readview.getCurHost() + "." + readview.getCurTitleKey();
+    readViewController.updateChapterList(comicData);
+    var keyPath = "comic." + readViewController.getCurHost() + "." + readViewController.getCurTitleKey();
     settings.set(keyPath, comicData);
 }
 
@@ -166,10 +166,10 @@ function updateChapterList() {
  */
 
 function init() {
-    searchview.bindSelectComic(selectComic);
-    favoriteview.bindSelectComic(selectComic);
+    searchViewController.bindSelectComic(selectComic);
+    favViewController.bindSelectComic(selectComic);
 
-    readview.bindSelectChapter(selectChapter);
+    readViewController.bindSelectChapter(selectChapter);
 }
 
 function lateInit() {

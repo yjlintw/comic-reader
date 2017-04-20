@@ -2,13 +2,13 @@
  * Things to load after everything is loaded
  */
 const path = require('path');
-var viewswitcher = require("./view-switcher");
 var subscriber = require("./subscriber");
 var schedule = require("node-schedule");
+var viewSwitchViewController = require("./viewcontrollers/view-switch-viewcontroller");
 
 var scheduledTask;
 $(document).ready(function() {
-    viewswitcher.tabswitch(0);
+    viewSwitchViewController.tabswitch(0);
     subscriber.checkUpdate();
     // console.log(scheduledTask);
     if (!scheduledTask) {
