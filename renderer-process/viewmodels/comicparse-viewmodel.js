@@ -13,14 +13,14 @@ var settings = require('electron-settings');
 const values = require('../models/values');
 
 // view model
-var subscriber = require('./subscribe-viewmodel');
+var subscribe_viewmodel = require('./subscribe-viewmodel');
 
 // view controller
-var searchViewController = require('../viewcontrollers/search-viewcontroller');
-var favViewController = require('../viewcontrollers/favorite-viewcontroller');
-var readViewController = require('../viewcontrollers/read-viewcontroller');
-var viewSwitchViewController = require("../viewcontrollers/view-switch-viewcontroller");
-var translateViewController = require("../viewcontrollers/translate-viewcontroller");
+var search_viewcontroller = require('../viewcontrollers/search-viewcontroller');
+var favorite_viewcontroller = require('../viewcontrollers/favorite-viewcontroller');
+var read_viewcontroller = require('../viewcontrollers/read-viewcontroller');
+var viewswitch_viewcontroller = require("../viewcontrollers/view-switch-viewcontroller");
+var translate_viewcontroller = require("../viewcontrollers/translate-viewcontroller");
 
 module.exports = {
     selectComic: selectComic
@@ -31,101 +31,101 @@ module.exports = {
  *      Variable Definition
  */
 // variable to store the settings. Preventing frequently I/O operations
-var comicData = {};
+var comic_data = {};
 
 /**
  * Set information for selected comic and grab chapters-info
  * @param {String} host     : Host name
  * @param {String} link     : Link to the comic
  * @param {String} title    : Comic's name (human-readable)
- * @param {String} titleKey : Unique key for the comic
+ * @param {String} titlekey : Unique key for the comic
  * @param {String} imguri   : thumbnail/cover photo 's url
  */
-function selectComic(host, link, title, titleKey, imguri) {
-    readViewController.setCurrentComic(host, titleKey, title, link, imguri);
-    subscriber.register(host, titleKey, title, link, imguri);
+function selectComic(host, link, title, titlekey, imguri) {
+    read_viewcontroller.setCurrentComic(host, titlekey, title, link, imguri);
+    subscribe_viewmodel.register(host, titlekey, title, link, imguri);
 
-    readViewController.clearReadArea();
-    values.hostnames[host].parsers.grabChapters(titleKey, link, onChaptersGrabbed);
+    read_viewcontroller.clearReadArea();
+    values.hostnames[host].parsers.grabChapters(titlekey, link, onChaptersGrabbed);
 
     // -- UI update --
     // Enable the loading screen
-    readViewController.toggleLoadingAnimation(true);
+    read_viewcontroller.toggleLoadingAnimation(true);
     // update the subscription indicators' UI
-    subscriber.updateUI();
+    subscribe_viewmodel.updateUI();
     // Make read-view active
-    viewSwitchViewController.tabswitch(2);
+    viewswitch_viewcontroller.tabswitch(2);
 }
 
 /**
  * Callback function when chapter info is grabbed
  * @param {Object} result : list of object
- *      @param {String} result.chName : Chapter name (human-readable)
- *      @param {String} result.chLink : url to the chapter
- *      @param {String} domid         : HTML DOM id to the chapter selector entry 
- *      @param {int}    index         : index in the chapter list
+ *      @param {String} result.ch_name : Chapter name (human-readable)
+ *      @param {String} result.ch_link : url to the chapter
+ *      @param {String} domid          : HTML DOM id to the chapter selector entry 
+ *      @param {int}    index          : index in the chapter list
  */
 function onChaptersGrabbed(result, newest){
     // clear the chapter selector
-    readViewController.clearChapterSelector();
+    read_viewcontroller.clearChapterSelector();
 
     // create an empty chapter list with size of the length of the result
-    var chapterList = new Array(result.length);
+    var chapter_list = new Array(result.length);
 
     // Get information from settings
-    var keyPath = "comic." + readViewController.getCurHost() 
-                    + "." + readViewController.getCurTitleKey();
-    comicData = settings.get(keyPath)
-    var chaptersData = comicData.chapters;
+    var keyPath = "comic." + read_viewcontroller.getCurHost() 
+                    + "." + read_viewcontroller.getCurTitleKey();
+    comic_data = settings.get(keyPath)
+    var chapters_data = comic_data.chapters;
     
     for (var index in result) {
         var obj = result[index];
-        var view = readViewController.createChapterEntry(obj.chGroup, obj.chKey, obj.chName, obj.chLink, obj.domid, obj.index);
-        chapterList[obj.index] = "#" + obj.domid;
+        var view = read_viewcontroller.createChapterEntry(obj.ch_group, obj.ch_key, obj.ch_name, obj.ch_link, obj.domid, obj.index);
+        chapter_list[obj.index] = "#" + obj.domid;
         
         // if it is a new chapter, update the setting files
-        if (!(obj.chGroup in chaptersData)) {
-            chaptersData[obj.chGroup] = {}
+        if (!(obj.ch_group in chapters_data)) {
+            chapters_data[obj.ch_group] = {}
         } 
-        if (!(obj.chKey in chaptersData[obj.chGroup])) {
-            chaptersData[obj.chGroup][obj.chKey] = {
-                name: obj.chName,
+        if (!(obj.ch_key in chapters_data[obj.ch_group])) {
+            chapters_data[obj.ch_group][obj.ch_key] = {
+                name: obj.ch_name,
                 read: false
             }
         }
 
         // add new ui to the screen
-        readViewController.appendNewChapter(view);
+        read_viewcontroller.appendNewChapter(view);
     }
     // Pass information to the read view
-    readViewController.setChapterList(chapterList);
+    read_viewcontroller.setChapterList(chapter_list);
 
     // update the newest chapter 
     // TODO: sloppy method, should implement with a different way later
-    comicData.newestchapter = newest;
-    comicData.hasupdate = false;
+    comic_data.newestchapter = newest;
+    comic_data.hasupdate = false;
 
     // update the read-history UI
     updateChapterList();
 
-    translateViewController.translate();
+    translate_viewcontroller.translate();
     // disable the loading UI
-    readViewController.toggleLoadingAnimation(false);
+    read_viewcontroller.toggleLoadingAnimation(false);
 }
 
 
 /**
  * Select one chapter to load
- * @param {String} chLink  : URL to the chapter
- * @param {String} chGroup : Chapter group
- * @param {String} chKey   : Chapter's unique key
+ * @param {String} ch_link  : URL to the chapter
+ * @param {String} ch_group : Chapter group
+ * @param {String} ch_key   : Chapter's unique key
  */
-function selectChapter(chLink, chGroup, chKey) {
+function selectChapter(ch_link, ch_group, ch_key) {
 
-    readViewController.clearReadArea();
+    read_viewcontroller.clearReadArea();
     
-    curPageIdx = 0;
-    values.hostnames[readViewController.getCurHost()].parsers.loadChapter(chLink, chGroup, chKey, onSingleChapterLoaded);
+    // curPageIdx = 0;
+    values.hostnames[read_viewcontroller.getCurHost()].parsers.loadChapter(ch_link, ch_group, ch_key, onSingleChapterLoaded);
     
 }
 
@@ -136,24 +136,24 @@ function selectChapter(chLink, chGroup, chKey) {
  *      @param {String} imgurl : image url
  *      @param {String} id     : HTML DOM object id for that image
  *      @param {int}    idx    : index in the image array
- * @param {String} chGroup : Chapter group
- * @param {String} chKey   : Chapter's unique key
+ * @param {String} ch_group : Chapter group
+ * @param {String} ch_key   : Chapter's unique key
  */
-function onSingleChapterLoaded(result, chGroup, chKey) {
-    if (chKey != $(readViewController.getChapterList()[readViewController.getChIdx()]).attr("chKey")) {
+function onSingleChapterLoaded(result, ch_group, ch_key) {
+    if (ch_key != $(read_viewcontroller.getChapterList()[read_viewcontroller.getChIdx()]).attr("chkey")) {
         return;
     }
     var pageIds = new Array(result.length);
     for (var index in result) {
         var obj = result[index];
-        var view = readViewController.createComicPage(obj.imgurl, obj.id, obj.idx);
+        var view = read_viewcontroller.createComicPage(obj.imgurl, obj.id, obj.idx);
         pageIds[obj.idx] = obj.id;
-        readViewController.appendNewPage(view);
+        read_viewcontroller.appendNewPage(view);
     }
-    readViewController.setPageIds(pageIds);
+    read_viewcontroller.setPageIds(pageIds);
     // console.log("read");
-    comicData.chapters[chGroup][chKey].read = true;
-    comicData.lastread = comicData.chapters[chGroup][chKey].name;
+    comic_data.chapters[ch_group][ch_key].read = true;
+    comic_data.lastread = comic_data.chapters[ch_group][ch_key].name;
     updateChapterList();
 }
 
@@ -162,9 +162,9 @@ function onSingleChapterLoaded(result, chGroup, chKey) {
  * Update read-history UI indicator
  */
 function updateChapterList() {
-    readViewController.updateChapterList(comicData);
-    var keyPath = "comic." + readViewController.getCurHost() + "." + readViewController.getCurTitleKey();
-    settings.set(keyPath, comicData);
+    read_viewcontroller.updateChapterList(comic_data);
+    var keypath = "comic." + read_viewcontroller.getCurHost() + "." + read_viewcontroller.getCurTitleKey();
+    settings.set(keypath, comic_data);
 }
 
 /**
@@ -172,10 +172,10 @@ function updateChapterList() {
  */
 
 function init() {
-    searchViewController.bindSelectComic(selectComic);
-    favViewController.bindSelectComic(selectComic);
+    search_viewcontroller.bindSelectComic(selectComic);
+    favorite_viewcontroller.bindSelectComic(selectComic);
 
-    readViewController.bindSelectChapter(selectChapter);
+    read_viewcontroller.bindSelectChapter(selectChapter);
 }
 
 function lateInit() {

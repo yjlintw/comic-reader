@@ -18,11 +18,11 @@ var notifier = require('node-notifier');
 const values = require("../models/values");
 
 // viewcontroller
-var favoriteview = require('../viewcontrollers/favorite-viewcontroller')
-var searchViewController = require('../viewcontrollers/search-viewcontroller');
-var readViewController = require('../viewcontrollers/read-viewcontroller');
-var viewSwitchViewController = require('../viewcontrollers/view-switch-viewcontroller')
-const translateViewController = require('../viewcontrollers/translate-viewcontroller');
+var favorite_viewcontroller = require('../viewcontrollers/favorite-viewcontroller')
+var search_viewcontroller = require('../viewcontrollers/search-viewcontroller');
+var read_viewcontroller = require('../viewcontrollers/read-viewcontroller');
+var viewswitch_viewcontroller = require('../viewcontrollers/view-switch-viewcontroller')
+const translate_viewcontroller = require('../viewcontrollers/translate-viewcontroller');
 
 module.exports = {
     register: register,
@@ -39,20 +39,20 @@ var notification;
 /**
  * Register a comic. Save the info for a comic, but do not subscribe it. 
  * @param {String} host           : Host name
- * @param {String} titleKey  : Unique key for the comic. the key can be 
+ * @param {String} titlekey  : Unique key for the comic. the key can be 
  *                                  reused if the comic is from a different host
- * @param {String} comicTitle     : Comic's name. (Human-readable)
+ * @param {String} title     : Comic's name. (Human-readable)
  * @param {String} link           : Link to the comic
- * @param {String} thumbnailURI   : thumbnail / cover photo 's url 
+ * @param {String} thumbnail_uri   : thumbnail / cover photo 's url 
  * @param {String} subscribed     : status of subscription
  */
-function register(host, titleKey, comicTitle, link, thumbnailURI, subscribed=false) {
-    var keyPath = "comic." + host + "." + titleKey;
-    if (!settings.has(keyPath)) {
-        settings.set(keyPath, {
-            "title": comicTitle,
+function register(host, titlekey, title, link, thumbnail_uri, subscribed=false) {
+    var key_path = "comic." + host + "." + titlekey;
+    if (!settings.has(key_path)) {
+        settings.set(key_path, {
+            "title": title,
             "link": link,
-            "thumbnail": thumbnailURI,
+            "thumbnail": thumbnail_uri,
             "subscribed": subscribed,
             "lastread": "",
             "lastpage": "",
@@ -62,25 +62,25 @@ function register(host, titleKey, comicTitle, link, thumbnailURI, subscribed=fal
             "hasupdate": true
         });
     }
-    return settings.get(keyPath);
+    return settings.get(key_path);
 }
 
 /**
  * Toggle the subscription status
  * @param see register(...) 
  */
-function subscribe(host, titleKey, comicTitle, link, thumbnailURI) {
-    var keyPath = "comic." + host + "." + titleKey;
-    var comicData = settings.get(keyPath);
-    if (comicData) {
+function subscribe(host, titlekey, title, link, thumbnail_uri) {
+    var keyPath = "comic." + host + "." + titlekey;
+    var comic_data = settings.get(keyPath);
+    if (comic_data) {
         
-        comicData.subscribed = !comicData.subscribed;
-        settings.set(keyPath, comicData);
+        comic_data.subscribed = !comic_data.subscribed;
+        settings.set(keyPath, comic_data);
     } else {
-        comicData = register(host, titleKey, comicTitle, link, thumbnailURI, true)
+        comic_data = register(host, titlekey, title, link, thumbnail_uri, true)
     }
-    if (comicData.subscribed) {
-        checkUpdateSingle(host, titleKey);
+    if (comic_data.subscribed) {
+        checkUpdateSingle(host, titlekey);
     }
     updateSubscribeUIStatus();
 
@@ -90,12 +90,12 @@ function subscribe(host, titleKey, comicTitle, link, thumbnailURI) {
  * Unsubscribe the comic
  * @param see register(...)
  */
-function unsubscribe(host, titleKey) {
-    var keyPath = "comic." + host + "." + titleKey;
-    var comicData = settings.get(keyPath);
+function unsubscribe(host, titlekey) {
+    var key_path = "comic." + host + "." + titlekey;
+    var comicData = settings.get(key_path);
     if (comicData) {
         comicData.subscribed = false;
-        settings.set(keyPath, comicData);
+        settings.set(key_path, comicData);
         updateSubscribeUIStatus();
     }
 }
@@ -103,15 +103,15 @@ function unsubscribe(host, titleKey) {
 /**
  * [Async] Check updates for a single comic.
  * @param {String} host 
- * @param {String} titleKey 
+ * @param {String} titlekey 
  */
-function checkUpdateSingle(host, titleKey) {
+function checkUpdateSingle(host, titlekey) {
     console.log("---- Start checking for one comic's updates ----")
-    var allComicData = settings.get('comic');
-    async.apply(values.hostnames[host].parsers.grabChapters(titleKey, allComicData[host][titleKey].link,onChaptersGrabbed.bind({
-                        allComicData: allComicData,
+    var all_comic_data = settings.get('comic');
+    async.apply(values.hostnames[host].parsers.grabChapters(titlekey, all_comic_data[host][titlekey].link,onChaptersGrabbed.bind({
+                        all_comic_data: all_comic_data,
                         host: host,
-                        titleKey: titleKey,
+                        titlekey: titlekey,
                         callback: onAllComicsUpdateChecked
                     })));
 }
@@ -121,14 +121,14 @@ function checkUpdateSingle(host, titleKey) {
  */
 function checkUpdate() {
     console.log("---- Start checking for updates ----")
-    var allComicData = settings.get('comic');
-    async.eachOf(allComicData, function(hostDict, host, callback1) {
-        async.eachOf(hostDict, function(comics, titleKey, callback2){
-            if (allComicData[host][titleKey].subscribed) {
-                values.hostnames[host].parsers.grabChapters(titleKey, comics.link,onChaptersGrabbed.bind({
-                        allComicData: allComicData,
+    var all_comic_data = settings.get('comic');
+    async.eachOf(all_comic_data, function(hostDict, host, callback1) {
+        async.eachOf(hostDict, function(comics, titlekey, callback2){
+            if (all_comic_data[host][titlekey].subscribed) {
+                values.hostnames[host].parsers.grabChapters(titlekey, comics.link,onChaptersGrabbed.bind({
+                        all_comic_data: all_comic_data,
                         host: host,
-                        titleKey: titleKey,
+                        titlekey: titlekey,
                         callback: callback2
                     }));
             } else {
@@ -137,30 +137,30 @@ function checkUpdate() {
         }, function() {
             callback1();
         })
-    }, onAllComicsUpdateChecked.bind({allComicData:allComicData}));
+    }, onAllComicsUpdateChecked.bind({all_comic_data : all_comic_data}));
 }
 
 /**
  * Callback when one chapter is grabbed.
  * @param {Array} result :list of obj (see below)
  *          {Object} obj:
- *            {String} chName : Chapter's name
- *            {String} chGroup: Chapter's group
- *            {String} chKey  : Chapter's unique key
- *            {String} chLink : URL to the chapter
- *            {String} domid  : HTML DOM object id
- *            {int}    index  : index
- * @param {JSON} this.allComicData
+ *            {String} ch_name : Chapter's name
+ *            {String} ch_group: Chapter's group
+ *            {String} ch_key  : Chapter's unique key
+ *            {String} ch_link : URL to the chapter
+ *            {String} domid   : HTML DOM object id
+ *            {int}    index   : index
+ * @param {JSON} this.all_comic_data
  * @param {JSON} this.host
- * @param {JSON} this.titleKey
+ * @param {JSON} this.titlekey
  * @param {JSON} this.callback : must invoke callback at the end of the function
  *                               when the job is finished.
  *              
  */
 function onChaptersGrabbed(result, newest) {
     console.log("---One Comic Update Checked---")
-    var comic = this.allComicData[this.host][this.titleKey];
-    var chaptersData = comic.chapters;
+    var comic = this.all_comic_data[this.host][this.titlekey];
+    var chapters_data = comic.chapters;
     // console.log(result.length + ":" + comic.chapters_count);
     if (result.length != comic.chapters_count) {
         comic.hasupdate = true;
@@ -176,12 +176,12 @@ function onChaptersGrabbed(result, newest) {
         
         var obj = result[index];
         // if is a new group
-        if (!(obj.chGroup in chaptersData)) {
-            chaptersData[obj.chGroup] = {}
+        if (!(obj.chGroup in chapters_data)) {
+            chapters_data[obj.ch_group] = {}
         } 
-        if (!(obj.chKey in chaptersData[obj.chGroup])) {
-            chaptersData[obj.chGroup][obj.chKey] = {
-                name: obj.chName,
+        if (!(obj.chKey in chapters_data[obj.ch_group])) {
+            chapters_data[obj.ch_group][obj.ch_key] = {
+                name: obj.ch_name,
                 read: false
             }
         }
@@ -193,11 +193,11 @@ function onChaptersGrabbed(result, newest) {
 
 /**
  * Callback when all update check in done.
- * @param {JSON} this.allComicData
+ * @param {JSON} this.all_comic_data
  */
 function onAllComicsUpdateChecked() {
     console.log("---- All updates checked ----")
-    settings.set("comic", this.allComicData);
+    settings.set("comic", this.all_comic_data);
     updateSubscribeUIStatus();
 }
 
@@ -205,11 +205,11 @@ function onAllComicsUpdateChecked() {
  * Refresh subscription indicators' UI
  */
 function updateSubscribeUIStatus() {
-    allComicData = settings.get('comic');
-    searchViewController.updateSubscribeUI(allComicData);
-    favoriteview.updateSubscribeUI(allComicData);
-    readViewController.updateSubscribeUI(allComicData);
-    translateViewController.translate();
+    all_comic_data = settings.get('comic');
+    search_viewcontroller.updateSubscribeUI(all_comic_data);
+    favorite_viewcontroller.updateSubscribeUI(all_comic_data);
+    read_viewcontroller.updateSubscribeUI(all_comic_data);
+    translate_viewcontroller.translate();
 
 }
 
@@ -218,15 +218,15 @@ function updateSubscribeUIStatus() {
  */
 
 function init () {
-    searchViewController.bindSubscribe(subscribe);
+    search_viewcontroller.bindSubscribe(subscribe);
 
-    favoriteview.bindRegister(register);
-    favoriteview.bindSubscribe(subscribe);
-    favoriteview.bindUnsubscribe(unsubscribe);
+    favorite_viewcontroller.bindRegister(register);
+    favorite_viewcontroller.bindSubscribe(subscribe);
+    favorite_viewcontroller.bindUnsubscribe(unsubscribe);
 
     
-    readViewController.bindSubscribe(subscribe);
-    viewSwitchViewController.bindUpdateAllUI(updateSubscribeUIStatus);
+    read_viewcontroller.bindSubscribe(subscribe);
+    viewswitch_viewcontroller.bindUpdateAllUI(updateSubscribeUIStatus);
 }
 
 // init when documen is ready

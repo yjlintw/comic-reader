@@ -23,10 +23,10 @@ module.exports = {
     translate: translate
 }
 
-var toTChinese = true;
+var to_traditional_chinese = true;
 
 function translate() {
-    if (toTChinese) {
+    if (to_traditional_chinese) {
         TongWen.trans2Trad(document);
     } else {
         TongWen.trans2Simp(document);
@@ -38,12 +38,12 @@ $(document).ready(function () {
     var zhconvert = document.getElementById("zh-convert");
     zhconvert.onclick = function () {
         if (zhconvert.dataset.zh == "tw") {
-            toTChinese = false;
+            to_traditional_chinese = false;
             setTimeout(function () { zhconvert.textContent = "簡"; }, 250);
             zhconvert.dataset.zh = "cn";
 
         } else {
-            toTChinese = true;
+            to_traditional_chinese = true;
             setTimeout(function () { zhconvert.textContent = "繁"; }, 250);
             zhconvert.dataset.zh = "tw";
         }

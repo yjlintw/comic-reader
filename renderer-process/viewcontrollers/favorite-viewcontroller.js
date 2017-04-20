@@ -16,49 +16,52 @@ module.exports = {
     bindUnsubscribe: bindUnsubscribe,
     bindSelectComic: bindSelectComic
 }
+//
+
+var favorite_entry_template_str = "";
 
 /**
  * Action Binding
  */
-var register;
-var subscribe;
-var unsubscribe;
-var selectComic;
+var registerFunc;
+var subscribeFunc;
+var unsubscribeFunc;
+var selectComicFunc;
 
 function bindRegister(func) {
-    register = func;
+    registerFunc = func;
 }
 
 function bindSubscribe(func) {
-    subscribe = func;
+    subscribeFunc = func;
 }
 
 function bindUnsubscribe(func) {
-    unsubscribe = func;
+    unsubscribeFunc = func;
 }
 
 function bindSelectComic(func) {
-    selectComic = func;
+    selectComicFunc = func;
 }
 
 /**
  * Update subscription indicator UI
  */
-function updateSubscribeUI(allComicData) {
+function updateSubscribeUI(all_comic_data) {
     $("#favorite-contents").html("");
 
-    for (var host in allComicData) {
-        for (var titleKey in allComicData[host]) {
-            var comicData = allComicData[host][titleKey];
-            if (comicData.subscribed) {
-                var link = comicData.link;
-                var imguri = comicData.thumbnail;
-                var title = comicData.title;
-                var lastread = comicData.lastread;
-                var newest = comicData.newestchapter;
-                var view = createFavEntry(link, titleKey, imguri, title, host, lastread, newest);
+    for (var host in all_comic_data) {
+        for (var titlekey in all_comic_data[host]) {
+            var comic_data = all_comic_data[host][titlekey];
+            if (comic_data.subscribed) {
+                var link = comic_data.link;
+                var imguri = comic_data.thumbnail;
+                var title = comic_data.title;
+                var lastread = comic_data.lastread;
+                var newest = comic_data.newestchapter;
+                var view = createFavEntry(link, titlekey, imguri, title, host, lastread, newest);
 
-                if (allComicData[host][titleKey].hasupdate) {
+                if (all_comic_data[host][titlekey].hasupdate) {
                     view.addClass("hasupdate");
                 }
                 $("#favorite-contents").append(view);
@@ -71,13 +74,13 @@ function updateSubscribeUI(allComicData) {
 /**
  * Create a favorite entry HTML DOM object
  * @param {String} link      : link to comic 
- * @param {String} titleKey  : title key store in settings
+ * @param {String} titlekey  : title key store in settings
  * @param {String} imguri    : thumbnail's url
  * @param {String} title     : comic's name (human-readable)
  * @param {String} host      : host name
  */
-function createFavEntry(link, titleKey, imguri, title, host, lastread, newest) {
-    var view = $(favEntryViewStr);
+function createFavEntry(link, titlekey, imguri, title, host, lastread, newest) {
+    var view = $(favorite_entry_template_str);
     view.find("img").attr("src", imguri);
     view.find(".comic-name strong").text(title);
     view.find(".comic-name small").text(host);
@@ -85,19 +88,19 @@ function createFavEntry(link, titleKey, imguri, title, host, lastread, newest) {
     view.find(".newest strong").text(newest)
     view.attr("title", title);
     view.attr("link", link);
-    view.attr("titlekey", titleKey);
+    view.attr("titlekey", titlekey);
     view.attr("host", host);
 
     view.find(".subscribe-btn").click(function(e){
         e.stopPropagation();
         console.log(host);
-        console.log(titleKey);
-        unsubscribe(host, titleKey);
+        console.log(titlekey);
+        unsubscribeFunc(host, titlekey);
     });
 
     view.click(function(e){
         // console.log("fav click:" + title + ", from:" + host);
-        selectComic(host, link, title, titleKey, imguri);
+        selectComicFunc(host, link, title, titlekey, imguri);
 
     });
 
@@ -113,7 +116,7 @@ function createFavEntry(link, titleKey, imguri, title, host, lastread, newest) {
 
 function init () {
     $.get('./sections/favorite-entry.html', function(result) {
-        favEntryViewStr = result;
+        favorite_entry_template_str = result;
     })
 }
 
