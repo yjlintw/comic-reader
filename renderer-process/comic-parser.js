@@ -25,7 +25,7 @@ module.exports = {
  *      Variable Definition
  */
 // variable to store the settings. Preventing frequently I/O operations
-var allComicData = {};
+var comicData = {};
 
 /**
  * Set information for selected comic and grab chapters-info
@@ -69,8 +69,8 @@ function onChaptersGrabbed(result, newest){
     // Get information from settings
     var keyPath = "comic." + readview.getCurHost() 
                     + "." + readview.getCurTitleKey();
-    allComicData = settings.get(keyPath)
-    var chaptersData = allComicData.chapters;
+    comicData = settings.get(keyPath)
+    var chaptersData = comicData.chapters;
     
     for (var index in result) {
         var obj = result[index];
@@ -81,9 +81,11 @@ function onChaptersGrabbed(result, newest){
         if (!(obj.chGroup in chaptersData)) {
             chaptersData[obj.chGroup] = {}
         } 
-        chaptersData[obj.chGroup][obj.chKey] = {
-            name: obj.chName,
-            read: false
+        if (!(obj.chKey in chaptersData[obj.chGroup])) {
+            chaptersData[obj.chGroup][obj.chKey] = {
+                name: obj.chName,
+                read: false
+            }
         }
 
         // add new ui to the screen
@@ -94,8 +96,8 @@ function onChaptersGrabbed(result, newest){
 
     // update the newest chapter 
     // TODO: sloppy method, should implement with a different way later
-    allComicData.newestchapter = newest;
-    allComicData.hasupdate = false;
+    comicData.newestchapter = newest;
+    comicData.hasupdate = false;
 
     // update the read-history UI
     updateChapterList();
@@ -143,8 +145,9 @@ function onSingleChapterLoaded(result, chGroup, chKey) {
         readview.appendNewPage(view);
     }
     readview.setPageIds(pageIds);
-    allComicData.chapters[chGroup][chKey].read = true;
-    allComicData.lastread = allComicData.chapters[chGroup][chKey].name;
+    console.log("read");
+    comicData.chapters[chGroup][chKey].read = true;
+    comicData.lastread = comicData.chapters[chGroup][chKey].name;
     updateChapterList();
 }
 
@@ -153,9 +156,9 @@ function onSingleChapterLoaded(result, chGroup, chKey) {
  * Update read-history UI indicator
  */
 function updateChapterList() {
-    readview.updateChapterList(allComicData);
+    readview.updateChapterList(comicData);
     var keyPath = "comic." + readview.getCurHost() + "." + readview.getCurTitleKey();
-    settings.set(keyPath, allComicData);
+    settings.set(keyPath, comicData);
 }
 
 /**
