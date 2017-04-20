@@ -5,12 +5,11 @@
  *      See: ../sections/sidebar.html
  */
 
-var searchview = require('./search-view');
-var favoriteview = require('./favorite-view');
-var readview = require('./read-view');
+var subscriber = require('./subscriber'); 
 
 module.exports = {
     tabswitch: tabswitch
+    
 }
 
 // Scroll behavior
@@ -84,26 +83,10 @@ function onTabEntryClick() {
     $(".sidebar .entry").removeClass("active");
     $(this).addClass("active");
 
-    searchview.updateSubscribeUI();
-    favoriteview.updateSubscribeUI();
-    readview.updateSubscribeUI();
+    subscriber.updateUI();
 }
 
 
 $(document).ready(function() {
     $(".sidebar .entry").click(onTabEntryClick);
-    //chinese convert
-    var zhconvert = document.getElementById("zh-convert");
-      zhconvert.onclick = function() {
-        if (zhconvert.dataset.zh == "tw") {
-            TongWen.trans2Simp(document);
-            setTimeout(function() {zhconvert.textContent = "簡";}, 0);
-            zhconvert.dataset.zh = "cn";
-
-          } else {
-            TongWen.trans2Trad(document);
-            setTimeout(function() {zhconvert.textContent = "繁";}, 0);
-            zhconvert.dataset.zh = "tw";
-          }
-        }
 });

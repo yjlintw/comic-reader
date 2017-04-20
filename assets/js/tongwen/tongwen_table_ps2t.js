@@ -1,4 +1,6 @@
-TongWen.addS2TTable({
+module.exports = {
+// TongWen.addS2TTable({
+S2TTable:{
 "0余":"0餘",
 "0天":"0天",
 "0天后":"0天後",
@@ -7043,4 +7045,5 @@ TongWen.addS2TTable({
 "０海裡":"０海里",
 "０裡":"０里",
 "披肩發":"披肩髮"
-});
+}
+}

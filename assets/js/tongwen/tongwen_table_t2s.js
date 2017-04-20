@@ -1,4 +1,6 @@
-TongWen.addT2STable({
+module.exports = {
+// TongWen.addT2STable({
+T2STable:{
 "㑳":"㑇",
 "㘚":"㘎",
 "㥮":"㤘",
@@ -2884,4 +2886,5 @@ TongWen.addT2STable({
 "﹩":"＄",
 "﹪":"％",
 "﹫":"＠"
-});
+}
+}

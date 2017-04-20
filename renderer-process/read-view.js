@@ -138,8 +138,10 @@ function updateSubscribeUI() {
  */
 function updateChapterList(allComicData) {
     $(".chapter-entry").each(function(i, e) {
-        var chName = $(e).text();
-        if (allComicData.chapters[chName].read) {
+        var chKey = $(e).attr("chKey");
+        var chGroup = $(e).attr("chGroup");
+
+        if (allComicData.chapters[chGroup][chKey].read) {
             $(e).addClass("read");
         }
     });
@@ -279,15 +281,18 @@ function clearChapterSelector() {
 }
 
 /**
- * 
+ * @param {String} chGroup: chapter's group
+ * @param {String} chKey  : chapter's unique key
  * @param {String} chName : chapter's name (human-readable)
  * @param {String} chLink : chapter's link
  * @param {String} domid  : HTML DOM id of the selected entry
  * @param {int}    index  : index of selected chapter in the chapter list
  */
-function createChapterEntry(chName, chLink, domid, index) {
+function createChapterEntry(chGroup, chKey, chName, chLink, domid, index) {
     var view = $(chapterEntryStr);
     view.attr("link", chLink);
+    view.attr("chGroup", chGroup);
+    view.attr("chKey", chKey);
     view.attr("idx", index);
     view.attr("id", domid);
 
@@ -297,7 +302,7 @@ function createChapterEntry(chName, chLink, domid, index) {
             // toggle chapter selector
             toggleChapterSelector();
         }
-        selectChapter(chLink, chName);
+        selectChapter(chLink, chGroup, chKey);
         $(".chapter-entry").removeClass("active");
         $(this).addClass("active");
         curChapterIdx = index;

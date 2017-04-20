@@ -1,4 +1,6 @@
-TongWen.addS2TTable({
+module.exports = {
+// TongWen.addS2TTable({
+S2TTable: {
 "㑇":"㑳",
 "㖞":"喎",
 "㘎":"㘚",
@@ -2504,4 +2506,5 @@ TongWen.addS2TTable({
 "龛":"龕",
 "龟":"龜",
 "":"　"
-});
+}
+}
