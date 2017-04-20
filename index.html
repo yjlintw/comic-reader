@@ -14,14 +14,16 @@
       <aside class="tile sidebar float-menu" id="sidebar">
       </aside>
       <div class="tile is-vertical" id="main-view">
-        
+
       </div>
     </div>
     <script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
     <script src="./assets/js/jquery-3.2.1.min.js"></script>
+    
     <script>
       require("./renderer-process/content-loader");
       require("./renderer-process/view-switcher");
+      require("./renderer-process/translate-view.js")
       require("./renderer-process/search-view")
       require("./renderer-process/search-controller");
       require("./renderer-process/favorite-view");
@@ -31,6 +33,8 @@
       // last things to load
       require("./renderer-process/load-after");
     </script>
+    
+    
     <script src="http://localhost:35729/livereload.js?snipver=2"></script>
     <script>if (window.module) module = window.module;</script>
   </body>

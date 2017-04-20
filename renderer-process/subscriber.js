@@ -17,6 +17,7 @@ var searchview = require('./search-view');
 var readview = require('./read-view');
 var async = require('async');
 var notifier = require('node-notifier');
+const translator = require('./translate-view');
 
 module.exports = {
     register: register,
@@ -200,6 +201,8 @@ function updateSubscribeUIStatus() {
     searchview.updateSubscribeUI();
     favoriteview.updateSubscribeUI();
     readview.updateSubscribeUI();
+    translator.translate();
+
 }
 
 /**

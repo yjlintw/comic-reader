@@ -1,16 +1,15 @@
 /**
  *      view-switcher.js
- * 
+ *
  *      Control the behavior of view switching and sidebar
  *      See: ../sections/sidebar.html
  */
 
-var searchview = require('./search-view');
-var favoriteview = require('./favorite-view');
-var readview = require('./read-view');
+var subscriber = require('./subscriber'); 
 
 module.exports = {
     tabswitch: tabswitch
+    
 }
 
 // Scroll behavior
@@ -37,11 +36,11 @@ setInterval(function() {
 
 function hasScrolled() {
     var st = $(this).scrollTop();
-    
+
     // Make sure they scroll more than delta
     if(Math.abs(lastScrollTop - st) <= delta)
         return;
-    
+
     // If they scrolled down and are past the navbar, add class .nav-up.
     // This is necessary so you never see what is "behind" the navbar.
     if (st > lastScrollTop && st > navbarHeight){
@@ -53,13 +52,13 @@ function hasScrolled() {
             $('.float-menu').removeClass('nav-up').addClass('nav-down');
         }
     }
-    
+
     lastScrollTop = st;
 }
 
 /**
  * Switch active panel
- * @param {int} index 
+ * @param {int} index
  */
 function tabswitch(index) {
     switch (index) {
@@ -84,12 +83,11 @@ function onTabEntryClick() {
     $(".sidebar .entry").removeClass("active");
     $(this).addClass("active");
 
-    searchview.updateSubscribeUI();
-    favoriteview.updateSubscribeUI();
-    readview.updateSubscribeUI();
+    subscriber.updateUI();
 }
 
 
 $(document).ready(function() {
     $(".sidebar .entry").click(onTabEntryClick);
+
 });
