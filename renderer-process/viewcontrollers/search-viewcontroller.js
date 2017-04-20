@@ -6,7 +6,6 @@
  *      ../sections/search-result-entry.html,
  *      ./search-controller.js
  */
-const settings = require('electron-settings')
 module.exports = {
     createResultView: createResultView,
     getSearchQuery: getSearchQuery,
@@ -24,10 +23,11 @@ module.exports = {
  *      Initialize & UI Interaction
  */
 
+var resultview_template_str = "";
 // search function
-var search;
-var subscribe;
-var selectComic;
+var searchFunc;
+var subscribeFunc;
+var selectComicFunc;
 
 /**
  * Create a single search result HTML DOM
@@ -35,7 +35,7 @@ var selectComic;
  * See: ../sections/search-result-entry.html
  * 
  * @param {String} link         : link to the comic page
- * @param {String} titleKey     : a unique key for a comic in a host, two comics
+ * @param {String} titlekey     : a unique key for a comic in a host, two comics
                                   from different hosts can have the same key
  * @param {String} imguri       : image thumbnail / cover photo
  * @param {String} title        : comic name (human-readable)
@@ -45,8 +45,8 @@ var selectComic;
  * 
  * @return {jQueryObject} result view HTML DOM
  */
-function createResultView(link, titleKey, imguri, title, host, updateinfo, description) {
-    var view = $(resultViewStr);
+function createResultView(link, titlekey, imguri, title, host, updateinfo, description) {
+    var view = $(resultview_template_str);
     view.find(".thumbnail img").attr("src", imguri);
     view.find(".comic-name strong").html(title);
     view.find(".comic-name small").html("(" + host +")");
@@ -55,16 +55,16 @@ function createResultView(link, titleKey, imguri, title, host, updateinfo, descr
     
     view.attr("title", title);
     view.attr("link", link);
-    view.attr("titlekey", titleKey);
+    view.attr("titlekey", titlekey);
     view.attr("host", host);
 
     view.click(function() {
-        selectComic(host, link, title, titleKey, imguri);
+        selectComicFunc(host, link, title, titlekey, imguri);
     })
 
     view.find(".subscribe-btn").click(function(e) {
         e.stopPropagation();
-        subscribe(host, titleKey, title, link, imguri);
+        subscribeFunc(host, titlekey, title, link, imguri);
     });
 
     return view;
@@ -108,22 +108,21 @@ function loadingUI(shown) {
 
 /**
  * Update subscription UI indicator
- * TODO:: prevent from directly manipulation the settings file
  */
-function updateSubscribeUI() {
-    var comics = settings.get("comic");
+function updateSubscribeUI(all_comic_Data) {
     $(".search-result").each(function(i, e) {
         var dom = $(e);
         var host = dom.attr("host");
-        var titleKey = dom.attr("titlekey");
+        var titlekey = dom.attr("titlekey");
         // var keyPath = "comic." + host + "." + titleKey;
         
-        if (comics && comics[host] && comics[host][titleKey] && comics[host][titleKey].subscribed) {
+        if (all_comic_Data && all_comic_Data[host] 
+            && all_comic_Data[host][titlekey] 
+            && all_comic_Data[host][titlekey].subscribed) {
             dom.find(".subscribe-btn").addClass("subscribed");
         } else {
             dom.find(".subscribe-btn").removeClass("subscribed");
         }
-        // settings.get(keyPath + ".subscribed");
     });  
 }
 
@@ -133,7 +132,7 @@ function updateSubscribeUI() {
  * @param {function} func 
  */
 function bindSearch(func) {
-    search = func;
+    searchFunc = func;
 }
 
 /**
@@ -141,7 +140,7 @@ function bindSearch(func) {
  * @param {function} func 
  */
 function bindSubscribe(func) {
-    subscribe = func;
+    subscribeFunc = func;
 }
 
 /**
@@ -149,13 +148,13 @@ function bindSubscribe(func) {
  * @param {function} func 
  */
 function bindSelectComic(func) {
-    selectComic = func;
+    selectComicFunc = func;
 }
 
 // init as soon as the script loads.
 function init() {
     $.get('./sections/search-result-entry.html', function(result) {
-        resultViewStr = result;
+        resultview_template_str = result;
     });
 }
 
@@ -169,9 +168,9 @@ function lateInit() {
         }
     });
 
-    $("#search-input").bind("enterKey", search);
+    $("#search-input").bind("enterKey", searchFunc);
 
-    $("#search-btn").click(search);
+    $("#search-btn").click(searchFunc);
 }
 
 /**

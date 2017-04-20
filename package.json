@@ -2,7 +2,7 @@
   "name": "comic-reader",
   "version": "0.1.5",
   "description": "A simple comic reader app",
-  "main": "app.js",
+  "main": "main.js",
   "devDependencies": {
     "concurrently": "^3.4.0",
     "livereloadx": "^0.3.9",

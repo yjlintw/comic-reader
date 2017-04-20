@@ -7,11 +7,11 @@ function include(f) {
   eval.apply(global, [read(f)]);
 }
 
-var t = require('../assets/js/tongwen/tongwen_core');
-const table1 = require('../assets/js/tongwen/tongwen_table_ps2t.js');
-const table2 = require('../assets/js/tongwen/tongwen_table_pt2s.js');
-const table3 = require('../assets/js/tongwen/tongwen_table_s2t.js');
-const table4 = require('../assets/js/tongwen/tongwen_table_t2s.js');
+var t = require('../tongwen/tongwen_core');
+const table1 = require('../tongwen/tongwen_table_ps2t.js');
+const table2 = require('../tongwen/tongwen_table_pt2s.js');
+const table3 = require('../tongwen/tongwen_table_s2t.js');
+const table4 = require('../tongwen/tongwen_table_t2s.js');
 var TongWen = t.TongWen();
 TongWen.addS2TTable(table1.S2TTable);
 TongWen.addT2STable(table2.T2STable);
@@ -23,10 +23,10 @@ module.exports = {
     translate: translate
 }
 
-var toTChinese = true;
+var to_traditional_chinese = true;
 
 function translate() {
-    if (toTChinese) {
+    if (to_traditional_chinese) {
         TongWen.trans2Trad(document);
     } else {
         TongWen.trans2Simp(document);
@@ -38,12 +38,12 @@ $(document).ready(function () {
     var zhconvert = document.getElementById("zh-convert");
     zhconvert.onclick = function () {
         if (zhconvert.dataset.zh == "tw") {
-            toTChinese = false;
+            to_traditional_chinese = false;
             setTimeout(function () { zhconvert.textContent = "簡"; }, 250);
             zhconvert.dataset.zh = "cn";
 
         } else {
-            toTChinese = true;
+            to_traditional_chinese = true;
             setTimeout(function () { zhconvert.textContent = "繁"; }, 250);
             zhconvert.dataset.zh = "tw";
         }

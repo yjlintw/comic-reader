@@ -22,13 +22,13 @@
     
     <script>
       require("./renderer-process/content-loader");
-      require("./renderer-process/view-switcher");
-      require("./renderer-process/translate-view.js")
-      require("./renderer-process/search-view")
-      require("./renderer-process/search-controller");
-      require("./renderer-process/favorite-view");
-      require("./renderer-process/subscriber");
-      require("./renderer-process/read-view")
+      require("./renderer-process/viewcontrollers/view-switch-viewcontroller");
+      require("./renderer-process/viewcontrollers/translate-viewcontroller")
+      require("./renderer-process/viewcontrollers/search-viewcontroller")
+      require("./renderer-process/viewcontrollers/favorite-viewcontroller");
+      require("./renderer-process/viewcontrollers/read-viewcontroller")
+      require("./renderer-process/viewmodels/search-viewmodel");
+      require("./renderer-process/viewmodels/subscribe-viewmodel");
 
       // last things to load
       require("./renderer-process/load-after");

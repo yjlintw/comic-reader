@@ -6,23 +6,27 @@
  *      See Also: ../sections/search-view.html, ./search-view.js
  */
 
+// model
+const values = require("../models/values");
 
-const values = require("./values");
-var subscriber = require("./subscriber");
-var comicparser = require("./comic-parser");
-var searchview = require("./search-view");
+// viewmodel
+var subscribe_viewmodel = require("./subscribe-viewmodel");
+var comicparser_viewmodel = require("./comicparse-viewmodel");
+
+//view controller
+var search_viewcontroller = require("../viewcontrollers/search-viewcontroller");
 
 /**
  *      Variable Definition
  */
 // {tring} store the html template for search result
-var resultViewStr = "";         
+var result_view_str_template = "";         
 
 // {Object} key: hostname value: boolean flag
 // Store information of the search request to every host
 // true: is searching
 // false: not searching
-var searchFlagDict = {};        
+var search_flag_dict = {};        
 
 /**
  *      Backend Functionality / View
@@ -34,8 +38,8 @@ var searchFlagDict = {};
  * @return: {bool} true: is searching, false: not searching
  */
 function isSearching() {
-    for(key in searchFlagDict) {
-        if (searchFlagDict[key]) {
+    for(key in search_flag_dict) {
+        if (search_flag_dict[key]) {
             return true;
         }
     }
@@ -53,18 +57,18 @@ function search() {
     if (isSearching()) return; // if still in the middle of searching, abort
     
     // get the search query from input box
-    var searchStr = searchview.getSearchQuery(); 
+    var search_str = search_viewcontroller.getSearchQuery(); 
 
     // clear the previous search results
-    searchview.clearSearchResults();
+    search_viewcontroller.clearSearchResults();
 
     // Show loading animiation
-    searchview.loadingUI(true);
+    search_viewcontroller.loadingUI(true);
 
     // Send requests using parsers
     for (var key in values.hosts) {
-        values.hosts[key].parsers.search(searchStr, searchResponse)
-        searchFlagDict[values.hosts[key].name] = true;
+        values.hosts[key].parsers.search(search_str, searchResponse)
+        search_flag_dict[values.hosts[key].name] = true;
     }
 }
 
@@ -73,26 +77,28 @@ function search() {
  * It take response, create search result and display on search-view
  * @param {Object} result 
  *        {String} link: link to the comic page
- *        {String} titleKey: a unique key for a comic in a host, two comics
+ *        {String} titlekey: a unique key for a comic in a host, two comics
  *                           from different hosts can have the same key
  * @param {String} host: name of the host that returns the response
  */
 function searchResponse(result, host) {
     // Remove loading animation
-    searchview.loadingUI(false);
+    search_viewcontroller.loadingUI(false);
     
     // set search flag false
-    searchFlagDict[host] = false;
+    search_flag_dict[host] = false;
 
     // construct UI element
     for (var idx in result) {
         var obj = result[idx];
-        var view = searchview.createResultView(obj.link, obj.titleKey, obj.imguri, obj.comicTitle, obj.host, obj.updateinfo, obj.description);
-        searchview.appendNewResult(view);
+        var view = search_viewcontroller.createResultView(
+            obj.link, obj.titlekey, obj.imguri, obj.title, obj.host, 
+            obj.updateinfo, obj.description);
+        search_viewcontroller.appendNewResult(view);
     }
 
     // Update subscribe status
-    subscriber.updateUI();
+    subscribe_viewmodel.updateUI();
 }
 
 
@@ -104,9 +110,9 @@ function searchResponse(result, host) {
 // init as soon as the script loads.
 function init() {
     for (var key in values.hosts) {
-        searchFlagDict[values.hosts[key].name] = false;
+        search_flag_dict[values.hosts[key].name] = false;
     }
-    searchview.bindSearch(search);
+    search_viewcontroller.bindSearch(search);
 }
 
 // init when document is ready
