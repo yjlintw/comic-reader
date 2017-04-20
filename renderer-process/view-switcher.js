@@ -89,5 +89,4 @@ function onTabEntryClick() {
 
 $(document).ready(function() {
     $(".sidebar .entry").click(onTabEntryClick);
-
 });
