@@ -97,12 +97,12 @@ $(document).ready(function() {
       zhconvert.onclick = function() {
         if (zhconvert.dataset.zh == "tw") {
             TongWen.trans2Simp(document);
-            setTimeout(function() {zhconvert.textContent = "簡";}, 500);
+            setTimeout(function() {zhconvert.textContent = "簡";}, 0);
             zhconvert.dataset.zh = "cn";
 
           } else {
             TongWen.trans2Trad(document);
-            setTimeout(function() {zhconvert.textContent = "繁";}, 500);
+            setTimeout(function() {zhconvert.textContent = "繁";}, 0);
             zhconvert.dataset.zh = "tw";
           }
         }
