@@ -39,7 +39,7 @@ function selectComic(host, link, title, titleKey, imguri) {
     subscriber.register(host, titleKey, title, link, imguri);
 
     readview.clearReadArea();
-    values.hostnames[host].parsers.grabChapters(link, onChaptersGrabbed);
+    values.hostnames[host].parsers.grabChapters(titleKey, link, onChaptersGrabbed);
 
     // -- UI update --
     // Enable the loading screen
@@ -58,7 +58,7 @@ function selectComic(host, link, title, titleKey, imguri) {
  *      @param {String} domid         : HTML DOM id to the chapter selector entry 
  *      @param {int}    index         : index in the chapter list
  */
-function onChaptersGrabbed(result){
+function onChaptersGrabbed(result, newest){
     // clear the chapter selector
     readview.clearChapterSelector();
 
@@ -73,14 +73,16 @@ function onChaptersGrabbed(result){
     
     for (var index in result) {
         var obj = result[index];
-        var view = readview.createChapterEntry(obj.chName, obj.chLink, obj.domid, obj.index);
+        var view = readview.createChapterEntry(obj.chGroup, obj.chKey, obj.chName, obj.chLink, obj.domid, obj.index);
         chapterList[obj.index] = "#" + obj.domid;
         
         // if it is a new chapter, update the setting files
-        if (!(obj.chName in chaptersData)) {
-            chaptersData[obj.chName] = {
-                read: false
-            }
+        if (!(obj.chGroup in chaptersData)) {
+            chaptersData[obj.chGroup] = {}
+        } 
+        chaptersData[obj.chGroup][obj.chKey] = {
+            name: obj.chName,
+            read: false
         }
 
         // add new ui to the screen
@@ -91,7 +93,7 @@ function onChaptersGrabbed(result){
 
     // update the newest chapter 
     // TODO: sloppy method, should implement with a different way later
-    allComicData.newestchapter = result[0].chName;
+    allComicData.newestchapter = newest;
     allComicData.hasupdate = false;
 
     // update the read-history UI
@@ -107,12 +109,12 @@ function onChaptersGrabbed(result){
  * @param {String} chLink : URL to the chapter
  * @param {String} chName : Chapter name. Human-readable.
  */
-function selectChapter(chLink, chName) {
+function selectChapter(chLink, chGroup, chKey) {
 
     readview.clearReadArea();
     
     curPageIdx = 0;
-    values.hostnames[readview.getCurHost()].parsers.loadChapter(chLink, chName, onSingleChapterLoaded);
+    values.hostnames[readview.getCurHost()].parsers.loadChapter(chLink, chGroup, chKey, onSingleChapterLoaded);
     
 }
 
@@ -125,8 +127,8 @@ function selectChapter(chLink, chName) {
  *      @param {int}    idx    : index in the image array
  * @param {String} chName : Chapter name. Human-readable
  */
-function onSingleChapterLoaded(result, chName) {
-    if (chName != $(readview.getChapterList()[readview.getChIdx()]).text()) {
+function onSingleChapterLoaded(result, chGroup, chKey) {
+    if (chKey != $(readview.getChapterList()[readview.getChIdx()]).attr("chKey")) {
         return;
     }
     var pageIds = new Array(result.length);
@@ -137,8 +139,8 @@ function onSingleChapterLoaded(result, chName) {
         readview.appendNewPage(view);
     }
     readview.setPageIds(pageIds);
-    allComicData.chapters[chName].read = true;
-    allComicData.lastread = chName;
+    allComicData.chapters[chGroup][chKey].read = true;
+    allComicData.lastread = allComicData.chapters[chGroup][chKey].name;
     updateChapterList();
 }
 
