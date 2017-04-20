@@ -17,10 +17,22 @@ An Electron app's for manga/comic reading.
 ### Only for users who have used the app with version number smaller than v0.1.2
 Please remove the settings file at
 
-```
+Mac:
+```bash
 ~/Library/Application\ Support/comic-reader/Settings
 ```
-
+Windows:
+```bash
+%APPDATA%/<Your App>
+```
+Linux:
+```bash
+$XDG_CONFIG_HOME/<Your App>
+```
+or
+```bash 
+~/.config/<Your App>
+```
 
 ## Screen Shots
 ### Search View
