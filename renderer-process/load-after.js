@@ -10,8 +10,9 @@ var scheduledTask;
 $(document).ready(function() {
     viewswitcher.tabswitch(0);
     subscriber.checkUpdate();
+    // console.log(scheduledTask);
     if (!scheduledTask) {
-        scheduledTask = schedule.scheduleJob('* * 5,11,17,23 * * *', function(){
+        scheduledTask = schedule.scheduleJob('0 10 5,11,17,23 * * *', function(){
             // console.log("schedule update");
             subscriber.checkUpdate();
         });
