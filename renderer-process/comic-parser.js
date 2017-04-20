@@ -14,6 +14,7 @@ var searchview = require('./search-view');
 var favoriteview = require('./favorite-view');
 var readview = require('./read-view');
 var viewswitcher = require("./view-switcher");
+var transltor = require("./translate-view");
 
 module.exports = {
     selectComic: selectComic
@@ -99,6 +100,7 @@ function onChaptersGrabbed(result, newest){
     // update the read-history UI
     updateChapterList();
 
+    transltor.translate();
     // disable the loading UI
     readview.toggleLoadingAnimation(false);
 }
