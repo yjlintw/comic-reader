@@ -65,7 +65,8 @@
 /* ---- Utility ----*/
 /* ---- Overall area ----*/
 body, html, .whole-view {
-  font-family: Arial,"文泉驛正黑","WenQuanYi Zen Hei","儷黑 Pro","LiHei Pro","微軟正黑體","Microsoft JhengHei",sans-serif; }
+  font-family: Arial,"文泉驛正黑","WenQuanYi Zen Hei","黑體-繁","Heiti TC","微軟正黑體","Microsoft JhengHei",sans-serif;
+  background: #414b5d; }
   @media only screen and (max-width: 768px) {
     body, html, .whole-view {
       height: 100%; } }
@@ -237,6 +238,13 @@ body, html, .whole-view {
   @media only screen and (max-width: 768px) {
     #favorite-view {
       padding: 0.5em 0; } }
+  #favorite-view h2 {
+    font-size: 35px;
+    font-family: 'Raleway', sans-serif;
+    color: #4991fc;
+    width: 100%;
+    text-align: center;
+    margin: 0 auto; }
   #favorite-view .columns {
     flex-wrap: wrap;
     align-content: flex-start;
@@ -252,19 +260,33 @@ body, html, .whole-view {
         width: 1294px; } }
 
 .favorite-entry.media {
-  border: 2px solid #fff;
-  overflow: hidden; }
+  overflow: hidden;
+  border-radius: 5px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.8);
+  margin: 3px; }
   .favorite-entry.media .media-left {
     margin-right: 0.2em; }
   .favorite-entry.media p {
     margin: 0; }
+  .favorite-entry.media .comic-name {
+    font-size: 25px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 150px;
+    line-height: 25px; }
+    .favorite-entry.media .comic-name small {
+      font-size: 12px;
+      line-height: 15px; }
   .favorite-entry.media .level {
-    margin: 0.5em 0; }
+    margin: 0.5em 0;
+    font-size: 15px;
+    line-height: 20px; }
   @media only screen and (min-width: 769px) {
     .favorite-entry.media {
-      width: 323.5px; } }
+      width: 317px; } }
   .favorite-entry.media.hasupdate {
-    background-color: #edd; }
+    background-color: #fed4df; }
 
 #read-view .middle-panel {
   position: fixed; }
@@ -282,8 +304,9 @@ body, html, .whole-view {
       border-left: 1px solid #c3c3c3;
       border-right: 1px solid #c3c3c3; } }
   #read-view .middle-panel #comic-header {
-    background-color: #fff;
+    background-color: #4d5769;
     border-bottom: 1px solid #e3e3e3;
+    color: #fff;
     display: flex; }
     @media only screen and (max-width: 768px) {
       #read-view .middle-panel #comic-header.float-menu {
@@ -306,7 +329,7 @@ body, html, .whole-view {
       line-height: 1em;
       cursor: pointer; }
       #read-view .middle-panel #comic-header .subscribe-btn.subscribed {
-        color: #a00; }
+        color: #ff558d; }
   #read-view .middle-panel .loading-bg {
     z-index: 10000; }
     @media only screen and (max-width: 768px) {
@@ -349,7 +372,7 @@ body, html, .whole-view {
         background-color: #ddf; }
 
 #read-view #read-area {
-  background-color: #000;
+  background-color: #333638;
   color: #fff;
   padding: 0; }
   @media only screen and (max-width: 768px) {
