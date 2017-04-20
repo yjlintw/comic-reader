@@ -221,7 +221,7 @@ function loadChapter(chLink, chGroup, chKey, callback) {
  * @param see npm request module
  */
 function onSingleChapterLoaded(error, response, body) {
-    console.log(this.chKey);
+    // console.log(this.chKey);
     var tmp = $("<div>" + body + "</div>");
     var find_script = tmp.find('#pull option:nth-child(2)').attr('value').split("'");
     var chapNum = find_script[1];

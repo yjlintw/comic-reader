@@ -6,11 +6,15 @@
  *      See Also: ../sections/search-view.html, ./search-view.js
  */
 
+// model
+const values = require("../models/values");
 
-const values = require("./models/values");
-var subscriber = require("./subscriber");
-var comicparser = require("./comic-parser");
-var searchViewController = require("./viewcontrollers/search-viewcontroller");
+// viewmodel
+var subscriber = require("./subscribe-viewmodel");
+var comicparser = require("./comicparse-viewmodel");
+
+//view controller
+var searchViewController = require("../viewcontrollers/search-viewcontroller");
 
 /**
  *      Variable Definition

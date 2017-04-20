@@ -5,12 +5,15 @@
  *      See: ../sections/sidebar.html
  */
 
-var subscriber = require('../subscriber'); 
+// var subscriber = require('../subscribe-viewmodel'); 
 
 module.exports = {
-    tabswitch: tabswitch
+    tabswitch: tabswitch,
+    bindUpdateAllUI: bindUpdateAllUI
     
 }
+// Variable definition
+var updateAllUI;
 
 // Scroll behavior
 
@@ -74,6 +77,10 @@ function tabswitch(index) {
     }
 }
 
+function bindUpdateAllUI(func) {
+    updateAllUI = func;
+}
+
 /**
  * Callback function when sidebar tab is clicked
  */
@@ -83,7 +90,7 @@ function onTabEntryClick() {
     $(".sidebar .entry").removeClass("active");
     $(this).addClass("active");
 
-    subscriber.updateUI();
+    updateAllUI();
 }
 
 

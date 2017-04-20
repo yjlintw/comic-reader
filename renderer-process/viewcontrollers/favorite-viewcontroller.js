@@ -96,7 +96,7 @@ function createFavEntry(link, titleKey, imguri, title, host, lastread, newest) {
     });
 
     view.click(function(e){
-        console.log("fav click:" + title + ", from:" + host);
+        // console.log("fav click:" + title + ", from:" + host);
         selectComic(host, link, title, titleKey, imguri);
 
     });

@@ -1,9 +1,14 @@
 /**
  * Things to load after everything is loaded
  */
-const path = require('path');
-var subscriber = require("./subscriber");
+// const path = require('path');
+// 3rd party library
 var schedule = require("node-schedule");
+
+// viewmodel
+var subscriber = require("./viewmodels/subscribe-viewmodel");
+
+// viewcontroller
 var viewSwitchViewController = require("./viewcontrollers/view-switch-viewcontroller");
 
 var scheduledTask;

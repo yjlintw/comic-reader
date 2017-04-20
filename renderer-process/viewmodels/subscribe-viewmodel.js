@@ -9,15 +9,20 @@
 // TODO::
 //      Move the detailed comic subscription information to a different file
 
-
+// 3rd party library
 var async = require('async');
 const settings = require("electron-settings");
 var notifier = require('node-notifier');
-const values = require("./models/values");
-var favoriteview = require('./viewcontrollers/favorite-viewcontroller')
-var searchViewController = require('./viewcontrollers/search-viewcontroller');
-var readViewController = require('./viewcontrollers/read-viewcontroller');
-const translateViewController = require('./viewcontrollers/translate-viewcontroller');
+
+// model
+const values = require("../models/values");
+
+// viewcontroller
+var favoriteview = require('../viewcontrollers/favorite-viewcontroller')
+var searchViewController = require('../viewcontrollers/search-viewcontroller');
+var readViewController = require('../viewcontrollers/read-viewcontroller');
+var viewSwitchViewController = require('../viewcontrollers/view-switch-viewcontroller')
+const translateViewController = require('../viewcontrollers/translate-viewcontroller');
 
 module.exports = {
     register: register,
@@ -221,6 +226,7 @@ function init () {
 
     
     readViewController.bindSubscribe(subscribe);
+    viewSwitchViewController.bindUpdateAllUI(updateSubscribeUIStatus);
 }
 
 // init when documen is ready

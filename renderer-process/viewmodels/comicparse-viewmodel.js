@@ -6,15 +6,21 @@
  *      site-specific parsers
  */
 
-
+// 3rd party library
 var settings = require('electron-settings');
-const values = require('./models/values');
-var subscriber = require('./subscriber');
-var searchViewController = require('./viewcontrollers/search-viewcontroller');
-var favViewController = require('./viewcontrollers/favorite-viewcontroller');
-var readViewController = require('./viewcontrollers/read-viewcontroller');
-var viewSwitchViewController = require("./viewcontrollers/view-switch-viewcontroller");
-var translateViewController = require("./viewcontrollers/translate-viewcontroller");
+
+// model
+const values = require('../models/values');
+
+// view model
+var subscriber = require('./subscribe-viewmodel');
+
+// view controller
+var searchViewController = require('../viewcontrollers/search-viewcontroller');
+var favViewController = require('../viewcontrollers/favorite-viewcontroller');
+var readViewController = require('../viewcontrollers/read-viewcontroller');
+var viewSwitchViewController = require("../viewcontrollers/view-switch-viewcontroller");
+var translateViewController = require("../viewcontrollers/translate-viewcontroller");
 
 module.exports = {
     selectComic: selectComic
@@ -145,7 +151,7 @@ function onSingleChapterLoaded(result, chGroup, chKey) {
         readViewController.appendNewPage(view);
     }
     readViewController.setPageIds(pageIds);
-    console.log("read");
+    // console.log("read");
     comicData.chapters[chGroup][chKey].read = true;
     comicData.lastread = comicData.chapters[chGroup][chKey].name;
     updateChapterList();
