@@ -1,5 +1,6 @@
 module.exports = {
-    toUnicode : toUnicode
+    toUnicode : toUnicode,
+    pad: pad
 }
 
 /**
@@ -8,11 +9,17 @@ module.exports = {
  * 
  * @return {String} string in unicode format
  */
-function toUnicode(str){
+function toUnicode(str, header="%u"){
     var result = "";
     for(var i = 0; i < str.length; i++){
         // Assumption: all characters are < 0xffff
-        result += "%u" + ("000" + str[i].charCodeAt(0).toString(16)).substr(-4);
+        result += header + ("000" + str[i].charCodeAt(0).toString(16)).substr(-4);
     }
     return result;
 };
+
+
+function pad(num, size) {
+    var s = "000000000" + num;
+    return s.substr(s.length-size);
+}
