@@ -110,7 +110,7 @@ body, html, .whole-view {
       height: 100vh;
       flex-direction: column;
       position: fixed; } }
-  .sidebar .entry {
+  .sidebar .entry, .sidebar .convert {
     height: 50px;
     flex-grow: 0;
     flex-basis: 50px;
@@ -123,16 +123,16 @@ body, html, .whole-view {
     font-size: 24px;
     cursor: pointer; }
     @media only screen and (max-width: 768px) {
-      .sidebar .entry {
+      .sidebar .entry, .sidebar .convert {
         width: 33.33333%;
         flex-basis: 33.33333%;
         border-bottom: none; }
-        .sidebar .entry:not(:last-child) {
+        .sidebar .entry:not(:last-child), .sidebar .convert:not(:last-child) {
           border-right: 1px solid #2b3b55; } }
-    .sidebar .entry:hover {
+    .sidebar .entry:hover, .sidebar .convert:hover {
       background-color: #26344b;
       border-bottom: 0px; }
-    .sidebar .entry.active {
+    .sidebar .entry.active, .sidebar .convert.active {
       background-color: #17C4BB;
       border: 0px; }
 

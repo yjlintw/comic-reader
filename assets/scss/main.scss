@@ -137,7 +137,7 @@ body {
 
     background-color: $sidebar-bg-color;
 
-    .entry {
+    .entry, .convert {
         @media #{$info-mobile} {
             width: 33.33333%;
             flex-basis: 33.33333%;
@@ -361,7 +361,7 @@ body {
     &.hasupdate {
         background-color: #edd;
     }
-    
+
 }
 
 #read-view {
