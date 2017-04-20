@@ -5,16 +5,19 @@ An Electron app's for manga/comic reading.
 1. Search comic books inside the app
 2. Add comics into favorite list
 3. Read each episode in a single scrolling page
+4. Desktop Notification when subscribed comics has new update **[still testing]**
 4. Automatically adjust the size of each image to the height of app window
 5. Keyboard navigation (Left/Right change images; Up/Down change chapters)
 6. Read history
+7. Translation between Traditional Chinese and Simplified Chinese
 
 ## Supported Host 
 1. SF互動傳媒網 [www.sfacg.com](http://www.sfacg.com)
+2. 8Comic [8comic.se](http://8comic.se/)
 2. ...more coming
 
 ## Remove Settings
-### Only for users who have used the app with version number smaller than v0.1.2
+### Only for users who have used the app with version number smaller than v0.1.5
 Please remove the settings file at
 
 Mac:
@@ -69,7 +72,6 @@ More detailed documentation is here:
 
 ## TODO::
 1. Define behavior in mobile view
-1. Track new update of favorite comics and provide notifications
 2. Revamp UI
 3. Different view mode (original size, fit screen-width)
 
