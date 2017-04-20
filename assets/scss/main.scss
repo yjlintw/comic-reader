@@ -67,7 +67,8 @@ $chapter-selector-width: 250px;
 // }
 
 body, html, .whole-view {
-    font-family: Arial,"文泉驛正黑","WenQuanYi Zen Hei","儷黑 Pro","LiHei Pro","微軟正黑體","Microsoft JhengHei",sans-serif;
+    font-family: Arial,"文泉驛正黑","WenQuanYi Zen Hei","黑體-繁","Heiti TC","微軟正黑體","Microsoft JhengHei",sans-serif;
+    background: #414b5d;
     @media #{$info-mobile} {
         height: 100%;
     }
@@ -321,7 +322,16 @@ body {
     @media #{$info-mobile} {
         padding: 0.5em 0;
     }
+    h2{
+      font-size: 35px;
+      font-family: 'Raleway', sans-serif;
+      color: #4991fc;
+      width: 100%;
+      text-align: center;
+      margin: 0 auto;
+    }
     .columns {
+
         flex-wrap: wrap;
         align-content: flex-start;
         margin: auto;
@@ -341,25 +351,42 @@ body {
 
 .favorite-entry.media {
     @extend .search-result.media;
-    border: 2px solid #fff;
     // margin: 0 auto;
     overflow: hidden;
+    border-radius: 5px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.8);
+    margin: 3px;
     .media-left {
         margin-right: 0.2em;
     }
 
     p {
         margin: 0;
+
+    }
+    .comic-name{
+      font-size: 25px;
+      overflow: hidden;
+      text-overflow : ellipsis;
+      white-space : nowrap;
+      width : 150px;
+      line-height: 25px;
+      small{
+        font-size:12px;
+        line-height: 15px;
+      }
     }
     .level {
         margin: 0.5em 0;
+        font-size: 15px;
+        line-height: 20px;
     }
     @media #{$info-tablet} {
-        width: 323.5px;
+        width: 317px;
     }
 
     &.hasupdate {
-        background-color: #edd;
+        background-color: #fed4df;
     }
 
 }
@@ -400,14 +427,15 @@ body {
             }
 
             @media #{$info-tablet} {
-                width: $chapter-selector-width;
+                width: calc(#{$chapter-selector-width} - 18px);
                 position: fixed;
                 left: $sidebar-width;
                 height: $sidebar-width;
                 // border-right: 1px solid #e3e3e3;
             }
-            background-color: #fff;
+            background-color: #4d5769;
             border-bottom: 1px solid #e3e3e3;
+            color: #fff;
             display: flex;
 
             .level-item {
@@ -418,7 +446,7 @@ body {
                 line-height: 1em;
                 cursor: pointer;
                 &.subscribed {
-                    color: #a00;
+                    color: #ff558d;
                 }
             }
         }
@@ -488,7 +516,7 @@ body {
             margin-left: $chapter-selector-width;
             min-height: 100vh;
         }
-        background-color: #000;
+        background-color: #333638;
         color: #fff;
         padding: 0;
         .comic-page-container {
