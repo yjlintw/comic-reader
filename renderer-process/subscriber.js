@@ -138,10 +138,12 @@ function checkUpdate() {
  * Callback when one chapter is grabbed.
  * @param {Array} result :list of obj (see below)
  *          {Object} obj:
- *            {String} chName: Chapter's name
- *            {String} chLink: URL to the chapter
- *            {String} domid : HTML DOM object id
- *            {int}    index : index
+ *            {String} chName : Chapter's name
+ *            {String} chGroup: Chapter's group
+ *            {String} chKey  : Chapter's unique key
+ *            {String} chLink : URL to the chapter
+ *            {String} domid  : HTML DOM object id
+ *            {int}    index  : index
  * @param {JSON} this.allComicData
  * @param {JSON} this.host
  * @param {JSON} this.titleKey
@@ -158,7 +160,7 @@ function onChaptersGrabbed(result, newest) {
         comic.hasupdate = true;
         notifier.notify({
             title: 'Comic Reader',
-            message: comic.title + ' has new updates ',
+            message: comic.title + ' has new updates',
             wait: false
         })
     }

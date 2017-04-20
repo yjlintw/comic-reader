@@ -106,8 +106,9 @@ function onChaptersGrabbed(result, newest){
 
 /**
  * Select one chapter to load
- * @param {String} chLink : URL to the chapter
- * @param {String} chName : Chapter name. Human-readable.
+ * @param {String} chLink  : URL to the chapter
+ * @param {String} chGroup : Chapter group
+ * @param {String} chKey   : Chapter's unique key
  */
 function selectChapter(chLink, chGroup, chKey) {
 
@@ -125,7 +126,8 @@ function selectChapter(chLink, chGroup, chKey) {
  *      @param {String} imgurl : image url
  *      @param {String} id     : HTML DOM object id for that image
  *      @param {int}    idx    : index in the image array
- * @param {String} chName : Chapter name. Human-readable
+ * @param {String} chGroup : Chapter group
+ * @param {String} chKey   : Chapter's unique key
  */
 function onSingleChapterLoaded(result, chGroup, chKey) {
     if (chKey != $(readview.getChapterList()[readview.getChIdx()]).attr("chKey")) {

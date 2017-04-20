@@ -281,7 +281,8 @@ function clearChapterSelector() {
 }
 
 /**
- * 
+ * @param {String} chGroup: chapter's group
+ * @param {String} chKey  : chapter's unique key
  * @param {String} chName : chapter's name (human-readable)
  * @param {String} chLink : chapter's link
  * @param {String} domid  : HTML DOM id of the selected entry

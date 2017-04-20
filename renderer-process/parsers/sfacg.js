@@ -107,16 +107,19 @@ function searchResponse(error, response, body) {
 
 /**
  * 
+ * @param {String} titleKey
  * @param {String} link 
  * @param {function} callback (result)
  * 
  * 
  *      {List}  result: List of obj (see below)
  *      {Object} obj
- *            {String} chName: Chapter's name
- *            {String} chLink: URL to the chapter
- *            {String} domid : HTML DOM object id
- *            {int}    index : index
+ *            {String} chName : Chapter's name
+ *            {String} chLink : URL to the chapter
+ *            {String} chGroup: Chapter's Group
+ *            {String} chKey  : Chapter's unique key
+ *            {String} domid  : HTML DOM object id
+ *            {int}    index  : index
  *      
  */
 function grabChapters(titleKey, link, callback) {
@@ -169,6 +172,8 @@ function onChapterGrabbed(error, response, body) {
 /**
  * 
  * @param {String} chLink : Link to the chapter 
+ * @param {String} chGroup: Chapter's Group
+ * @param {String} chKey  : Chapter's unique key
  * @param {String} chName : Chapter name (User-readable)
  * @param {function} callback(result, chName)
  *      @param result: list of obj contains information for images to load
