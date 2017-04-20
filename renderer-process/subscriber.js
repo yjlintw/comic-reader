@@ -174,9 +174,11 @@ function onChaptersGrabbed(result, newest) {
         if (!(obj.chGroup in chaptersData)) {
             chaptersData[obj.chGroup] = {}
         } 
-        chaptersData[obj.chGroup][obj.chKey] = {
-            name: obj.chName,
-            read: false
+        if (!(obj.chKey in chaptersData[obj.chGroup])) {
+            chaptersData[obj.chGroup][obj.chKey] = {
+                name: obj.chName,
+                read: false
+            }
         }
     }
     comic.newestchapter = newest;

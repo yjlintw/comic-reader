@@ -136,12 +136,13 @@ function updateSubscribeUI() {
  * update chapter list
  * @param {Object} allComicData 
  */
-function updateChapterList(allComicData) {
+function updateChapterList(comicData) {
+    // console.log(comicData);
     $(".chapter-entry").each(function(i, e) {
         var chKey = $(e).attr("chKey");
         var chGroup = $(e).attr("chGroup");
-
-        if (allComicData.chapters[chGroup][chKey].read) {
+        
+        if (comicData.chapters[chGroup][chKey].read) {
             $(e).addClass("read");
         }
     });
