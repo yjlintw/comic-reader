@@ -1,7 +1,7 @@
 /**
  *      Favorite View
  *      favorite-view.js
- * 
+ *
  *      See Also: ../sections/favorite-view.html,
  *      ../sections/favorite-entry.html,
  *      ./subscriber.js
@@ -72,7 +72,7 @@ function updateSubscribeUI() {
 
 /**
  * Create a favorite entry HTML DOM object
- * @param {String} link      : link to comic 
+ * @param {String} link      : link to comic
  * @param {String} titleKey  : title key store in settings
  * @param {String} imguri    : thumbnail's url
  * @param {String} title     : comic's name (human-readable)
@@ -81,12 +81,12 @@ function updateSubscribeUI() {
 function createFavEntry(link, titleKey, imguri, title, host) {
     var view = $(favEntryViewStr);
     view.find("img").attr("src", imguri);
-    view.find(".comic-name strong").text(title);
-    view.find(".comic-name small").text(host);
+    view.find(".comic-name").text(title);
+    view.find(".host").text(host);
     var lastread = settings.get("comic." + host + "." + titleKey + ".lastread");
     var newest = settings.get("comic." + host + "." + titleKey + ".newestchapter");
-    view.find(".last-read strong").text(lastread);
-    view.find(".newest strong").text(newest)
+    view.find(".last-read").text(lastread);
+    view.find(".newest").text(newest)
     view.attr("title", title);
     view.attr("link", link);
     view.attr("titlekey", titleKey);

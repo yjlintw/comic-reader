@@ -3,6 +3,7 @@
  **/
 @import "loading";
 @import url('https://fonts.googleapis.com/css?family=Raleway');
+@import url('https://fonts.googleapis.com/css?family=Roboto+Condensed');
 
 
 /**
@@ -67,8 +68,9 @@ $chapter-selector-width: 250px;
 // }
 
 body, html, .whole-view {
-    font-family: Arial,"文泉驛正黑","WenQuanYi Zen Hei","黑體-繁","Heiti TC","微軟正黑體","Microsoft JhengHei",sans-serif;
-    background: #414b5d;
+    font-family:'Roboto Condensed',"文泉驛正黑","WenQuanYi Zen Hei","黑體-繁","Heiti TC","微軟正黑體","Microsoft JhengHei",sans-serif;
+    // background: linear-gradient(to bottom, #7072e3 0%,#7f66e5 44%,#964cdb 100%);
+    background: #373e4a;
     @media #{$info-mobile} {
         height: 100%;
     }
@@ -79,6 +81,7 @@ body {
         // overflow: hidden;
     }
 }
+
 
 .whole-view {
     @media #{$info-mobile} {
@@ -317,15 +320,17 @@ body {
 
 
 #favorite-view {
+    background: #222935;
+    height: 100vh;
     padding: 2em 0;
     // max-width: 960px
     @media #{$info-mobile} {
         padding: 0.5em 0;
     }
     h2{
-      font-size: 35px;
+      font-size: 38px;
       font-family: 'Raleway', sans-serif;
-      color: #4991fc;
+      color: #7a8587;
       width: 100%;
       text-align: center;
       margin: 0 auto;
@@ -347,48 +352,87 @@ body {
         }
 
     }
+
+    .media-content{
+      color: #fff;
+    }
 }
 
 .favorite-entry.media {
     @extend .search-result.media;
     // margin: 0 auto;
     overflow: hidden;
-    border-radius: 5px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.8);
+    border-radius: 3px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+    position: relative;
     margin: 3px;
+    background: #373f4e;
+    border-top: 10px solid #857af8;
     .media-left {
         margin-right: 0.2em;
+    }
+    .media-right {
+      position: absolute;
+      right: 10px;
+      top: 10px;
+      z-index: 2;
     }
 
     p {
         margin: 0;
-
+        line-height: 15px;
+        padding: 0;
     }
     .comic-name{
-      font-size: 25px;
+      font-size: 20px;
       overflow: hidden;
       text-overflow : ellipsis;
       white-space : nowrap;
       width : 150px;
       line-height: 25px;
+      padding: 15px 0 5px 0;
+      border-bottom: 1px solid #242e40;
+      color: #fff;
       small{
-        font-size:12px;
+        font-family: 'Roboto Condensed',"文泉驛正黑","WenQuanYi Zen Hei","黑體-繁","Heiti TC","微軟正黑體","Microsoft JhengHei",sans-serif;
+        font-weight: 600;
+        font-size:13px;
         line-height: 15px;
       }
     }
     .level {
         margin: 0.5em 0;
-        font-size: 15px;
+        font-size: 13px;
         line-height: 20px;
+    }
+    .level-item{
+      font-family: 'Roboto Condensed',"文泉驛正黑","WenQuanYi Zen Hei","黑體-繁","Heiti TC","微軟正黑體","Microsoft JhengHei",sans-serif;
+      margin: 0;
+      padding: 0;
+      font-size: 13px;
+      color: #fff;
+
+      &.last-read, &.newest{
+        display: block;
+        width: 105px;
+        overflow: hidden;
+        text-overflow : ellipsis;
+        white-space : nowrap;
+      }
     }
     @media #{$info-tablet} {
         width: 317px;
     }
 
     &.hasupdate {
-        background-color: #fed4df;
+        border-top: 10px solid #6ddaa4
     }
-
+    .subscribe-btn{
+      color: #697d8d;
+      &:hover{
+        color: #857af8;
+      }
+    }
 }
 
 #read-view {
@@ -405,8 +449,8 @@ body {
             width: $chapter-selector-width;
             position: fixed;
             overflow-y: auto;
-            border-left: 1px solid #c3c3c3;
-            border-right: 1px solid #c3c3c3;
+            border-left: 1px solid #24272c;
+            border-right: 1px solid #2d2f33;
         }
 
         position: fixed;
@@ -434,7 +478,7 @@ body {
                 // border-right: 1px solid #e3e3e3;
             }
             background-color: #4d5769;
-            border-bottom: 1px solid #e3e3e3;
+            border-bottom: 1px solid #313743;
             color: #fff;
             display: flex;
 
@@ -479,7 +523,6 @@ body {
         #chapter-selector {
             @media #{$info-mobile} {
                 height: calc(100vh - #{$sidebar-width}*2);
-
                 overflow-y: auto;
             }
             @media #{$info-tablet} {
@@ -487,21 +530,24 @@ body {
             }
             margin-top: $sidebar-width;
             padding: 0;
-            background-color: #fff;
+            color: #cecece;
+
             .chapter-entry {
-                border-bottom: 1px solid #e3e3e3;
                 cursor: pointer;
+                background: #373e4a;
+                border-bottom: 1px solid #313743;
 
                 &:hover {
-                    background-color: #ccf;
+                    background-color: #2f3640;
                 }
 
                 &.read {
-                    background-color: #fdd;
+                    background-color: #3f4654;
                 }
 
                 &.active {
-                    background-color: #ddf;
+                    background-color: #2f3640;
+                    border-bottom: 2px solid #17c4bb;
                 }
             }
         }
