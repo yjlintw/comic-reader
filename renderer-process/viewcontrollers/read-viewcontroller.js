@@ -23,6 +23,8 @@ module.exports = {
     clearReadArea: clearReadArea,
     clearChapterSelector: clearChapterSelector,
     toggleLoadingAnimation: toggleLoadingAnimation,
+    scrollToPage: scrollToPage,
+    selectChapter: selectChapter,
 
     // Action Binding
     bindSubscribe: bindSubscribe,
@@ -35,7 +37,9 @@ module.exports = {
     setPageIds: function(x) { page_id_list = x},
     getChapterList: function() { return chapter_list },
     setChapterList: function(x) { chapter_list = x},
+    getCurrentChapterKey: function () {return current_chapter_key},
     setCurrentComic: setCurrentComic,
+    getCurrentPageIdx: getCurrentPageIdx,
     updateChapterList: updateChapterList
 }
 
@@ -61,6 +65,7 @@ var page_id_list = [];
 var chapter_list = [];
 var current_page_idx = 0;
 var current_chapter_idx = -1;
+var current_chapter_key = "";
 
 var did_scroll = false;
 
@@ -82,6 +87,15 @@ function bindSelectChapter(func) {
     selectChapterFunc = func;
 }
 
+function getCurrentPageIdx() {
+    if (did_scroll) {
+        did_scroll = false;
+        var height = $(window).height();
+        var pos = $(window).scrollTop();
+        current_page_idx = Math.ceil(pos / height);
+    }
+    return current_page_idx;
+}
 
 /**
  * Set selected comic's information
@@ -128,7 +142,6 @@ function updateSubscribeUI(all_comic_data) {
     } else {
         dom.find(".subscribe-btn").removeClass("subscribed");
     }
-    
 }
 
 /**
@@ -215,6 +228,22 @@ function nextChapter() {
     scrollMiddlePanel();
 }
 
+function scrollToPage(page_idx) {
+    console.log("scroll");
+    if (page_idx >= 0) {
+        current_page_idx = page_idx;
+    }
+    // console.log(page_idx);
+    // console.log(current_page_idx);
+    var pos = $("#" + page_id_list[current_page_idx]).offset();
+    console.log("pos: " + pos); 
+    console.log("current:" + current_page_idx);
+    $('html, body').animate({
+        scrollTop: pos==undefined ? 0 : pos.top
+    }, 100)
+    
+}
+
 /**
  * Scroll the chapter selector, so the active chapter
  * will always be visible
@@ -280,6 +309,21 @@ function clearChapterSelector() {
     $("#chapter-selector").html("");
 }
 
+function selectChapter(ch_link, ch_group, ch_key, last_page = 0) {
+    $(".chapter-entry").each(function(i, v) {
+        if ($(v).attr("link") == ch_link) {
+            $(v).trigger('click');
+            return false;
+        }
+    });
+    console.log(last_page);
+    if (last_page != 0) {
+        setTimeout(function() {
+            scrollToPage(last_page);
+        }, 2000);
+    }
+}
+
 /**
  * @param {String} ch_group: chapter's group
  * @param {String} ch_key  : chapter's unique key
@@ -306,6 +350,8 @@ function createChapterEntry(ch_group, ch_key, ch_name, ch_link, domid, index) {
         $(".chapter-entry").removeClass("active");
         $(this).addClass("active");
         current_chapter_idx = index;
+        current_chapter_key = ch_key;
+        scrollMiddlePanel();
         // console.log(curChapterIdx);
     });
     return view;
