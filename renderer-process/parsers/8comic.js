@@ -164,7 +164,7 @@ function onChapterGrabbed(error, response, body) {
     var newest = "";
     var titlekey = this.titlekey;
     tmp.each(function(i, e){
-        if($(e).text() == "") return;
+        if($(e).find('a').attr('href') == undefined) return;
         var ch_name = $(e).find('a').text();
         var ch_link = $(e).find('a').attr('href');
         var ch_group = "cr_main";
