@@ -336,7 +336,6 @@ body {
       margin: 0 auto;
     }
     .columns {
-
         flex-wrap: wrap;
         align-content: flex-start;
         margin: auto;
@@ -368,6 +367,9 @@ body {
     margin: 3px;
     background: #373f4e;
     border-top: 10px solid #857af8;
+    &:hover{
+      background: #303744;
+    }
     .media-left {
         margin-right: 0.2em;
     }
