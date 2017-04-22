@@ -272,6 +272,8 @@ body, html, .whole-view {
   margin: 3px;
   background: #373f4e;
   border-top: 10px solid #857af8; }
+  .favorite-entry.media:hover {
+    background: #303744; }
   .favorite-entry.media .media-left {
     margin-right: 0.2em; }
   .favorite-entry.media .media-right {
