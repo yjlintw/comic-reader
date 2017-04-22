@@ -12,7 +12,7 @@ if (process.platform === 'darwin') {
             click() { 
                 openAboutWindow({
                     win_options: {minimizable: false, maximizable: false, fullscreen: false},
-                    icon_path: path.join('file://', __dirname, '../assets/icons/icon.png')
+                    icon_path: path.join('file://', __dirname, '../../assets/icons/icon.png')
                 })
             }
         },
