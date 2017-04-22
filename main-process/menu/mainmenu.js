@@ -7,21 +7,34 @@ if (process.platform === 'darwin') {
     const name = app.getName()
     template = [{
         label: name,
-        submenu: [{
-            label: `About ${name}`,
-            click() { 
-                openAboutWindow({
-                    win_options: {minimizable: false, maximizable: false, fullscreen: false},
-                    icon_path: path.join('file://', __dirname, '../../assets/icons/icon.png')
-                })
-            }
-        },
-        {
-            type: 'separator'
-        },
-        {
-            role: 'quit'
-        }]
+        submenu: [
+            {
+                label: `About ${name}`,
+                click() { 
+                    openAboutWindow({
+                        win_options: {minimizable: false, maximizable: false, fullscreen: false},
+                        icon_path: path.join('file://', __dirname, '../../assets/icons/icon.png')
+                    })
+                }
+            },
+            {
+                label: 'Toggle Developer Tools',
+                accelerator: (function () {
+                    if (process.platform === 'darwin') {
+                        return 'Alt+Command+I'
+                    } else {
+                        return 'Ctrl+Shift+I'
+                    }
+                })(),
+                click: function (item, focusedWindow) {
+                if (focusedWindow) {
+                    focusedWindow.toggleDevTools()
+                }
+                }
+            },
+            { type: 'separator' },
+            { role: 'quit' }
+        ]
     }]
     const menu = Menu.buildFromTemplate(template)
     Menu.setApplicationMenu(menu)
