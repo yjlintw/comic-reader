@@ -411,6 +411,44 @@ body, html, .whole-view {
         background-color: #2f3640;
         border-bottom: 2px solid #17c4bb; }
 
+#read-view .controlTips {
+  position: absolute;
+  left: 310px;
+  top: 10px;
+  z-index: 99;
+  width: 160px; }
+  #read-view .controlTips li {
+    display: block;
+    width: 50px;
+    height: 50px;
+    background: rgba(129, 104, 255, 0.8);
+    font-size: 25px;
+    color: #fff;
+    border: 2px solid #ab92ee;
+    line-height: 50px;
+    text-align: center;
+    position: absolute;
+    border-radius: 6px; }
+    #read-view .controlTips li:nth-child(1) {
+      left: 55px; }
+    #read-view .controlTips li:nth-child(2) {
+      top: 55px; }
+    #read-view .controlTips li:nth-child(3) {
+      top: 55px;
+      left: 55px; }
+    #read-view .controlTips li:nth-child(4) {
+      top: 55px;
+      left: 110px; }
+    #read-view .controlTips li span {
+      font-size: 10px;
+      position: absolute;
+      left: 3px;
+      top: 23px;
+      z-index: 2;
+      line-height: 10px;
+      width: 40px;
+      text-align: center; }
+
 #read-view #read-area {
   background-color: #333638;
   color: #fff;

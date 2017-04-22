@@ -1,7 +1,7 @@
 /**
  *      Read View
  *      read-view.js
- * 
+ *
  *      See Also: ../sections/read-view.html,
  *      ../sections/chapter-entry.html,
  *      ../sections/page.html,
@@ -71,14 +71,14 @@ var didscroll = false;
 
 /**
  * Bind subscribe function
- * @param {function} func 
+ * @param {function} func
  */
 function bindSubscribe(func) {
     subscribe = func;
 }
 /**
  * Bind chapter selection function
- * @param {functino} func 
+ * @param {functino} func
  */
 function bindSelectChapter(func) {
     selectChapter = func;
@@ -87,11 +87,11 @@ function bindSelectChapter(func) {
 
 /**
  * Set selected comic's information
- * @param {string} host 
- * @param {string} titleKey 
- * @param {string} title 
- * @param {string} link 
- * @param {string} imguri 
+ * @param {string} host
+ * @param {string} titleKey
+ * @param {string} title
+ * @param {string} link
+ * @param {string} imguri
  */
 function setCurrentComic(host, titleKey, title, link, imguri) {
     curHost = host;
@@ -121,7 +121,6 @@ function updateSubscribeUI() {
     var host = dom.attr("host");
     var titleKey = dom.attr("titlekey");
     var keyPath = "comic." + host + "." + titleKey;
-    
     var isSubscribed = settings.get(keyPath + ".subscribed");
 
     if (isSubscribed) {
@@ -129,19 +128,17 @@ function updateSubscribeUI() {
     } else {
         dom.find(".subscribe-btn").removeClass("subscribed");
     }
-    
 }
 
 /**
  * update chapter list
- * @param {Object} allComicData 
+ * @param {Object} allComicData
  */
 function updateChapterList(comicData) {
     // console.log(comicData);
     $(".chapter-entry").each(function(i, e) {
         var chKey = $(e).attr("chKey");
         var chGroup = $(e).attr("chGroup");
-        
         if (comicData.chapters[chGroup][chKey].read) {
             $(e).addClass("read");
         }
@@ -165,9 +162,7 @@ function prevPic() {
     }
     curPageIdx--;
     if (curPageIdx < 0) curPageIdx = 0;
-    
-    if ($("#" + pageIds[curPageIdx]).offset() !== undefined ) { 
-    
+    if ($("#" + pageIds[curPageIdx]).offset() !== undefined ) {
         $('html, body').animate({
             scrollTop: $("#" + pageIds[curPageIdx]).offset().top
         }, 100);
@@ -185,7 +180,7 @@ function nextPic() {
         curPageIdx = Math.floor(pos / height);
     }
     curPageIdx++;
-    
+
     if (curPageIdx >= pageIds.length) curPageIdx = pageIds.length -1;;
     if ($("#" + pageIds[curPageIdx]).offset() !== undefined) {
         $('html, body').animate({
@@ -202,7 +197,7 @@ function prevChapter() {
     if (curChapterIdx < 0) curChapterIdx = 0;
     // console.log(chapterList[curChapterIdx]);
     $(chapterList[curChapterIdx]).trigger('click');
-    
+
     scrollMiddlePanel();
 }
 
@@ -313,7 +308,7 @@ function createChapterEntry(chGroup, chKey, chName, chLink, domid, index) {
 }
 
 /**
- * 
+ *
  * @param {String} imguri : comic image url
  * @param {String} id     : HTML DOM id for the image
  * @param {int}    idx    : index in the pic array
@@ -344,7 +339,7 @@ function toggleChapterSelector() {
 
 /**
  * Toggle loading animation
- * @param {bool} shown 
+ * @param {bool} shown
  */
 function toggleLoadingAnimation(shown) {
     var loadBg = $(".middle-panel .loading-bg");
@@ -357,32 +352,32 @@ function toggleLoadingAnimation(shown) {
 
 /**
  * Keyboard Event only in readview
- * @param {KeyEvent} e 
+ * @param {KeyEvent} e
  */
 function onKeydown(e) {
     if (!$('#read-view').hasClass('is-hidden')) {
         switch(e.which) {
             case 33:
-            case 37: // left
+            case 38: // left
                 prevPic();
             break;
 
-            case 38: // up
+            case 37: // up
                 prevChapter();
             break;
 
             case 34:
-            case 39: // right
+            case 40: // right
                 nextPic();
             break;
 
-            case 40: // down
+            case 39: // down
                 nextChapter();
             break;
 
             default: return; // exit this handler for other keys
         }
-        
+
         e.preventDefault(); // prevent the default action (scroll / move caret)
     }
 }
@@ -414,4 +409,3 @@ init();
 $(document).ready(lateInit);
 
 $(document).keydown(onKeydown);
-
