@@ -47,6 +47,10 @@ deploy:
     repo: https://github.com/yjlintw/comic-reader
     tags: true
 
+branches:
+  only: 
+    - master
+
 before_script:
   - export DISPLAY=:99.0
   - sh -e /etc/init.d/xvfb start &
