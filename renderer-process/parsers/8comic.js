@@ -227,7 +227,8 @@ function onSingleChapterLoaded(error, response, body) {
     var chapters_num = find_script[1];
     var num_pages = find_script[3];
     var img_template = tmp.find("#caonima").attr("src");
-    var pid = chapters_num + '/';
+    console.log(img_template);
+    var pid = '/' + chapters_num + '/';
     var img = img_template.split(pid);
     var result = [];
     for (var i = 1; i <= num_pages; i++) {
