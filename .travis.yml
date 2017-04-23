@@ -40,7 +40,8 @@ install:
 deploy:
   provider: releases
   api_key: $GH_TOKEN
-  file: dist/*
+  file_glob: true
+  file: dist/*.dmg
   skip_cleanup: true
   on:
     tags: true
