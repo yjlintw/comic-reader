@@ -215,7 +215,7 @@ function updateSubscribeUIStatus() {
     var page_idx = read_viewcontroller.getCurrentPageIdx();
     var titlekey = read_viewcontroller.getCurTitleKey();
     var host = read_viewcontroller.getCurHost();
-    console.log(page_idx + ":" + titlekey + ":" + host); 
+    // console.log(page_idx + ":" + titlekey + ":" + host); 
     if (host && titlekey && page_idx != 0) {
         all_comic_data[host][titlekey].lastpage = page_idx;
         settings.set('comic', all_comic_data);
