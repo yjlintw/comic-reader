@@ -1,7 +1,7 @@
 /**
  *      Read View
  *      read-view.js
- * 
+ *
  *      See Also: ../sections/read-view.html,
  *      ../sections/chapter-entry.html,
  *      ../sections/page.html,
@@ -74,14 +74,14 @@ var did_scroll = false;
 
 /**
  * Bind subscribe function
- * @param {function} func 
+ * @param {function} func
  */
 function bindSubscribe(func) {
     subscribeFunc = func;
 }
 /**
  * Bind chapter selection function
- * @param {functino} func 
+ * @param {functino} func
  */
 function bindSelectChapter(func) {
     selectChapterFunc = func;
@@ -179,7 +179,6 @@ function prevPic() {
     if (current_page_idx < 0) current_page_idx = 0;
     
     if ($("#" + page_id_list[current_page_idx]).offset() !== undefined ) { 
-    
         $('html, body').animate({
             scrollTop: $("#" + page_id_list[current_page_idx]).offset().top
         }, 100);
@@ -198,7 +197,7 @@ function nextPic() {
     }
     current_page_idx++;
     
-    if (current_page_idx >= page_id_list.length) current_page_idx = page_id_list.length -1;;
+    if (current_page_idx >= page_id_list.length) current_page_idx = page_id_list.length -1;
     if ($("#" + page_id_list[current_page_idx]).offset() !== undefined) {
         $('html, body').animate({
             scrollTop: $("#" + page_id_list[current_page_idx]).offset().top
@@ -215,7 +214,6 @@ function nextChapter() {
     if (current_chapter_idx < 0) current_chapter_idx = 0;
     // console.log(chapterList[curChapterIdx]);
     $(chapter_list[current_chapter_idx]).trigger('click');
-    
     scrollMiddlePanel();
 }
 
@@ -360,7 +358,7 @@ function createChapterEntry(ch_group, ch_key, ch_name, ch_link, domid, index) {
 }
 
 /**
- * 
+ *
  * @param {String} imguri : comic image url
  * @param {String} id     : HTML DOM id for the image
  * @param {int}    idx    : index in the pic array
@@ -391,7 +389,7 @@ function toggleChapterSelector() {
 
 /**
  * Toggle loading animation
- * @param {bool} shown 
+ * @param {bool} shown
  */
 function toggleLoadingAnimation(shown) {
     var loading_bg = $(".middle-panel .loading-bg");
@@ -404,7 +402,7 @@ function toggleLoadingAnimation(shown) {
 
 /**
  * Keyboard Event only in readview
- * @param {KeyEvent} e 
+ * @param {KeyEvent} e
  */
 function onKeydown(e) {
     if (!$('#read-view').hasClass('is-hidden')) {
@@ -429,7 +427,7 @@ function onKeydown(e) {
 
             default: return; // exit this handler for other keys
         }
-        
+
         e.preventDefault(); // prevent the default action (scroll / move caret)
     }
 }
@@ -461,4 +459,3 @@ init();
 $(document).ready(lateInit);
 
 $(document).keydown(onKeydown);
-

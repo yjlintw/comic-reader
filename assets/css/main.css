@@ -3,6 +3,7 @@
  *      Import
  **/
 @import url("https://fonts.googleapis.com/css?family=Raleway");
+@import url("https://fonts.googleapis.com/css?family=Roboto+Condensed");
 @keyframes spin {
   0% {
     transform: rotate(0deg); }
@@ -65,8 +66,8 @@
 /* ---- Utility ----*/
 /* ---- Overall area ----*/
 body, html, .whole-view {
-  font-family: Arial,"文泉驛正黑","WenQuanYi Zen Hei","黑體-繁","Heiti TC","微軟正黑體","Microsoft JhengHei",sans-serif;
-  background: #414b5d; }
+  font-family: 'Roboto Condensed',"文泉驛正黑","WenQuanYi Zen Hei","黑體-繁","Heiti TC","微軟正黑體","Microsoft JhengHei",sans-serif;
+  background: #373e4a; }
   @media only screen and (max-width: 768px) {
     body, html, .whole-view {
       height: 100%; } }
@@ -234,14 +235,16 @@ body, html, .whole-view {
         color: #d55; }
 
 #favorite-view {
+  background: #222935;
+  height: 100vh;
   padding: 2em 0; }
   @media only screen and (max-width: 768px) {
     #favorite-view {
       padding: 0.5em 0; } }
   #favorite-view h2 {
-    font-size: 35px;
+    font-size: 38px;
     font-family: 'Raleway', sans-serif;
-    color: #4991fc;
+    color: #7a8587;
     width: 100%;
     text-align: center;
     margin: 0 auto; }
@@ -258,35 +261,70 @@ body, html, .whole-view {
     @media only screen and (min-width: 1344px) {
       #favorite-view .columns {
         width: 1294px; } }
+  #favorite-view .media-content {
+    color: #fff; }
 
 .favorite-entry.media {
   overflow: hidden;
-  border-radius: 5px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.8);
-  margin: 3px; }
+  border-radius: 3px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  position: relative;
+  margin: 3px;
+  background: #373f4e;
+  border-top: 10px solid #857af8; }
+  .favorite-entry.media:hover {
+    background: #303744; }
   .favorite-entry.media .media-left {
     margin-right: 0.2em; }
+  .favorite-entry.media .media-right {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    z-index: 2; }
   .favorite-entry.media p {
-    margin: 0; }
+    margin: 0;
+    line-height: 15px;
+    padding: 0; }
   .favorite-entry.media .comic-name {
-    font-size: 25px;
+    font-size: 20px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
     width: 150px;
-    line-height: 25px; }
+    line-height: 25px;
+    padding: 15px 0 5px 0;
+    border-bottom: 1px solid #242e40;
+    color: #fff; }
     .favorite-entry.media .comic-name small {
-      font-size: 12px;
+      font-family: 'Roboto Condensed',"文泉驛正黑","WenQuanYi Zen Hei","黑體-繁","Heiti TC","微軟正黑體","Microsoft JhengHei",sans-serif;
+      font-weight: 600;
+      font-size: 13px;
       line-height: 15px; }
   .favorite-entry.media .level {
     margin: 0.5em 0;
-    font-size: 15px;
+    font-size: 13px;
     line-height: 20px; }
+  .favorite-entry.media .level-item {
+    font-family: 'Roboto Condensed',"文泉驛正黑","WenQuanYi Zen Hei","黑體-繁","Heiti TC","微軟正黑體","Microsoft JhengHei",sans-serif;
+    margin: 0;
+    padding: 0;
+    font-size: 13px;
+    color: #fff; }
+    .favorite-entry.media .level-item.last-read, .favorite-entry.media .level-item.newest {
+      display: block;
+      width: 105px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap; }
   @media only screen and (min-width: 769px) {
     .favorite-entry.media {
       width: 317px; } }
   .favorite-entry.media.hasupdate {
-    background-color: #fed4df; }
+    border-top: 10px solid #6ddaa4; }
+  .favorite-entry.media .subscribe-btn {
+    color: #697d8d; }
+    .favorite-entry.media .subscribe-btn:hover {
+      color: #857af8; }
 
 #read-view .middle-panel {
   position: fixed; }
@@ -301,11 +339,11 @@ body, html, .whole-view {
       width: 250px;
       position: fixed;
       overflow-y: auto;
-      border-left: 1px solid #c3c3c3;
-      border-right: 1px solid #c3c3c3; } }
+      border-left: 1px solid #24272c;
+      border-right: 1px solid #2d2f33; } }
   #read-view .middle-panel #comic-header {
     background-color: #4d5769;
-    border-bottom: 1px solid #e3e3e3;
+    border-bottom: 1px solid #313743;
     color: #fff;
     display: flex; }
     @media only screen and (max-width: 768px) {
@@ -353,7 +391,7 @@ body, html, .whole-view {
   #read-view .middle-panel #chapter-selector {
     margin-top: 50px;
     padding: 0;
-    background-color: #fff; }
+    color: #cecece; }
     @media only screen and (max-width: 768px) {
       #read-view .middle-panel #chapter-selector {
         height: calc(100vh - 50px*2);
@@ -362,14 +400,54 @@ body, html, .whole-view {
       #read-view .middle-panel #chapter-selector {
         width: 250px; } }
     #read-view .middle-panel #chapter-selector .chapter-entry {
-      border-bottom: 1px solid #e3e3e3;
-      cursor: pointer; }
+      cursor: pointer;
+      background: #373e4a;
+      border-bottom: 1px solid #313743; }
       #read-view .middle-panel #chapter-selector .chapter-entry:hover {
-        background-color: #ccf; }
+        background-color: #2f3640; }
       #read-view .middle-panel #chapter-selector .chapter-entry.read {
-        background-color: #fdd; }
+        background-color: #3f4654; }
       #read-view .middle-panel #chapter-selector .chapter-entry.active {
-        background-color: #ddf; }
+        background-color: #2f3640;
+        border-bottom: 2px solid #17c4bb; }
+
+#read-view .controlTips {
+  position: absolute;
+  left: 310px;
+  top: 10px;
+  z-index: 99;
+  width: 160px; }
+  #read-view .controlTips li {
+    display: block;
+    width: 50px;
+    height: 50px;
+    background: rgba(129, 104, 255, 0.8);
+    font-size: 25px;
+    color: #fff;
+    border: 2px solid #ab92ee;
+    line-height: 50px;
+    text-align: center;
+    position: absolute;
+    border-radius: 6px; }
+    #read-view .controlTips li:nth-child(1) {
+      left: 55px; }
+    #read-view .controlTips li:nth-child(2) {
+      top: 55px; }
+    #read-view .controlTips li:nth-child(3) {
+      top: 55px;
+      left: 55px; }
+    #read-view .controlTips li:nth-child(4) {
+      top: 55px;
+      left: 110px; }
+    #read-view .controlTips li span {
+      font-size: 10px;
+      position: absolute;
+      left: 3px;
+      top: 23px;
+      z-index: 2;
+      line-height: 10px;
+      width: 40px;
+      text-align: center; }
 
 #read-view #read-area {
   background-color: #333638;
