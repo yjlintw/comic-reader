@@ -207,6 +207,10 @@ function onAllComicsUpdateChecked() {
  */
 function updateSubscribeUIStatus() {
     all_comic_data = settings.get('comic');
+    if (all_comic_data == undefined) {
+        all_comic_data = {};
+        settings.set('comic', all_comic_data);
+    }
     search_viewcontroller.updateSubscribeUI(all_comic_data);
     favorite_viewcontroller.updateSubscribeUI(all_comic_data);
     read_viewcontroller.updateSubscribeUI(all_comic_data);
