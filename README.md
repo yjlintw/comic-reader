@@ -1,5 +1,5 @@
 # Comic Reader
-An Electron app's for manga/comic reading.
+An Electron app's for manga/comic reading.  
 ![build](https://travis-ci.org/yjlintw/comic-reader.svg?branch=master)
 
 ## Features
