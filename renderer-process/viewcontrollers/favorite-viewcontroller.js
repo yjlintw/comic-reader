@@ -82,10 +82,10 @@ function updateSubscribeUI(all_comic_data) {
 function createFavEntry(link, titlekey, imguri, title, host, lastread, newest) {
     var view = $(favorite_entry_template_str);
     view.find("img").attr("src", imguri);
-    view.find(".comic-name strong").text(title);
-    view.find(".comic-name small").text(host);
-    view.find(".last-read strong").text(lastread);
-    view.find(".newest strong").text(newest)
+    view.find(".comic-name").text(title);
+    view.find(".host").text(host);
+    view.find(".last-read").text(lastread);
+    view.find(".newest").text(newest)
     view.attr("title", title);
     view.attr("link", link);
     view.attr("titlekey", titlekey);
