@@ -215,14 +215,13 @@ function TongWen () {
 	}
 
 	function parseTree(doc, zhflag) {
-		var treeWalker = doc.createTreeWalker(doc.body, 1|4, null, false);
-
+		var treeWalker = doc.createTreeWalker(doc.querySelector(".whole-view"), 1|4, null, false);
+		// console.log(treeWalker);
 		(function walker() {
 			var node = null, attr = null, cnt = 0;
-
 			while (treeWalker.nextNode()) {
 				node = treeWalker.currentNode;
-
+				// console.log(node);
 				// Node Types http://www.w3schools.com/dom/dom_nodetype.asp
 				switch (node.nodeType) {
 				case 1: // ELEMENT_NODE
@@ -297,17 +296,21 @@ function TongWen () {
 
 				if (70 < cnt) {
 					break;
+				} else {
+					setTimeout(function () {
+						walker();
+					}, 1);
 				}
 				cnt += 1;
 			}
 
-			setTimeout(function () {
-				walker();
-			}, 1);
+			
 		}());
+
 	}
 
 	function transPage(doc, zhflag) {
+		// console.log("Trans Page");
 		curZhFlag = zhflag;
 		try {
 			doc.title = convert(doc.title, zhflag);
