@@ -44,6 +44,7 @@ deploy:
   file: dist/*.dmg
   skip_cleanup: true
   on:
+    repo: https://github.com/yjlintw/comic-reader
     tags: true
 
 before_script:
