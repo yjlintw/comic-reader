@@ -209,7 +209,8 @@ function nextPic() {
 /**
  * Scroll to previous chapter
  */
-function prevChapter() {
+function nextChapter() {
+    if (current_chapter_idx == 0) return;
     current_chapter_idx--;
     if (current_chapter_idx < 0) current_chapter_idx = 0;
     // console.log(chapterList[curChapterIdx]);
@@ -221,7 +222,8 @@ function prevChapter() {
 /**
  * Scroll to next chapter
  */
-function nextChapter() {
+function prevChapter() {
+    if (current_chapter_idx == chapter_list.length - 1) return;
     current_chapter_idx++;
     if (current_chapter_idx >= chapter_list.length) current_chapter_idx = chapter_list.length - 1;
     $(chapter_list[current_chapter_idx]).trigger('click');
@@ -407,22 +409,22 @@ function toggleLoadingAnimation(shown) {
 function onKeydown(e) {
     if (!$('#read-view').hasClass('is-hidden')) {
         switch(e.which) {
-            case 33:
             case 37: // left
-                prevPic();
-            break;
-
-            case 38: // up
                 prevChapter();
             break;
 
-            case 34:
-            case 39: // right
-                nextPic();
+            case 33: // pageup
+            case 38: // up
+                prevPic();
             break;
 
-            case 40: // down
+            case 39: // right
                 nextChapter();
+            break;
+
+            case 34: // pagedown
+            case 40: // down
+                nextPic();
             break;
 
             default: return; // exit this handler for other keys
