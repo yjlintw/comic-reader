@@ -56,5 +56,8 @@ before_script:
   - sh -e /etc/init.d/xvfb start &
   - sleep 3
 
+notifications:
+  slack: comicreader:$SLACK_TOKEN
+
 script:
   - npm run dist
