@@ -80,7 +80,13 @@ function updateSubscribeUI() {
  */
 function createFavEntry(link, titleKey, imguri, title, host) {
     var view = $(favEntryViewStr);
-    view.find("img").attr("src", imguri);
+    view.find("img").each(function(n, img) {
+            view.find(".thumb").css({
+                'background': '#fff url(' + imguri + ') center center no-repeat',
+                'background-size': 'cover'
+            });
+            img.remove();
+        });
     view.find(".comic-name").text(title);
     view.find(".host").text(host);
     var lastread = settings.get("comic." + host + "." + titleKey + ".lastread");
