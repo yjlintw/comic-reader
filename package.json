@@ -30,14 +30,17 @@
     "electron-settings": "^3.0.14",
     "node-notifier": "^5.1.2",
     "node-schedule": "^1.2.1",
-    "request": "^2.81.0"
+    "request": "^2.81.0",
+    "titlebar": "^1.4.0"
   },
   "build": {
     "appId": "com.comicreader.comicreader",
     "productName": "Comic Reader",
     "mac": {
       "category": "public.app-category.entertainment",
-      "target": ["dmg"],
+      "target": [
+        "dmg"
+      ],
       "icon": "assets/icons/icon.icns"
     }
   }

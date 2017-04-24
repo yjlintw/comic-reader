@@ -23,6 +23,10 @@ $info-fullhd: "only screen and (min-width: 1344px)";
   */
 $container-max-width: 960px;
 
+/**
+  *     Title Bar
+  */
+$titlebar-height: 22px;
 
 /**
   *     Sidebar
@@ -52,6 +56,7 @@ $non-subscribe-color: #aaa;
 $non-subscribe-hover-color: #558;
 $subscribed-color: #a00;
 $subscribed-hover-color: #d55;
+
 
 /**
   *     Read View
@@ -88,6 +93,9 @@ body {
         display: flex;
         flex-direction: column;
     }
+    &.tile.is-ancestor#whole-view {
+        margin: $titlebar-height 0 0;
+    }
 }
 
 #main-view {
@@ -106,6 +114,19 @@ body {
         margin-left: $sidebar-width;
     }
 }
+
+/**
+ *     Title Bar
+ **/ 
+.titlebar {
+    background-color: $sidebar-bg-color;
+    position: fixed;
+    z-index: 10000;
+    width: 100%;
+    height: $titlebar-height;
+    top: 0;
+}
+
 
 /* ---- Side Bar ---- */
 // Tabview switcher
@@ -557,7 +578,7 @@ body {
     .controlTips{
       position: absolute;
       left: 310px;
-      top: 10px;
+      top: calc(#{$titlebar-height} + 10px);
       z-index: 99;
       width: 160px;
       li{
@@ -608,7 +629,8 @@ body {
         }
         @media #{$info-tablet} {
             margin-left: $chapter-selector-width;
-            min-height: 100vh;
+            // margin-top: 22px;
+            min-height: calc(100vh - #{$titlebar-height});
         }
         background-color: #333638;
         color: #fff;
@@ -618,7 +640,7 @@ body {
             // background-color: #aaa;
             margin-bottom: 1em;
             img {
-                height: 100vh;
+                height: calc(100vh - #{$titlebar-height});
                 display: block;
                 margin: 0 auto;
             }
