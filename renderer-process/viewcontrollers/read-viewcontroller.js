@@ -239,7 +239,7 @@ function scrollToPage(page_idx) {
     // console.log("pos: " + pos); 
     // console.log("current:" + current_page_idx);
     $('html, body').animate({
-        scrollTop: pos==undefined ? 0 : pos.top
+        scrollTop: pos==undefined ? 0 : pos.top - $("#titlebar").outerHeight()
     }, 100)
     
 }
