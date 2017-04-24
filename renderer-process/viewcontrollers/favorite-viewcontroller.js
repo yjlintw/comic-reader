@@ -79,9 +79,15 @@ function updateSubscribeUI(all_comic_data) {
  * @param {String} title     : comic's name (human-readable)
  * @param {String} host      : host name
  */
-function createFavEntry(link, titlekey, imguri, title, host, lastread, newest) {
+function createFavEntry(link, titlekey, imguri, title, host, lastread, newest)  {
     var view = $(favorite_entry_template_str);
-    view.find("img").attr("src", imguri);
+    view.find("img").each(function(n, img) {
+            view.find(".thumb").css({
+                'background': '#fff url(' + imguri + ') center center no-repeat',
+                'background-size': 'cover'
+            });
+            img.remove();
+        });
     view.find(".comic-name").text(title);
     view.find(".host").text(host);
     view.find(".last-read").text(lastread);

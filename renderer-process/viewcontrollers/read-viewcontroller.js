@@ -407,20 +407,20 @@ function toggleLoadingAnimation(shown) {
 function onKeydown(e) {
     if (!$('#read-view').hasClass('is-hidden')) {
         switch(e.which) {
+            case 33: // pageup
             case 37: // left
                 prevChapter();
             break;
 
-            case 33: // pageup
             case 38: // up
                 prevPic();
             break;
 
+            case 34: // pagedown
             case 39: // right
                 nextChapter();
             break;
 
-            case 34: // pagedown
             case 40: // down
                 nextPic();
             break;
