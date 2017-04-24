@@ -160,7 +160,8 @@ function onChapterGrabbed(error, response, body) {
     var titlekey = this.titlekey;
     tmp.each(function(i, e){
         if($(e).attr('href') == undefined) return;
-        var ch_name = $(e).text();
+        var ch_name = $(e).text().replace(/.*(?:漫畫|漫画)\s*/g, '');
+        console.log(ch_name);
         var rel_link = $(e).attr('href');
         if (rel_link.includes("javascript")) return;
         var ch_link = baseuri + rel_link;
