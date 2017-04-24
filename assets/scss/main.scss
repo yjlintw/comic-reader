@@ -468,7 +468,7 @@ body {
 
         }
         @media #{$info-tablet} {
-            height: 100vh;
+            height: calc(100vh - #{$titlebar-height};
             width: $chapter-selector-width;
             position: fixed;
             overflow-y: auto;

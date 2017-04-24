@@ -352,7 +352,7 @@ body, html, .whole-view {
       top: 50px; } }
   @media only screen and (min-width: 769px) {
     #read-view .middle-panel {
-      height: 100vh;
+      height: calc(100vh - 22px);
       width: 250px;
       position: fixed;
       overflow-y: auto;

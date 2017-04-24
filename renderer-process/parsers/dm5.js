@@ -162,6 +162,7 @@ function onChapterGrabbed(error, response, body) {
         if($(e).attr('href') == undefined) return;
         var ch_name = $(e).text();
         var rel_link = $(e).attr('href');
+        if (rel_link.includes("javascript")) return;
         var ch_link = baseuri + rel_link;
         var ch_group = "cr_main";
     //     var link_chunks = $(e).find('a').attr('href').split('/');
@@ -189,8 +190,8 @@ function onChapterGrabbed(error, response, body) {
     // for(var i = 0; i < result.length; i++) {
     //     result[i].index = i;
     // }
-    console.log(this.titlekey)
-    console.log(result);
+    // console.log(this.titlekey)
+    // console.log(result);
     newest = result[0].ch_name;
 
     this.callback(result, newest);

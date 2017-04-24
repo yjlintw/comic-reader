@@ -180,7 +180,7 @@ function prevPic() {
     
     if ($("#" + page_id_list[current_page_idx]).offset() !== undefined ) { 
         $('html, body').animate({
-            scrollTop: $("#" + page_id_list[current_page_idx]).offset().top - 22
+            scrollTop: $("#" + page_id_list[current_page_idx]).offset().top - $("#titlebar").outerHeight()
         }, 100);
     }
 }
@@ -200,7 +200,7 @@ function nextPic() {
     if (current_page_idx >= page_id_list.length) current_page_idx = page_id_list.length -1;
     if ($("#" + page_id_list[current_page_idx]).offset() !== undefined) {
         $('html, body').animate({
-            scrollTop: $("#" + page_id_list[current_page_idx]).offset().top - 22
+            scrollTop: $("#" + page_id_list[current_page_idx]).offset().top - $("#titlebar").outerHeight()
         }, 100)
     }
 }
@@ -249,15 +249,15 @@ function scrollToPage(page_idx) {
  * will always be visible
  */
 function scrollMiddlePanel() {
-    var scroll_bottom = $(".middle-panel").height() - $("#comic-header").height();
+    var scroll_bottom = $(".middle-panel").height() - $("#comic-header").height() + $("#titlebar").outerHeight();
     var e = $(chapter_list[current_chapter_idx]);
     if (e.offset() && e.offset().top  + e.height() >= scroll_bottom) {
         $(".middle-panel").animate({
-            scrollTop: $(".middle-panel").scrollTop() + e.offset().top - $("#comic-header").outerHeight()
+            scrollTop: $(".middle-panel").scrollTop() + e.offset().top - $("#comic-header").outerHeight() - $("#titlebar").outerHeight()
         }, 100)
-    } else if (e.offset() && e.offset().top < $("#comic-header").outerHeight()) {
+    } else if (e.offset() && e.offset().top < $("#comic-header").outerHeight() + $("#titlebar").outerHeight()) {
         $(".middle-panel").animate({
-            scrollTop: $(".middle-panel").scrollTop() - $(".middle-panel").height() + $("#comic-header").outerHeight() + e.offset().top
+            scrollTop: $(".middle-panel").scrollTop() - $(".middle-panel").height() + $("#comic-header").outerHeight() + e.offset().top - $("#titlebar").outerHeight()
         }, 100)
     }
 }
