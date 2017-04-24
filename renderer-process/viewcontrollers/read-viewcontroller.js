@@ -88,7 +88,7 @@ function bindSelectChapter(func) {
 }
 
 function getCurrentPageIdx() {
-    if (did_scroll) {
+    if (did_scroll && $("#read-view").css('display') != "none") {
         did_scroll = false;
         var height = $(window).height();
         var pos = $(window).scrollTop();
@@ -129,6 +129,7 @@ function setCurrentComic(host, titlekey, title, link, imguri) {
  * TODO:: separate settings from view
  */
 function updateSubscribeUI(all_comic_data) {
+    // console.log("update subscribe ui: " + current_page_idx);
     var dom = $("#comic-header");
     var host = dom.attr("host");
     var titlekey = dom.attr("titlekey");
@@ -229,15 +230,10 @@ function prevChapter() {
 }
 
 function scrollToPage(page_idx) {
-    // console.log("scroll");
     if (page_idx >= 0) {
         current_page_idx = page_idx;
     }
-    // console.log(page_idx);
-    // console.log(current_page_idx);
     var pos = $("#" + page_id_list[current_page_idx]).offset();
-    // console.log("pos: " + pos); 
-    // console.log("current:" + current_page_idx);
     $('html, body').animate({
         scrollTop: pos==undefined ? 0 : pos.top - $("#titlebar").outerHeight()
     }, 100)
@@ -316,11 +312,13 @@ function selectChapter(ch_link, ch_group, ch_key, last_page = 0) {
             return false;
         }
     });
-    // console.log(last_page);
+    
     if (last_page != 0) {
         setTimeout(function() {
             scrollToPage(last_page);
         }, 2000);
+    } else {
+        scrollToPage(last_page);
     }
 }
 
