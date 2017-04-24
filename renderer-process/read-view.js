@@ -358,20 +358,20 @@ function onKeydown(e) {
     if (!$('#read-view').hasClass('is-hidden')) {
         switch(e.which) {
             case 33:
-            case 38: // left
+            case 38: // up
                 prevPic();
             break;
 
-            case 37: // up
+            case 39: // left
                 prevChapter();
             break;
 
             case 34:
-            case 40: // right
+            case 40: // down
                 nextPic();
             break;
 
-            case 39: // down
+            case 37: // right
                 nextChapter();
             break;
 
