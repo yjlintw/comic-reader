@@ -19,6 +19,7 @@ function createWindow () {
   win = new BrowserWindow({
     width: w, 
     height: h,
+    frame: false,
     icon: path.join(__dirname, 'assets/icons/icon.icns'),
     webPreferences: {
       blinkFeatures: 'OverlayScrollbars'

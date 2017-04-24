@@ -180,7 +180,7 @@ function prevPic() {
     
     if ($("#" + page_id_list[current_page_idx]).offset() !== undefined ) { 
         $('html, body').animate({
-            scrollTop: $("#" + page_id_list[current_page_idx]).offset().top
+            scrollTop: $("#" + page_id_list[current_page_idx]).offset().top - 22
         }, 100);
     }
 }
@@ -200,7 +200,7 @@ function nextPic() {
     if (current_page_idx >= page_id_list.length) current_page_idx = page_id_list.length -1;
     if ($("#" + page_id_list[current_page_idx]).offset() !== undefined) {
         $('html, body').animate({
-            scrollTop: $("#" + page_id_list[current_page_idx]).offset().top
+            scrollTop: $("#" + page_id_list[current_page_idx]).offset().top - 22
         }, 100)
     }
 }
