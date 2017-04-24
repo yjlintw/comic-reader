@@ -45,8 +45,8 @@ var selectComicFunc;
  *
  * @return {jQueryObject} result view HTML DOM
  */
-function createResultView(link, titleKey, imguri, title, host, updateinfo, description) {
-    var view = $(resultViewStr);
+function createResultView(link, titlekey, imguri, title, host, updateinfo, description) {
+    var view = $(resultview_template_str);
     view.find("img").each(function(n, img) {
             view.find(".thumb").css({
                 'background': '#fff url(' + imguri + ') center center no-repeat',
