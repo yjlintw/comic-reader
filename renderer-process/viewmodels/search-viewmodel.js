@@ -54,6 +54,7 @@ function isSearching() {
  * request is completed
  */
 function search() {
+    console.log("isSearching: " + isSearching());
     if (isSearching()) return; // if still in the middle of searching, abort
     
     // get the search query from input box

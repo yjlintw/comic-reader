@@ -118,10 +118,14 @@ function onChaptersGrabbed(result, newest){
     read_viewcontroller.toggleLoadingAnimation(false);
 
     // select last chapter
+    // console.log(result);
     if (comic_data.lastread_ch_key != undefined) {
+        // console.log("old");
         read_viewcontroller.selectChapter(comic_data.chapters[comic_data.lastread_ch_group][comic_data.lastread_ch_key].ch_link, comic_data.lastread_ch_group, comic_data.lastread_ch_key, comic_data.lastpage);
     } else {
         var obj = result[result.length - 1];
+        // console.log("new")
+        // console.log(obj);
         read_viewcontroller.selectChapter(obj.ch_link, obj.ch_group, obj.ch_key);
     }
 }
@@ -134,7 +138,7 @@ function onChaptersGrabbed(result, newest){
  * @param {String} ch_key   : Chapter's unique key
  */
 function selectChapter(ch_link, ch_group, ch_key) {
-    console.log("select " + ch_link + ":" + ch_group + ":" + ch_key);
+    // console.log("select " + ch_link + ":" + ch_group + ":" + ch_key);
     read_viewcontroller.clearReadArea();
     
     // curPageIdx = 0;

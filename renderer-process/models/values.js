@@ -8,6 +8,7 @@
 
 var sfacg = require("../parsers/sfacg");
 var _8comic = require("../parsers/8comic");
+var dm5 = require("../parsers/dm5");
 
 module.exports = {
     // from host path
@@ -19,6 +20,10 @@ module.exports = {
         "8comic.se": {
             name: "8comic",
             parsers: _8comic
+        },
+        "www.dm5.com": {
+            name: "dm5",
+            parsers: dm5,
         }
     },
     // from host name
@@ -28,6 +33,9 @@ module.exports = {
         },
         "8comic": {
             parsers: _8comic
+        },
+        "dm5": {
+            parsers: dm5
         }
     }
 }

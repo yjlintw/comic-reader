@@ -229,15 +229,15 @@ function prevChapter() {
 }
 
 function scrollToPage(page_idx) {
-    console.log("scroll");
+    // console.log("scroll");
     if (page_idx >= 0) {
         current_page_idx = page_idx;
     }
     // console.log(page_idx);
     // console.log(current_page_idx);
     var pos = $("#" + page_id_list[current_page_idx]).offset();
-    console.log("pos: " + pos); 
-    console.log("current:" + current_page_idx);
+    // console.log("pos: " + pos); 
+    // console.log("current:" + current_page_idx);
     $('html, body').animate({
         scrollTop: pos==undefined ? 0 : pos.top
     }, 100)
@@ -316,7 +316,7 @@ function selectChapter(ch_link, ch_group, ch_key, last_page = 0) {
             return false;
         }
     });
-    console.log(last_page);
+    // console.log(last_page);
     if (last_page != 0) {
         setTimeout(function() {
             scrollToPage(last_page);
