@@ -1,6 +1,6 @@
 /**
  *      Search-Controller.js
- *
+ * 
  *      This file includes search behavior for search page
  *
  *      See Also: ../sections/search-view.html, ./search-view.js
@@ -20,13 +20,13 @@ var search_viewcontroller = require("../viewcontrollers/search-viewcontroller");
  *      Variable Definition
  */
 // {tring} store the html template for search result
-var result_view_str_template = "";
+var result_view_str_template = "";         
 
 // {Object} key: hostname value: boolean flag
 // Store information of the search request to every host
 // true: is searching
 // false: not searching
-var search_flag_dict = {};
+var search_flag_dict = {};        
 
 /**
  *      Backend Functionality / View
@@ -34,7 +34,7 @@ var search_flag_dict = {};
 
 /**
  * Check whether is still searching
- *
+ * 
  * @return: {bool} true: is searching, false: not searching
  */
 function isSearching() {
@@ -49,16 +49,16 @@ function isSearching() {
 /**
  * Send search request to different host through parsers
  * Triggerd when the user hit enter in the input box or click the search button
- *
- * function searchResponse(result, host) will be triggered after each search
+ * 
+ * function searchResponse(result, host) will be triggered after each search 
  * request is completed
  */
 function search() {
     console.log("isSearching: " + isSearching());
     if (isSearching()) return; // if still in the middle of searching, abort
-
+    
     // get the search query from input box
-    var search_str = search_viewcontroller.getSearchQuery();
+    var search_str = search_viewcontroller.getSearchQuery(); 
 
     // clear the previous search results
     search_viewcontroller.clearSearchResults();
@@ -76,7 +76,7 @@ function search() {
 /**
  * Callback: search response returns
  * It take response, create search result and display on search-view
- * @param {Object} result
+ * @param {Object} result 
  *        {String} link: link to the comic page
  *        {String} titlekey: a unique key for a comic in a host, two comics
  *                           from different hosts can have the same key
@@ -85,7 +85,7 @@ function search() {
 function searchResponse(result, host) {
     // Remove loading animation
     search_viewcontroller.loadingUI(false);
-
+    
     // set search flag false
     search_flag_dict[host] = false;
 
@@ -93,7 +93,7 @@ function searchResponse(result, host) {
     for (var idx in result) {
         var obj = result[idx];
         var view = search_viewcontroller.createResultView(
-            obj.link, obj.titlekey, obj.imguri, obj.title, obj.host,
+            obj.link, obj.titlekey, obj.imguri, obj.title, obj.host, 
             obj.updateinfo, obj.description);
         search_viewcontroller.appendNewResult(view);
     }
@@ -118,7 +118,7 @@ function init() {
 
 // init when document is ready
 function lateInit() {
-
+   
 }
 
 /**
@@ -126,3 +126,4 @@ function lateInit() {
  */
 init();
 $(document).ready(lateInit);
+

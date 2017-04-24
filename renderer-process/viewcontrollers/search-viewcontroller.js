@@ -121,15 +121,15 @@ function updateSubscribeUI(all_comic_Data) {
         var host = dom.attr("host");
         var titlekey = dom.attr("titlekey");
         // var keyPath = "comic." + host + "." + titleKey;
-
-        if (all_comic_Data && all_comic_Data[host]
-            && all_comic_Data[host][titlekey]
+        
+        if (all_comic_Data && all_comic_Data[host] 
+            && all_comic_Data[host][titlekey] 
             && all_comic_Data[host][titlekey].subscribed) {
             dom.find(".subscribe-btn").addClass("subscribed");
         } else {
             dom.find(".subscribe-btn").removeClass("subscribed");
         }
-    });
+    });  
 }
 
 
