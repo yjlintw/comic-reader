@@ -5,22 +5,25 @@
  *      See: ../sections/sidebar.html
  */
 
-var subscriber = require('./subscriber'); 
-
+// var subscriber = require('../subscribe-viewmodel'); 
+var read_viewcontroller = require('./read-viewcontroller');
 module.exports = {
-    tabswitch: tabswitch
+    tabswitch: tabswitch,
+    bindUpdateAllUI: bindUpdateAllUI
     
 }
+// Variable definition
+var updateAllUIFunc;
 
 // Scroll behavior
 
 // Hide Header on on scroll down
-var didScroll;
-var lastScrollTop = 0;
+var did_scroll;
+var last_scroll_top = 0;
 var delta = 5;
-var navbarHeight = $('aside').outerHeight();
+var navbar_height = $('aside').outerHeight();
 $(window).scroll(function(event){
-    didScroll = ($(".sidebar.float-menu").css("flex-direction") == "row")
+    did_scroll = ($(".sidebar.float-menu").css("flex-direction") == "row")
 });
 
 $(window).resize(function(event){
@@ -28,9 +31,9 @@ $(window).resize(function(event){
 })
 
 setInterval(function() {
-    if (didScroll) {
+    if (did_scroll) {
         hasScrolled();
-        didScroll = false;
+        did_scroll = false;
     }
 }, 250);
 
@@ -38,12 +41,12 @@ function hasScrolled() {
     var st = $(this).scrollTop();
 
     // Make sure they scroll more than delta
-    if(Math.abs(lastScrollTop - st) <= delta)
+    if(Math.abs(last_scroll_top - st) <= delta)
         return;
 
     // If they scrolled down and are past the navbar, add class .nav-up.
     // This is necessary so you never see what is "behind" the navbar.
-    if (st > lastScrollTop && st > navbarHeight){
+    if (st > last_scroll_top && st > navbar_height){
         // Scroll Down
         $('.float-menu').removeClass('nav-down').addClass('nav-up');
     } else {
@@ -53,7 +56,7 @@ function hasScrolled() {
         }
     }
 
-    lastScrollTop = st;
+    last_scroll_top = st;
 }
 
 /**
@@ -70,20 +73,29 @@ function tabswitch(index) {
             break;
         case 2:
             $("#tab-read").trigger("click");
+            
             break;
     }
+}
+
+function bindUpdateAllUI(func) {
+    updateAllUIFunc = func;
 }
 
 /**
  * Callback function when sidebar tab is clicked
  */
 function onTabEntryClick() {
+    updateAllUIFunc();
     $(".content-view").addClass("is-hidden");
     $($(this).attr("associate-view")).removeClass("is-hidden");
     $(".sidebar .entry").removeClass("active");
     $(this).addClass("active");
-
-    subscriber.updateUI();
+    if ($(this).attr('id') == "tab-read") {
+        setTimeout( () => {
+            read_viewcontroller.scrollToPage(-1)
+        }, 100);
+    }
 }
 
 

@@ -55,6 +55,9 @@
   *     General
   */
 /**
+  *     Title Bar
+  */
+/**
   *     Sidebar
   **/
 /**
@@ -77,6 +80,9 @@ body, html, .whole-view {
     display: flex;
     flex-direction: column; } }
 
+.whole-view.tile.is-ancestor#whole-view {
+  margin: 22px 0 0; }
+
 @media only screen and (max-width: 768px) {
   #main-view {
     display: flex;
@@ -88,6 +94,17 @@ body, html, .whole-view {
     flex-shrink: 0;
     flex-basis: calc(100% - 50px);
     margin-left: 50px; } }
+
+/**
+ *     Title Bar
+ **/
+.titlebar {
+  background-color: #1f2b3d;
+  position: fixed;
+  z-index: 10000;
+  width: 100%;
+  height: 22px;
+  top: 0; }
 
 /* ---- Side Bar ---- */
 .sidebar {
@@ -357,7 +374,7 @@ body, html, .whole-view {
       top: 50px; } }
   @media only screen and (min-width: 769px) {
     #read-view .middle-panel {
-      height: 100vh;
+      height: calc(100vh - 22px);
       width: 250px;
       position: fixed;
       overflow-y: auto;
@@ -436,7 +453,7 @@ body, html, .whole-view {
 #read-view .controlTips {
   position: absolute;
   left: 310px;
-  top: 10px;
+  top: calc(22px + 10px);
   z-index: 99;
   width: 160px; }
   #read-view .controlTips li {
@@ -482,10 +499,10 @@ body, html, .whole-view {
   @media only screen and (min-width: 769px) {
     #read-view #read-area {
       margin-left: 250px;
-      min-height: 100vh; } }
+      min-height: calc(100vh - 22px); } }
   #read-view #read-area .comic-page-container {
     margin-bottom: 1em; }
     #read-view #read-area .comic-page-container img {
-      height: 100vh;
+      height: calc(100vh - 22px);
       display: block;
       margin: 0 auto; }

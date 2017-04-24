@@ -2,6 +2,7 @@ const {app, BrowserWindow} = require('electron');
 const path = require('path');
 const url = require('url');
 const settings = require('electron-settings');
+require('electron-debug')({showDevTools: false});
 console.log(app.getAppPath())
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -18,6 +19,7 @@ function createWindow () {
   win = new BrowserWindow({
     width: w, 
     height: h,
+    frame: false,
     icon: path.join(__dirname, 'assets/icons/icon.icns'),
     webPreferences: {
       blinkFeatures: 'OverlayScrollbars'
@@ -51,6 +53,8 @@ function createWindow () {
 
     win = null
   })
+
+  require('./main-process/menu/mainmenu')
 }
 
 // This method will be called when Electron has finished

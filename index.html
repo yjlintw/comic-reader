@@ -10,7 +10,8 @@
 
   </head>
   <body>
-    <div class="tile is-ancestor is-marginless whole-view">
+    <div class="titlebar" id="titlebar"></div>
+    <div class="tile is-ancestor whole-view" id="whole-view">
       <aside class="tile sidebar float-menu" id="sidebar">
       </aside>
       <div class="tile is-vertical" id="main-view">
@@ -21,14 +22,15 @@
     <script src="./assets/js/jquery-3.2.1.min.js"></script>
     
     <script>
+      require("./renderer-process/viewcontrollers/titlebar-viewcontroller")
       require("./renderer-process/content-loader");
-      require("./renderer-process/view-switcher");
-      require("./renderer-process/translate-view.js")
-      require("./renderer-process/search-view")
-      require("./renderer-process/search-controller");
-      require("./renderer-process/favorite-view");
-      require("./renderer-process/subscriber");
-      require("./renderer-process/read-view")
+      require("./renderer-process/viewcontrollers/view-switch-viewcontroller");
+      require("./renderer-process/viewcontrollers/translate-viewcontroller")
+      require("./renderer-process/viewcontrollers/search-viewcontroller")
+      require("./renderer-process/viewcontrollers/favorite-viewcontroller");
+      require("./renderer-process/viewcontrollers/read-viewcontroller")
+      require("./renderer-process/viewmodels/search-viewmodel");
+      require("./renderer-process/viewmodels/subscribe-viewmodel");
 
       // last things to load
       require("./renderer-process/load-after");

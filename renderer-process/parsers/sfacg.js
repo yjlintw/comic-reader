@@ -8,7 +8,7 @@
  *          result is a list of obj contains following
  *          fields:
  *              link
- *              titleKey
+ *              titlekey
  *              imguri
  *              comicTitle
  *              host
@@ -19,8 +19,8 @@
  *          function callback(result)
  *          result is a list of obj contains following
  *          fields:
- *              chName,
- *              chLink,
+ *              ch_name,
+ *              ch_link,
  *              domid,
  *              index 
  * 
@@ -59,17 +59,17 @@ var searchuri = "http://s.sfacg.com/?Key={search}&S=0&SS=0";
  * 
  *        obj {Object}:
  *          link {String}
- *          titleKey {String}
+ *          titlekey {String}
  *          imguri {String}
- *          comicTitle {String}
+ *          title {String}
  *          host {String}
  *          updateinfo {String}
  *          description {String}
  */
-function search(searchTerm, callback) {
+function search(search_term, callback) {
     request({
         method: "GET",
-        uri: searchuri.replace("{search}", util.toUnicode(searchTerm))
+        uri: searchuri.replace("{search}", util.toUnicode(search_term))
     }, searchResponse.bind({callback:callback}));
 }
 
@@ -83,18 +83,18 @@ function searchResponse(error, response, body) {
     tmp.find("ul").each(function(i, e){
         var imguri = $(e).find("li:first-child img").attr("src");
         // console.log(imguri);
-        var comicTitle = $(e).find("li:nth-child(2)").find("a").text();
+        var title = $(e).find("li:nth-child(2)").find("a").text();
         var link = $(e).find("li:nth-child(2)").find("a").attr("href");
         var info = $(e).find("li:nth-child(2)").text().split("\n");
         $.map(info, $.trim);
         var updateinfo = info[1];
         var description = info.splice(2).join('\n').trim();
-        var titleKey = link.substr(link.lastIndexOf('/') + 1);
+        var titlekey = link.substr(link.lastIndexOf('/') + 1);
         var obj = {};
         obj.link = link;
-        obj.titleKey = titleKey;
+        obj.titlekey = titlekey;
         obj.imguri = imguri;
-        obj.comicTitle = comicTitle;
+        obj.title = title;
         obj.host =host;
         obj.updateinfo = updateinfo;
         obj.description = description;
@@ -114,19 +114,19 @@ function searchResponse(error, response, body) {
  * 
  *      {List}  result: List of obj (see below)
  *      {Object} obj
- *            {String} chName : Chapter's name
- *            {String} chLink : URL to the chapter
- *            {String} chGroup: Chapter's Group
- *            {String} chKey  : Chapter's unique key
- *            {String} domid  : HTML DOM object id
- *            {int}    index  : index
+ *            {String} ch_name : Chapter's name
+ *            {String} ch_link : URL to the chapter
+ *            {String} ch_group: Chapter's Group
+ *            {String} ch_key  : Chapter's unique key
+ *            {String} domid   : HTML DOM object id
+ *            {int}    index   : index
  *      
  */
-function grabChapters(titleKey, link, callback) {
+function grabChapters(titlekey, link, callback) {
     request({
         methos: 'GET',
         uri: link
-    }, onChapterGrabbed.bind({callback: callback, titleKey: titleKey}));
+    }, onChapterGrabbed.bind({callback: callback, titlekey: titlekey}));
 }
 
 function onChapterGrabbed(error, response, body) {
@@ -134,31 +134,31 @@ function onChapterGrabbed(error, response, body) {
     var tmp = $("table:nth-of-type(9)", "<div>" + body + "</div>").find("ul.serialise_list.Blue_link2");
     var result = [];
     var newest = "";
-    var titleKey = this.titleKey;
+    var titlekey = this.titlekey;
     tmp.find("li").each(function(i, e) {
-        var chName = $(e).text();
-        var chLink = "http://" + hostpath + $(e).find('a').attr('href');
+        var ch_name = $(e).text();
+        var ch_link = "http://" + hostpath + $(e).find('a').attr('href');
         var domid = "chapter" + i;
-        var chGroup = "";
-        var chKey = "";
-        var linkChunks = chLink.split("/");
+        var ch_group = "";
+        var ch_key = "";
+        var link_chunks = ch_link.split("/");
         // console.log(linkChunks[linkChunks.length - 3] + ":" + titleKey);
-        if (linkChunks[linkChunks.length - 3] == titleKey) {
-            chGroup = "cr_main";
-            chKey = linkChunks[linkChunks.length - 2];
+        if (link_chunks[link_chunks.length - 3] == titlekey) {
+            ch_group = "cr_main";
+            ch_key = link_chunks[link_chunks.length - 2];
             if (newest == "") {
-                newest = chName;
+                newest = ch_name;
             }
-        } else if (linkChunks[linkChunks.length - 4] == titleKey) {
-            chGroup = linkChunks[linkChunks.length - 3];
-            chKey = linkChunks[linkChunks.length - 2];
+        } else if (link_chunks[link_chunks.length - 4] == titlekey) {
+            ch_group = link_chunks[link_chunks.length - 3];
+            ch_key = link_chunks[link_chunks.length - 2];
         }
 
         var obj = {
-            chName: chName,
-            chLink: chLink,
-            chGroup: chGroup,
-            chKey: chKey, 
+            ch_name: ch_name,
+            ch_link: ch_link,
+            ch_group: ch_group,
+            ch_key: ch_key, 
             domid: domid,
             index: i
         };
@@ -171,21 +171,21 @@ function onChapterGrabbed(error, response, body) {
 
 /**
  * 
- * @param {String} chLink : Link to the chapter 
- * @param {String} chGroup: Chapter's Group
- * @param {String} chKey  : Chapter's unique key
- * @param {String} chName : Chapter name (User-readable)
+ * @param {String} ch_link : Link to the chapter 
+ * @param {String} ch_group: Chapter's Group
+ * @param {String} ch_key  : Chapter's unique key
+ * @param {String} ch_name : Chapter name (User-readable)
  * @param {function} callback(result, chName)
  *      @param result: list of obj contains information for images to load
  *          {String} imgurl: Image URL
  *          {String} id    : HTML DOM object id
  *          {int}    idx   : index
  */
-function loadChapter(chLink, chGroup, chKey, callback) {
+function loadChapter(ch_link, ch_group, ch_key, callback) {
     request({
         method: 'GET',
-        uri: chLink
-    }, onSingleChapterLoaded.bind({callback:callback, chGroup: chGroup, chKey: chKey}))    
+        uri: ch_link
+    }, onSingleChapterLoaded.bind({callback:callback, ch_group: ch_group, ch_key: ch_key}))    
 
 }
 
@@ -200,7 +200,7 @@ function onSingleChapterLoaded(error, response, body) {
     request({
         method: 'GET',
         uri: "http://" + hostpath + scripts
-    }, utilParser.bind({callback:this.callback, chGroup: this.chGroup, chKey: this.chKey}));
+    }, utilParser.bind({callback:this.callback, ch_group: this.ch_group, ch_key: this.ch_key}));
 }
 
 /**
@@ -228,6 +228,6 @@ function utilParser (error, response, body) {
         result.push(obj);
     }
 
-    this.callback(result, this.chGroup, this.chKey);
+    this.callback(result, this.ch_group, this.ch_key);
     
 }

@@ -1,14 +1,19 @@
 /**
  * Things to load after everything is loaded
  */
-const path = require('path');
-var viewswitcher = require("./view-switcher");
-var subscriber = require("./subscriber");
-var schedule = require("node-schedule");
+// const path = require('path');
+// 3rd party library
+var schedule = require('node-schedule');
+
+// viewmodel
+var subscriber = require('./viewmodels/subscribe-viewmodel');
+
+// viewcontroller
+var viewswitch_viewcontroller = require('./viewcontrollers/view-switch-viewcontroller');
 
 var scheduledTask;
 $(document).ready(function() {
-    viewswitcher.tabswitch(0);
+    viewswitch_viewcontroller.tabswitch(0);
     subscriber.checkUpdate();
     // console.log(scheduledTask);
     if (!scheduledTask) {
