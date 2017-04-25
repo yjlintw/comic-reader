@@ -66,12 +66,11 @@ function createResultView(link, titlekey, imguri, title, host, updateinfo, descr
     view.attr("host", host);
 
     view.click(function() {
-      var sel = util.getSelected();
-      if (sel === '') {
-          selectComicFunc(host, link, title, titlekey, imguri);
-      }
-  })
-
+        var sel = util.getSelected();
+        if (sel === '') {
+            selectComicFunc(host, link, title, titlekey, imguri);
+        }
+    })
     view.find(".subscribe-btn").click(function(e) {
         e.stopPropagation();
         subscribeFunc(host, titlekey, title, link, imguri);
