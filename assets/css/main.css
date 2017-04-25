@@ -141,7 +141,9 @@ body, html, .whole-view {
     border-top: 1px solid #2b3b55;
     color: #fff;
     font-size: 24px;
-    cursor: pointer; }
+    cursor: pointer;
+    -webkit-app-region: no-drag;
+    -webkit-user-select: none; }
     @media only screen and (max-width: 768px) {
       .sidebar .entry, .sidebar .convert {
         width: 33.33333%;
@@ -367,7 +369,8 @@ body, html, .whole-view {
       color: #857af8; }
 
 #read-view .middle-panel {
-  position: fixed; }
+  position: fixed;
+  -webkit-user-select: none; }
   @media only screen and (max-width: 768px) {
     #read-view .middle-panel {
       height: calc(100vh - 50px);

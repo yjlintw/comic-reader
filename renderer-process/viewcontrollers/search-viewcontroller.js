@@ -6,6 +6,7 @@
  *      ../sections/search-result-entry.html,
  *      ./search-controller.js
  */
+const util = require('../util');
 module.exports = {
     createResultView: createResultView,
     getSearchQuery: getSearchQuery,
@@ -65,7 +66,10 @@ function createResultView(link, titlekey, imguri, title, host, updateinfo, descr
     view.attr("host", host);
 
     view.click(function() {
-        selectComicFunc(host, link, title, titlekey, imguri);
+        var sel = util.getSelected();
+        if (sel === '') {
+            selectComicFunc(host, link, title, titlekey, imguri);
+        }
     })
 
     view.find(".subscribe-btn").click(function(e) {

@@ -192,6 +192,9 @@ body {
 
         //divider
 
+        //
+        -webkit-app-region: no-drag;
+        -webkit-user-select: none;
 
         &:hover {
             background-color: $sidebar-entry-hover-bg-color;
@@ -495,7 +498,7 @@ body {
         }
 
         position: fixed;
-
+        -webkit-user-select: none;
         #comic-header {
             @media #{$info-mobile} {
                 &.float-menu {
