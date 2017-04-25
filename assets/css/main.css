@@ -68,6 +68,23 @@
   */
 /* ---- Utility ----*/
 /* ---- Overall area ----*/
+body, #comic-header {
+  -ms-overflow-style: scrollbar;
+  -webkit-app-region: drag; }
+
+input[type="submit"],
+input[type="reset"],
+input[type="button"],
+input[type="text"],
+button,
+textarea,
+.favorite-entry,
+.search-result,
+.chapter-entry,
+.comic-page-container,
+.subscribe-btn {
+  -webkit-app-region: no-drag; }
+
 body, html, .whole-view {
   font-family: 'Roboto Condensed',"文泉驛正黑","WenQuanYi Zen Hei","黑體-繁","Heiti TC","微軟正黑體","Microsoft JhengHei",sans-serif;
   background: #222935; }
