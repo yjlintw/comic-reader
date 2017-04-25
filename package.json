@@ -42,6 +42,9 @@
         "dmg"
       ],
       "icon": "assets/icons/icon.icns"
+    },
+    "win": {
+      "iconUrl": "https://github.com/yjlintw/comic-reader/blob/master/assets/icons/icon.ico"
     }
   }
 }
