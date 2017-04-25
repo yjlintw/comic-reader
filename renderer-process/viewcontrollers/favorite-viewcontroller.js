@@ -6,7 +6,7 @@
  *      ../sections/favorite-entry.html,
  *      ./subscriber.js
  */
-
+const util = require('../util');
 module.exports = {
     updateSubscribeUI: updateSubscribeUI,
 
@@ -98,6 +98,7 @@ function createFavEntry(link, titlekey, imguri, title, host, lastread, newest)  
     view.attr("host", host);
 
     view.find(".subscribe-btn").click(function(e){
+        
         e.stopPropagation();
         console.log(host);
         console.log(titlekey);
@@ -106,12 +107,17 @@ function createFavEntry(link, titlekey, imguri, title, host, lastread, newest)  
 
     view.click(function(e){
         // console.log("fav click:" + title + ", from:" + host);
-        selectComicFunc(host, link, title, titlekey, imguri);
+        var sel = util.getSelected().toString();
+        // console.log(sel);
+        if (sel === '') {
+            selectComicFunc(host, link, title, titlekey, imguri);
+        }
 
     });
 
     return view;
 }
+
 
 
 

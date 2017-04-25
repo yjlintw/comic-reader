@@ -121,7 +121,11 @@ function onChaptersGrabbed(result, newest){
     // console.log(result);
     if (comic_data.lastread_ch_key != undefined) {
         // console.log("old");
-        read_viewcontroller.selectChapter(comic_data.chapters[comic_data.lastread_ch_group][comic_data.lastread_ch_key].ch_link, comic_data.lastread_ch_group, comic_data.lastread_ch_key, comic_data.lastpage);
+        var lastpage = comic_data.lastpage;
+        if (comic_data.lastread_ch_key != obj.ch_key) {
+            lastpage = 0;
+        }
+        read_viewcontroller.selectChapter(comic_data.chapters[comic_data.lastread_ch_group][comic_data.lastread_ch_key].ch_link, comic_data.lastread_ch_group, comic_data.lastread_ch_key, lastpage);
     } else {
         var obj = result[result.length - 1];
         // console.log("new")
@@ -168,6 +172,11 @@ function onSingleChapterLoaded(result, ch_group, ch_key) {
         read_viewcontroller.appendNewPage(view);
     }
     read_viewcontroller.setPageIds(pageIds);
+    var lastpage = comic_data.lastpage;
+    if (comic_data.lastread_ch_key != ch_key) {
+        lastpage = 0;
+    }
+    read_viewcontroller.scrollToPage(lastpage);
     // console.log("read");
     comic_data.chapters[ch_group][ch_key].read = true;
     comic_data.lastread = comic_data.chapters[ch_group][ch_key].name;

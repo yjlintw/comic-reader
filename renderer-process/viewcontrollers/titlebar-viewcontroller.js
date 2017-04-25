@@ -1,4 +1,5 @@
 var titlebar = require('titlebar');
+const remote = require('electron').remote;
 
 
 var log = function(name) {
@@ -8,7 +9,20 @@ var log = function(name) {
 };
 var t = titlebar()
     .appendTo(document.querySelector('#titlebar'))
-    .on('close', log('close'))
-    .on('minimize', log('minimize'))
-    .on('fullscreen', log('fullscreen'))
-	.on('maximize', log('maximize'));
+    .on('close', function() {
+        var window = remote.getCurrentWindow();
+        window.close();
+    })
+    .on('minimize', function() {
+        var window = remote.getCurrentWindow();
+        window.minimize();
+    })
+    .on('fullscreen', function() {
+        var window = remote.getCurrentWindow();
+        window.setFullScreen(!window.isFullScreen());
+       
+    })
+	.on('maximize', function() {
+        var window = remote.getCurrentWindow();
+        window.maximize();
+    });

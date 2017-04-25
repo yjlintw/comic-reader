@@ -92,9 +92,7 @@ function onTabEntryClick() {
     $(".sidebar .entry").removeClass("active");
     $(this).addClass("active");
     if ($(this).attr('id') == "tab-read") {
-        setTimeout( () => {
-            read_viewcontroller.scrollToPage(-1)
-        }, 100);
+        read_viewcontroller.scrollToPage(-1);
     }
 }
 
