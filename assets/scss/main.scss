@@ -336,9 +336,9 @@ body {
     margin: 5px 0;
     padding: 1em;
     border-top: none;
-    border-radius: 3px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.3);
-    background-color: $search-result-bg-color;
+    box-shadow: none;
+    background: transparent;
+    border-bottom: 1px solid #313e56;
     cursor: pointer;
     color: #fff;
     .thumb{
@@ -357,6 +357,12 @@ body {
     &:hover {
         background-color: $search-result-hover-bg-color;
     }
+    &.subscribed {
+        background-color: $search-result-bg-color;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+        border-bottom: 0px;
+        border-radius: 3px;
+        }
     .content p {
         margin: 10px 0;
         font-size: 15px;
