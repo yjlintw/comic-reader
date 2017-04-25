@@ -71,7 +71,6 @@ function createResultView(link, titlekey, imguri, title, host, updateinfo, descr
             selectComicFunc(host, link, title, titlekey, imguri);
         }
     })
-
     view.find(".subscribe-btn").click(function(e) {
         e.stopPropagation();
         subscribeFunc(host, titlekey, title, link, imguri);
@@ -125,15 +124,17 @@ function updateSubscribeUI(all_comic_Data) {
         var host = dom.attr("host");
         var titlekey = dom.attr("titlekey");
         // var keyPath = "comic." + host + "." + titleKey;
-        
-        if (all_comic_Data && all_comic_Data[host] 
-            && all_comic_Data[host][titlekey] 
+
+        if (all_comic_Data && all_comic_Data[host]
+            && all_comic_Data[host][titlekey]
             && all_comic_Data[host][titlekey].subscribed) {
             dom.find(".subscribe-btn").addClass("subscribed");
+            dom.addClass("subscribed");
         } else {
             dom.find(".subscribe-btn").removeClass("subscribed");
+            dom.removeClass("subscribed");
         }
-    });  
+    });
 }
 
 

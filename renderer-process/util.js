@@ -6,8 +6,8 @@ module.exports = {
 
 /**
  * Convert an input string to Unicode format
- * @param {String} str 
- * 
+ * @param {String} str
+ *
  * @return {String} string in unicode format
  */
 function toUnicode(str, header="%u"){
