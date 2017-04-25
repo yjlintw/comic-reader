@@ -441,11 +441,10 @@ body, html, .whole-view {
     #read-view .middle-panel #comic-header .level-item {
       margin: 0; }
     #read-view .middle-panel #comic-header .subscribe-btn {
-      line-height: 1em;
       cursor: pointer;
       position: absolute;
       right: 15px;
-      top: 0px; }
+      top: 19px; }
       #read-view .middle-panel #comic-header .subscribe-btn.subscribed {
         color: #ff558d; }
   #read-view .middle-panel .loading-bg {
