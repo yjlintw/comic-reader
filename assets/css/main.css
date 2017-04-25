@@ -103,8 +103,14 @@ body, html, .whole-view {
   position: fixed;
   z-index: 10000;
   width: 100%;
+<<<<<<< HEAD
   height: 25px;
   top: 0; }
+=======
+  height: 22px;
+  top: 0;
+  -webkit-app-region: drag; }
+>>>>>>> 593c82d5807f864bfebf6599513a950116856b3b
 
 .titlebar-close,
 .titlebar-minimize,
@@ -128,8 +134,12 @@ body, html, .whole-view {
 
 /* ---- Side Bar ---- */
 .sidebar {
+<<<<<<< HEAD
   box-shadow: 2px 0px 5px 0px rgba(0, 0, 0, 0.3);
   z-index: 99;
+=======
+  -webkit-app-region: drag;
+>>>>>>> 593c82d5807f864bfebf6599513a950116856b3b
   background-color: #1f2b3d; }
   @media only screen and (max-width: 768px) {
     .sidebar.float-menu {
@@ -162,7 +172,9 @@ body, html, .whole-view {
     border-top: 1px solid #2b3b55;
     color: #fff;
     font-size: 24px;
-    cursor: pointer; }
+    cursor: pointer;
+    -webkit-app-region: no-drag;
+    -webkit-user-select: none; }
     @media only screen and (max-width: 768px) {
       .sidebar .entry, .sidebar .convert {
         width: 33.33333%;

@@ -98,6 +98,7 @@ function createFavEntry(link, titlekey, imguri, title, host, lastread, newest)  
     view.attr("host", host);
 
     view.find(".subscribe-btn").click(function(e){
+        
         e.stopPropagation();
         console.log(host);
         console.log(titlekey);
@@ -116,6 +117,7 @@ function createFavEntry(link, titlekey, imguri, title, host, lastread, newest)  
 
     return view;
 }
+
 
 
 
