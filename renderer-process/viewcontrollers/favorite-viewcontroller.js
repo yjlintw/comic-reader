@@ -1,12 +1,12 @@
 /**
  *      Favorite View
  *      favorite-viewcontroller.js
- * 
+ *
  *      See Also: ../sections/favorite-view.html,
  *      ../sections/favorite-entry.html,
  *      ./subscriber.js
  */
-
+const util = require('../util');
 module.exports = {
     updateSubscribeUI: updateSubscribeUI,
 
@@ -73,7 +73,7 @@ function updateSubscribeUI(all_comic_data) {
 
 /**
  * Create a favorite entry HTML DOM object
- * @param {String} link      : link to comic 
+ * @param {String} link      : link to comic
  * @param {String} titlekey  : title key store in settings
  * @param {String} imguri    : thumbnail's url
  * @param {String} title     : comic's name (human-readable)
@@ -106,7 +106,11 @@ function createFavEntry(link, titlekey, imguri, title, host, lastread, newest)  
 
     view.click(function(e){
         // console.log("fav click:" + title + ", from:" + host);
-        selectComicFunc(host, link, title, titlekey, imguri);
+        var sel = util.getSelected().toString();
+        // console.log(sel);
+        if (sel === '') {
+            selectComicFunc(host, link, title, titlekey, imguri);
+        }
 
     });
 
