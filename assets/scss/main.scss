@@ -124,6 +124,7 @@ body {
     width: 100%;
     height: $titlebar-height;
     top: 0;
+    -webkit-app-region: drag;
 }
 
 

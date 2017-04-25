@@ -104,7 +104,8 @@ body, html, .whole-view {
   z-index: 10000;
   width: 100%;
   height: 22px;
-  top: 0; }
+  top: 0;
+  -webkit-app-region: drag; }
 
 /* ---- Side Bar ---- */
 .sidebar {
