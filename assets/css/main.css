@@ -103,14 +103,9 @@ body, html, .whole-view {
   position: fixed;
   z-index: 10000;
   width: 100%;
-<<<<<<< HEAD
   height: 25px;
-  top: 0; }
-=======
-  height: 22px;
   top: 0;
   -webkit-app-region: drag; }
->>>>>>> 593c82d5807f864bfebf6599513a950116856b3b
 
 .titlebar-close,
 .titlebar-minimize,
@@ -134,12 +129,9 @@ body, html, .whole-view {
 
 /* ---- Side Bar ---- */
 .sidebar {
-<<<<<<< HEAD
   box-shadow: 2px 0px 5px 0px rgba(0, 0, 0, 0.3);
   z-index: 99;
-=======
   -webkit-app-region: drag;
->>>>>>> 593c82d5807f864bfebf6599513a950116856b3b
   background-color: #1f2b3d; }
   @media only screen and (max-width: 768px) {
     .sidebar.float-menu {
@@ -262,9 +254,9 @@ body, html, .whole-view {
   margin: 5px 0;
   padding: 1em;
   border-top: none;
-  border-radius: 3px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-  background-color: #373f4e;
+  box-shadow: none;
+  background: transparent;
+  border-bottom: 1px solid #313e56;
   cursor: pointer;
   color: #fff; }
   .search-result.media .thumb, .favorite-entry.media .thumb {
@@ -280,6 +272,11 @@ body, html, .whole-view {
     color: #fff; }
   .search-result.media:hover, .favorite-entry.media:hover {
     background-color: #303744; }
+  .search-result.media.subscribed, .subscribed.favorite-entry.media {
+    background-color: #373f4e;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    border-bottom: 0px;
+    border-radius: 3px; }
   .search-result.media .content p, .favorite-entry.media .content p {
     margin: 10px 0;
     font-size: 15px;
