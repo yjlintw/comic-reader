@@ -108,6 +108,7 @@ body, html, .whole-view {
 
 /* ---- Side Bar ---- */
 .sidebar {
+  -webkit-app-region: drag;
   background-color: #1f2b3d; }
   @media only screen and (max-width: 768px) {
     .sidebar.float-menu {

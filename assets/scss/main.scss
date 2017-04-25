@@ -159,6 +159,7 @@ body {
         position:fixed;
     }
 
+    -webkit-app-region: drag;
     background-color: $sidebar-bg-color;
 
     .entry, .convert {
