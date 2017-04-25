@@ -1,7 +1,7 @@
 /**
  *      Read View
  *      read-view.js
- * 
+ *
  *      See Also: ../sections/read-view.html,
  *      ../sections/chapter-entry.html,
  *      ../sections/page.html,
@@ -23,6 +23,8 @@ module.exports = {
     clearReadArea: clearReadArea,
     clearChapterSelector: clearChapterSelector,
     toggleLoadingAnimation: toggleLoadingAnimation,
+    scrollToPage: scrollToPage,
+    selectChapter: selectChapter,
 
     // Action Binding
     bindSubscribe: bindSubscribe,
@@ -35,7 +37,9 @@ module.exports = {
     setPageIds: function(x) { page_id_list = x},
     getChapterList: function() { return chapter_list },
     setChapterList: function(x) { chapter_list = x},
+    getCurrentChapterKey: function () {return current_chapter_key},
     setCurrentComic: setCurrentComic,
+    getCurrentPageIdx: getCurrentPageIdx,
     updateChapterList: updateChapterList
 }
 
@@ -61,6 +65,7 @@ var page_id_list = [];
 var chapter_list = [];
 var current_page_idx = 0;
 var current_chapter_idx = -1;
+var current_chapter_key = "";
 
 var did_scroll = false;
 
@@ -69,19 +74,28 @@ var did_scroll = false;
 
 /**
  * Bind subscribe function
- * @param {function} func 
+ * @param {function} func
  */
 function bindSubscribe(func) {
     subscribeFunc = func;
 }
 /**
  * Bind chapter selection function
- * @param {functino} func 
+ * @param {functino} func
  */
 function bindSelectChapter(func) {
     selectChapterFunc = func;
 }
 
+function getCurrentPageIdx() {
+    if (did_scroll && $("#read-view").css('display') != "none") {
+        did_scroll = false;
+        var height = $(window).height();
+        var pos = $(window).scrollTop();
+        current_page_idx = Math.ceil(pos / height);
+    }
+    return current_page_idx;
+}
 
 /**
  * Set selected comic's information
@@ -115,6 +129,7 @@ function setCurrentComic(host, titlekey, title, link, imguri) {
  * TODO:: separate settings from view
  */
 function updateSubscribeUI(all_comic_data) {
+    // console.log("update subscribe ui: " + current_page_idx);
     var dom = $("#comic-header");
     var host = dom.attr("host");
     var titlekey = dom.attr("titlekey");
@@ -128,7 +143,6 @@ function updateSubscribeUI(all_comic_data) {
     } else {
         dom.find(".subscribe-btn").removeClass("subscribed");
     }
-    
 }
 
 /**
@@ -166,9 +180,8 @@ function prevPic() {
     if (current_page_idx < 0) current_page_idx = 0;
     
     if ($("#" + page_id_list[current_page_idx]).offset() !== undefined ) { 
-    
         $('html, body').animate({
-            scrollTop: $("#" + page_id_list[current_page_idx]).offset().top
+            scrollTop: $("#" + page_id_list[current_page_idx]).offset().top - $("#titlebar").outerHeight()
         }, 100);
     }
 }
@@ -185,10 +198,10 @@ function nextPic() {
     }
     current_page_idx++;
     
-    if (current_page_idx >= page_id_list.length) current_page_idx = page_id_list.length -1;;
+    if (current_page_idx >= page_id_list.length) current_page_idx = page_id_list.length -1;
     if ($("#" + page_id_list[current_page_idx]).offset() !== undefined) {
         $('html, body').animate({
-            scrollTop: $("#" + page_id_list[current_page_idx]).offset().top
+            scrollTop: $("#" + page_id_list[current_page_idx]).offset().top - $("#titlebar").outerHeight()
         }, 100)
     }
 }
@@ -196,23 +209,35 @@ function nextPic() {
 /**
  * Scroll to previous chapter
  */
-function prevChapter() {
+function nextChapter() {
+    if (current_chapter_idx == 0) return;
     current_chapter_idx--;
     if (current_chapter_idx < 0) current_chapter_idx = 0;
     // console.log(chapterList[curChapterIdx]);
     $(chapter_list[current_chapter_idx]).trigger('click');
-    
     scrollMiddlePanel();
 }
 
 /**
  * Scroll to next chapter
  */
-function nextChapter() {
+function prevChapter() {
+    if (current_chapter_idx == chapter_list.length - 1) return;
     current_chapter_idx++;
     if (current_chapter_idx >= chapter_list.length) current_chapter_idx = chapter_list.length - 1;
     $(chapter_list[current_chapter_idx]).trigger('click');
     scrollMiddlePanel();
+}
+
+function scrollToPage(page_idx) {
+    if (page_idx >= 0) {
+        current_page_idx = page_idx;
+    }
+    var pos = $("#" + page_id_list[current_page_idx]).offset();
+    $('html, body').animate({
+        scrollTop: pos==undefined ? 0 : pos.top - $("#titlebar").outerHeight()
+    }, 100)
+    
 }
 
 /**
@@ -220,15 +245,15 @@ function nextChapter() {
  * will always be visible
  */
 function scrollMiddlePanel() {
-    var scroll_bottom = $(".middle-panel").height() - $("#comic-header").height();
+    var scroll_bottom = $(".middle-panel").height() - $("#comic-header").height() + $("#titlebar").outerHeight();
     var e = $(chapter_list[current_chapter_idx]);
     if (e.offset() && e.offset().top  + e.height() >= scroll_bottom) {
         $(".middle-panel").animate({
-            scrollTop: $(".middle-panel").scrollTop() + e.offset().top - $("#comic-header").outerHeight()
+            scrollTop: $(".middle-panel").scrollTop() + e.offset().top - $("#comic-header").outerHeight() - $("#titlebar").outerHeight()
         }, 100)
-    } else if (e.offset() && e.offset().top < $("#comic-header").outerHeight()) {
+    } else if (e.offset() && e.offset().top < $("#comic-header").outerHeight() + $("#titlebar").outerHeight()) {
         $(".middle-panel").animate({
-            scrollTop: $(".middle-panel").scrollTop() - $(".middle-panel").height() + $("#comic-header").outerHeight() + e.offset().top
+            scrollTop: $(".middle-panel").scrollTop() - $(".middle-panel").height() + $("#comic-header").outerHeight() + e.offset().top - $("#titlebar").outerHeight()
         }, 100)
     }
 }
@@ -280,6 +305,23 @@ function clearChapterSelector() {
     $("#chapter-selector").html("");
 }
 
+function selectChapter(ch_link, ch_group, ch_key, last_page = 0) {
+    $(".chapter-entry").each(function(i, v) {
+        if ($(v).attr("link") == ch_link) {
+            $(v).trigger('click');
+            return false;
+        }
+    });
+    
+    if (last_page != 0) {
+        setTimeout(function() {
+            scrollToPage(last_page);
+        }, 2000);
+    } else {
+        scrollToPage(last_page);
+    }
+}
+
 /**
  * @param {String} ch_group: chapter's group
  * @param {String} ch_key  : chapter's unique key
@@ -306,13 +348,15 @@ function createChapterEntry(ch_group, ch_key, ch_name, ch_link, domid, index) {
         $(".chapter-entry").removeClass("active");
         $(this).addClass("active");
         current_chapter_idx = index;
+        current_chapter_key = ch_key;
+        scrollMiddlePanel();
         // console.log(curChapterIdx);
     });
     return view;
 }
 
 /**
- * 
+ *
  * @param {String} imguri : comic image url
  * @param {String} id     : HTML DOM id for the image
  * @param {int}    idx    : index in the pic array
@@ -343,7 +387,7 @@ function toggleChapterSelector() {
 
 /**
  * Toggle loading animation
- * @param {bool} shown 
+ * @param {bool} shown
  */
 function toggleLoadingAnimation(shown) {
     var loading_bg = $(".middle-panel .loading-bg");
@@ -356,32 +400,32 @@ function toggleLoadingAnimation(shown) {
 
 /**
  * Keyboard Event only in readview
- * @param {KeyEvent} e 
+ * @param {KeyEvent} e
  */
 function onKeydown(e) {
     if (!$('#read-view').hasClass('is-hidden')) {
         switch(e.which) {
-            case 33:
+            case 33: // pageup
             case 37: // left
-                prevPic();
-            break;
-
-            case 38: // up
                 prevChapter();
             break;
 
-            case 34:
+            case 38: // up
+                prevPic();
+            break;
+
+            case 34: // pagedown
             case 39: // right
-                nextPic();
+                nextChapter();
             break;
 
             case 40: // down
-                nextChapter();
+                nextPic();
             break;
 
             default: return; // exit this handler for other keys
         }
-        
+
         e.preventDefault(); // prevent the default action (scroll / move caret)
     }
 }
@@ -413,4 +457,3 @@ init();
 $(document).ready(lateInit);
 
 $(document).keydown(onKeydown);
-

@@ -6,7 +6,7 @@
  */
 
 // var subscriber = require('../subscribe-viewmodel'); 
-
+var read_viewcontroller = require('./read-viewcontroller');
 module.exports = {
     tabswitch: tabswitch,
     bindUpdateAllUI: bindUpdateAllUI
@@ -73,6 +73,7 @@ function tabswitch(index) {
             break;
         case 2:
             $("#tab-read").trigger("click");
+            
             break;
     }
 }
@@ -85,12 +86,14 @@ function bindUpdateAllUI(func) {
  * Callback function when sidebar tab is clicked
  */
 function onTabEntryClick() {
+    updateAllUIFunc();
     $(".content-view").addClass("is-hidden");
     $($(this).attr("associate-view")).removeClass("is-hidden");
     $(".sidebar .entry").removeClass("active");
     $(this).addClass("active");
-
-    updateAllUIFunc();
+    if ($(this).attr('id') == "tab-read") {
+        read_viewcontroller.scrollToPage(-1);
+    }
 }
 
 

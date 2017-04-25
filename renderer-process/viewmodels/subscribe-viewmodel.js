@@ -176,12 +176,13 @@ function onChaptersGrabbed(result, newest) {
         
         var obj = result[index];
         // if is a new group
-        if (!(obj.chGroup in chapters_data)) {
+        if (!chapters_data[obj.ch_group]) {
             chapters_data[obj.ch_group] = {}
         } 
-        if (!(obj.chKey in chapters_data[obj.ch_group])) {
+        if (!chapters_data[obj.ch_group][obj.ch_key]) {
             chapters_data[obj.ch_group][obj.ch_key] = {
                 name: obj.ch_name,
+                ch_link: obj.ch_link,
                 read: false
             }
         }
@@ -206,11 +207,23 @@ function onAllComicsUpdateChecked() {
  */
 function updateSubscribeUIStatus() {
     all_comic_data = settings.get('comic');
+    if (all_comic_data == undefined) {
+        all_comic_data = {};
+        settings.set('comic', all_comic_data);
+    }
     search_viewcontroller.updateSubscribeUI(all_comic_data);
     favorite_viewcontroller.updateSubscribeUI(all_comic_data);
     read_viewcontroller.updateSubscribeUI(all_comic_data);
     translate_viewcontroller.translate();
 
+    var page_idx = read_viewcontroller.getCurrentPageIdx();
+    var titlekey = read_viewcontroller.getCurTitleKey();
+    var host = read_viewcontroller.getCurHost();
+    // console.log(page_idx + ":" + titlekey + ":" + host); 
+    if (host && titlekey && page_idx != 0) {
+        all_comic_data[host][titlekey].lastpage = page_idx;
+        settings.set('comic', all_comic_data);
+    }
 }
 
 /**
@@ -232,6 +245,19 @@ function init () {
 // init when documen is ready
 function lateInit() {
     updateSubscribeUIStatus();
+    window.onbeforeunload = unload;
+}
+
+function unload(e) {
+    console.log("test2");
+    var page_idx = read_viewcontroller.getCurrentPageIdx();
+    var titlekey = read_viewcontroller.getCurTitleKey();
+    var host = read_viewcontroller.getCurHost();
+    console.log(page_idx + ":" + titlekey + ":" + host); 
+    if (host && titlekey && page_idx != 0) {
+        all_comic_data[host][titlekey].lastpage = page_idx;
+        settings.set('comic', all_comic_data);
+    }
 }
 
 /**

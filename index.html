@@ -10,7 +10,8 @@
 
   </head>
   <body>
-    <div class="tile is-ancestor is-marginless whole-view">
+    <div class="titlebar" id="titlebar"></div>
+    <div class="tile is-ancestor whole-view" id="whole-view">
       <aside class="tile sidebar float-menu" id="sidebar">
       </aside>
       <div class="tile is-vertical" id="main-view">
@@ -21,6 +22,7 @@
     <script src="./assets/js/jquery-3.2.1.min.js"></script>
     
     <script>
+      require("./renderer-process/viewcontrollers/titlebar-viewcontroller")
       require("./renderer-process/content-loader");
       require("./renderer-process/viewcontrollers/view-switch-viewcontroller");
       require("./renderer-process/viewcontrollers/translate-viewcontroller")

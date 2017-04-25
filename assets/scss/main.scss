@@ -3,6 +3,7 @@
  **/
 @import "loading";
 @import url('https://fonts.googleapis.com/css?family=Raleway');
+@import url('https://fonts.googleapis.com/css?family=Roboto+Condensed');
 
 
 /**
@@ -22,12 +23,16 @@ $info-fullhd: "only screen and (min-width: 1344px)";
   */
 $container-max-width: 960px;
 
+/**
+  *     Title Bar
+  */
+$titlebar-height: 25px;
 
 /**
   *     Sidebar
   **/
 // layout
-$sidebar-width: 50px;
+$sidebar-width: 60px;
 // color
 $sidebar-bg-color: #1f2b3d;
 $sidebar-divider-color: #2b3b55;
@@ -43,14 +48,14 @@ $search-result-thumbnail-width: 100px;
 
 // color
 $search-header-bg-color: #34495e;
-$search-result-bg-color: #f8f8ff;
-$search-result-hover-bg-color: #eef;
-$search-result-grey-color: #888;
+$search-result-bg-color: #373f4e;
+$search-result-hover-bg-color: #303744;
 
 $non-subscribe-color: #aaa;
 $non-subscribe-hover-color: #558;
-$subscribed-color: #a00;
+$subscribed-color: #fc5fa1;
 $subscribed-hover-color: #d55;
+
 
 /**
   *     Read View
@@ -66,9 +71,11 @@ $chapter-selector-width: 250px;
 //     display: flex;
 // }
 
+
 body, html, .whole-view {
-    font-family: Arial,"文泉驛正黑","WenQuanYi Zen Hei","黑體-繁","Heiti TC","微軟正黑體","Microsoft JhengHei",sans-serif;
-    background: #414b5d;
+    font-family:'Roboto Condensed',"文泉驛正黑","WenQuanYi Zen Hei","黑體-繁","Heiti TC","微軟正黑體","Microsoft JhengHei",sans-serif;
+    // background: linear-gradient(to bottom, #7072e3 0%,#7f66e5 44%,#964cdb 100%);
+    background: #222935;
     @media #{$info-mobile} {
         height: 100%;
     }
@@ -80,10 +87,14 @@ body {
     }
 }
 
+
 .whole-view {
     @media #{$info-mobile} {
         display: flex;
         flex-direction: column;
+    }
+    &.tile.is-ancestor#whole-view {
+        margin: $titlebar-height 0 0;
     }
 }
 
@@ -104,10 +115,58 @@ body {
     }
 }
 
+/**
+ *     Title Bar
+ **/ 
+.titlebar {
+    background-color: $sidebar-bg-color;
+    position: fixed;
+    z-index: 10000;
+    width: 100%;
+    height: $titlebar-height;
+    top: 0;
+    -webkit-app-region: drag;
+}
+
+.titlebar-close,
+.titlebar-minimize,
+.titlebar-fullscreen {
+  width: 12px;
+	height: 12px;
+  text-indent: -9999px
+}
+
+.titlebar-close {
+	&:hover {
+  	border-color: #ad3934;
+  	background-color: #bf4943;
+  }
+}
+
+.titlebar-minimize {
+   &:hover {
+  	border-color: #ad7d15;
+  	background-color: #bf9123;
+  }
+}
+
+
+
+.titlebar-fullscreen,
+.titlebar-maximize {
+  &:hover {
+  	border-color: #128622;
+  	background-color: #1f9a31;
+  }
+}
+
+
+
 /* ---- Side Bar ---- */
 // Tabview switcher
 .sidebar {
-
+    box-shadow: 2px 0px 5px 0px rgba(0,0,0,0.3);
+    z-index: 99;
     @media #{$info-mobile} {
         &.float-menu {
             display:flex;
@@ -136,6 +195,7 @@ body {
         position:fixed;
     }
 
+    -webkit-app-region: drag;
     background-color: $sidebar-bg-color;
 
     .entry, .convert {
@@ -168,6 +228,9 @@ body {
 
         //divider
 
+        //
+        -webkit-app-region: no-drag;
+        -webkit-user-select: none;
 
         &:hover {
             background-color: $sidebar-entry-hover-bg-color;
@@ -271,31 +334,51 @@ body {
 }
 
 .search-result.media {
-    margin-top: 0;
-    margin-bottom: 0.2em;
+    margin: 5px 0;
     padding: 1em;
     border-top: none;
-    // border-bottom: 1px solid rgba(219,219,219, 0.3);
-    // border-right: 1px solid rgba(219,219,219, 0.3);
-
-    background-color: $search-result-bg-color;
+    box-shadow: none;
+    background: transparent;
+    border-bottom: 1px solid #313e56;
     cursor: pointer;
-
+    color: #fff;
+    .thumb{
+      width: 115px;
+      height: 160px;
+    }
+    .comic-name{
+      font-size: 23px;
+      overflow: hidden;
+      white-space : nowrap;
+      line-height: 25px;
+      padding: 5px 0 5px 0;
+      border-bottom: 1px solid #242e40;
+      color: #fff;
+    }
     &:hover {
         background-color: $search-result-hover-bg-color;
     }
-
-    .thumbnail {
-        width: $search-result-thumbnail-width;
-    }
-
-    .conten p {
-        margin-bottom: 0.4em;
-        line-height: 1.2em;
-
-        &.comic-update-info {
-            font-size: 0.9em;
-            color: $search-result-grey-color;
+    &.subscribed {
+        background-color: $search-result-bg-color;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+        border-bottom: 0px;
+        border-radius: 3px;
+        }
+    .content p {
+        margin: 10px 0;
+        font-size: 15px;
+        color: #fff;
+        &.comic-host, &.comic-update-info {
+            margin: 5px 0 0 0;
+            color:#698aca;
+            font-weight: 600;
+            line-height: 15px;
+            font-size: 13px;
+        }
+        &.comic-description {
+            height: 85px;
+            color: #b6cfce;
+            overflow: hidden;
         }
     }
 
@@ -317,21 +400,22 @@ body {
 
 
 #favorite-view {
+    background: #222935;
+    height: 100vh;
     padding: 2em 0;
     // max-width: 960px
     @media #{$info-mobile} {
         padding: 0.5em 0;
     }
     h2{
-      font-size: 35px;
+      font-size: 38px;
       font-family: 'Raleway', sans-serif;
-      color: #4991fc;
+      color: #7a8587;
       width: 100%;
       text-align: center;
       margin: 0 auto;
     }
     .columns {
-
         flex-wrap: wrap;
         align-content: flex-start;
         margin: auto;
@@ -347,52 +431,97 @@ body {
         }
 
     }
+
+    .media-content{
+      color: #fff;
+    }
 }
 
 .favorite-entry.media {
     @extend .search-result.media;
     // margin: 0 auto;
     overflow: hidden;
-    border-radius: 5px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.8);
+    border-radius: 3px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+    position: relative;
     margin: 3px;
+    background: #373f4e;
+    border-top: 10px solid #3c4659;
+    &:hover{
+      background: #303744;
+    }
     .media-left {
         margin-right: 0.2em;
     }
+    .media-right {
+      position: absolute;
+      right: 10px;
+      top: 10px;
+      z-index: 2;
+    }
 
-    p {
+    .content p {
         margin: 0;
-
+        line-height: 15px;
+        padding: 0;
+    }
+    .thumb{
+      width: 115px;
+      height: 160px;
     }
     .comic-name{
-      font-size: 25px;
+      font-size: 20px;
       overflow: hidden;
       text-overflow : ellipsis;
       white-space : nowrap;
       width : 150px;
       line-height: 25px;
+      padding: 15px 0 5px 0;
+      border-bottom: 1px solid #242e40;
+      color: #fff;
       small{
-        font-size:12px;
+        font-family: 'Roboto Condensed',"文泉驛正黑","WenQuanYi Zen Hei","黑體-繁","Heiti TC","微軟正黑體","Microsoft JhengHei",sans-serif;
+        font-weight: 600;
+        font-size:13px;
         line-height: 15px;
       }
     }
     .level {
         margin: 0.5em 0;
-        font-size: 15px;
+        font-size: 13px;
         line-height: 20px;
+    }
+    .level-item{
+      font-family: 'Roboto Condensed',"文泉驛正黑","WenQuanYi Zen Hei","黑體-繁","Heiti TC","微軟正黑體","Microsoft JhengHei",sans-serif;
+      margin: 0;
+      padding: 0;
+      font-size: 13px;
+      color: #fff;
+
+      &.last-read, &.newest{
+        display: block;
+        width: 105px;
+        overflow: hidden;
+        text-overflow : ellipsis;
+        white-space : nowrap;
+      }
     }
     @media #{$info-tablet} {
         width: 317px;
     }
 
     &.hasupdate {
-        background-color: #fed4df;
+        border-top: 10px solid #857af8
     }
-
+    .subscribe-btn{
+      color: #697d8d;
+      &:hover{
+        color: #857af8;
+      }
+    }
 }
 
 #read-view {
-
     .middle-panel {
         @media #{$info-mobile} {
             height: calc(100vh - #{$sidebar-width});
@@ -401,16 +530,16 @@ body {
 
         }
         @media #{$info-tablet} {
-            height: 100vh;
+            height: calc(100vh - #{$titlebar-height};
             width: $chapter-selector-width;
             position: fixed;
             overflow-y: auto;
-            border-left: 1px solid #c3c3c3;
-            border-right: 1px solid #c3c3c3;
+            left: $sidebar-width;
+            z-index: 2;
+            overflow-x: hidden;
         }
-
         position: fixed;
-
+        -webkit-user-select: none;
         #comic-header {
             @media #{$info-mobile} {
                 &.float-menu {
@@ -425,32 +554,31 @@ body {
                     }
                 }
             }
-
             @media #{$info-tablet} {
                 width: #{$chapter-selector-width};
                 position: fixed;
-                left: $sidebar-width;
+                left: calc($sidebar-widt + 1);
                 height: $sidebar-width;
-                // border-right: 1px solid #e3e3e3;
+                box-shadow: 0px 2px 3px 0px rgba(0,0,0,0.3);
+                font-size: 18px;
             }
             background-color: #4d5769;
-            border-bottom: 1px solid #e3e3e3;
+            border-bottom: 1px solid #313743;
             color: #fff;
             display: flex;
-
             .level-item {
                 margin: 0;
             }
-
             .subscribe-btn {
-                line-height: 1em;
                 cursor: pointer;
+                position: absolute;
+                right: 15px;
+                top: 19px;
                 &.subscribed {
                     color: #ff558d;
                 }
             }
         }
-
         .loading-bg {
             @media #{$info-mobile} {
                 height: calc(100vh - #{$sidebar-width} - 68px);
@@ -463,7 +591,6 @@ body {
                 margin-top: $sidebar-width;
             }
             z-index: 10000;
-
             .loading {
                 width: 4em;
                 height: 4em;
@@ -474,12 +601,9 @@ body {
                 left: calc(50% - 2em);
             }
         }
-
-
         #chapter-selector {
             @media #{$info-mobile} {
                 height: calc(100vh - #{$sidebar-width}*2);
-
                 overflow-y: auto;
             }
             @media #{$info-tablet} {
@@ -487,26 +611,73 @@ body {
             }
             margin-top: $sidebar-width;
             padding: 0;
-            background-color: #fff;
+            color: #cecece;
             .chapter-entry {
-                border-bottom: 1px solid #e3e3e3;
                 cursor: pointer;
-
+                background: #373e4a;
+                border-bottom: 1px solid #313743;
                 &:hover {
-                    background-color: #ccf;
+                    background-color: #2f3640;
                 }
-
                 &.read {
-                    background-color: #fdd;
+                    background-color: #3f4654;
                 }
-
                 &.active {
-                    background-color: #ddf;
+                    background-color: #2f3640;
+                    border-bottom: 2px solid #17c4bb;
                 }
             }
         }
     }
+    .controlTips{
+      position: absolute;
+      left: 320px;
+      top: calc(#{$titlebar-height} + 10px);
+      z-index: 99;
+      width: 160px;
+      @media #{$info-mobile} {
+          display: none;
+      }
+      li{
+        display: block;
+        width: 50px;
+        height: 50px;
+        background: rgba(129, 104, 255, 0.8);
+        font-size: 25px;
+        color: #fff;
+        border: 2px solid #ab92ee;
+        line-height: 50px;
+        text-align: center;
+        position: absolute;
+        border-radius: 6px;
+        &:nth-child(1){
+          left: 55px;
+        }
+        &:nth-child(2){
+          top: 55px;
+        }
+        &:nth-child(3){
+          top: 55px;
+          left: 55px;
+        }
+        &:nth-child(4){
+          top: 55px;
+          left: 110px;
+        }
 
+
+        span{
+          font-size: 10px;
+          position: absolute;
+          left: 3px;
+          top: 23px;
+          z-index: 2;
+          line-height: 10px;
+          width: 40px;
+          text-align: center;
+        }
+      }
+    }
     #read-area {
         @media #{$info-mobile} {
             margin-top: $sidebar-width;
@@ -514,7 +685,8 @@ body {
         }
         @media #{$info-tablet} {
             margin-left: $chapter-selector-width;
-            min-height: 100vh;
+            // margin-top: 22px;
+            min-height: calc(100vh - #{$titlebar-height});
         }
         background-color: #333638;
         color: #fff;
@@ -524,7 +696,7 @@ body {
             // background-color: #aaa;
             margin-bottom: 1em;
             img {
-                height: 100vh;
+                height: calc(100vh - #{$titlebar-height});
                 display: block;
                 margin: 0 auto;
             }

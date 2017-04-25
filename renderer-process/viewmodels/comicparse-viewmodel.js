@@ -55,6 +55,8 @@ function selectComic(host, link, title, titlekey, imguri) {
     subscribe_viewmodel.updateUI();
     // Make read-view active
     viewswitch_viewcontroller.tabswitch(2);
+
+
 }
 
 /**
@@ -90,6 +92,7 @@ function onChaptersGrabbed(result, newest){
         if (!(obj.ch_key in chapters_data[obj.ch_group])) {
             chapters_data[obj.ch_group][obj.ch_key] = {
                 name: obj.ch_name,
+                ch_link: obj.ch_link,
                 read: false
             }
         }
@@ -97,6 +100,7 @@ function onChaptersGrabbed(result, newest){
         // add new ui to the screen
         read_viewcontroller.appendNewChapter(view);
     }
+    // console.log(chapter_list);
     // Pass information to the read view
     read_viewcontroller.setChapterList(chapter_list);
 
@@ -105,12 +109,29 @@ function onChaptersGrabbed(result, newest){
     comic_data.newestchapter = newest;
     comic_data.hasupdate = false;
 
+    
     // update the read-history UI
     updateChapterList();
 
     translate_viewcontroller.translate();
     // disable the loading UI
     read_viewcontroller.toggleLoadingAnimation(false);
+
+    // select last chapter
+    // console.log(result);
+    if (comic_data.lastread_ch_key != undefined) {
+        // console.log("old");
+        var lastpage = comic_data.lastpage;
+        if (comic_data.lastread_ch_key != obj.ch_key) {
+            lastpage = 0;
+        }
+        read_viewcontroller.selectChapter(comic_data.chapters[comic_data.lastread_ch_group][comic_data.lastread_ch_key].ch_link, comic_data.lastread_ch_group, comic_data.lastread_ch_key, lastpage);
+    } else {
+        var obj = result[result.length - 1];
+        // console.log("new")
+        // console.log(obj);
+        read_viewcontroller.selectChapter(obj.ch_link, obj.ch_group, obj.ch_key);
+    }
 }
 
 
@@ -121,7 +142,7 @@ function onChaptersGrabbed(result, newest){
  * @param {String} ch_key   : Chapter's unique key
  */
 function selectChapter(ch_link, ch_group, ch_key) {
-
+    // console.log("select " + ch_link + ":" + ch_group + ":" + ch_key);
     read_viewcontroller.clearReadArea();
     
     // curPageIdx = 0;
@@ -151,9 +172,17 @@ function onSingleChapterLoaded(result, ch_group, ch_key) {
         read_viewcontroller.appendNewPage(view);
     }
     read_viewcontroller.setPageIds(pageIds);
+    var lastpage = comic_data.lastpage;
+    if (comic_data.lastread_ch_key != ch_key) {
+        lastpage = 0;
+    }
+    read_viewcontroller.scrollToPage(lastpage);
     // console.log("read");
     comic_data.chapters[ch_group][ch_key].read = true;
     comic_data.lastread = comic_data.chapters[ch_group][ch_key].name;
+    comic_data.lastread_ch_key = ch_key;
+    comic_data.lastread_ch_group = ch_group;
+    comic_data.lastpage = 0;
     updateChapterList();
 }
 
@@ -179,7 +208,6 @@ function init() {
 }
 
 function lateInit() {
-    
 }
 
 

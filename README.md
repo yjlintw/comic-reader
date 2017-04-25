@@ -1,5 +1,6 @@
 # Comic Reader
 An Electron app's for manga/comic reading.
+![build](https://travis-ci.org/yjlintw/comic-reader.svg?branch=master)
 
 ## Features
 1. Search comic books inside the app
@@ -14,7 +15,11 @@ An Electron app's for manga/comic reading.
 ## Supported Host 
 1. SF互動傳媒網 [www.sfacg.com](http://www.sfacg.com)
 2. 8Comic [8comic.se](http://8comic.se/)
+3. dm5 [www.dm5.com](http://www.dm5.com/)
 2. ...more coming
+
+## Known Issues
+1. Mobile View is broken at this moment.
 
 ## Remove Settings
 ### Only for users who have used the app with version number smaller than v0.1.5
@@ -39,15 +44,11 @@ or
 
 ## Screen Shots
 ### Search View
-![Imgur](http://i.imgur.com/Kih19di.png)
+![Imgur](http://i.imgur.com/HfHSH2A.png)
 ### Favorite View
-![Imgur](http://i.imgur.com/FSrtzUN.png)
-#### Favorite View - Mobile
-![Imgur](http://i.imgur.com/XKKOvyK.png)
+![Imgur](http://i.imgur.com/zV3ECFq.png)
 ### Read View
-![Imgur](http://i.imgur.com/55WXUia.png)
-#### ReadView - Mobile
-![Imgur](http://i.imgur.com/shPfT2s.png)
+![Imgur](http://i.imgur.com/N5P9HLY.jpg)
 
 
 # For Developers:
