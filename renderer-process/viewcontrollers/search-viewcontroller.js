@@ -172,7 +172,7 @@ function init() {
 // init when document is ready
 function lateInit() {
     // Search Header
-    $('#search-input').keyup(function(e){
+    $('#search-input').keypress(function(e){
         if(e.keyCode == 13)
         {
             $(this).trigger("enterKey");
