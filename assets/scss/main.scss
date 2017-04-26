@@ -648,6 +648,14 @@ h1, h2 {
       top: calc(#{$titlebar-height} + 10px);
       z-index: 99;
       width: 160px;
+      visibility: hidden;
+      opacity: 0;
+      transition: opacity 1s ease-out, visibility 1s;
+      &.is-visible {
+        opacity: 1;
+        visibility: visible;
+      }
+
       @media #{$info-mobile} {
           display: none;
       }

@@ -25,6 +25,7 @@ module.exports = {
     toggleLoadingAnimation: toggleLoadingAnimation,
     scrollToPage: scrollToPage,
     selectChapter: selectChapter,
+    showToolTips: showToolTips,
 
     // Action Binding
     bindSubscribe: bindSubscribe,
@@ -308,6 +309,13 @@ function clearReadArea() {
 
 function clearChapterSelector() {
     $("#chapter-selector").html("");
+}
+
+function showToolTips() {
+    $('.controlTips').addClass('is-visible')
+    setTimeout(function() {
+        $('.controlTips').removeClass('is-visible')
+    }, 2000);
 }
 
 function selectChapter(ch_link, ch_group, ch_key, last_page = 0) {

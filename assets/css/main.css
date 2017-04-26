@@ -511,7 +511,13 @@ h1, h2 {
     left: 320px;
     top: calc(25px + 10px);
     z-index: 99;
-    width: 160px; }
+    width: 160px;
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 1s ease-out, visibility 1s; }
+    #read-view .controlTips.is-visible {
+      opacity: 1;
+      visibility: visible; }
     @media only screen and (max-width: 768px) {
       #read-view .controlTips {
         display: none; } }
