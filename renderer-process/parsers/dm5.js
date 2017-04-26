@@ -258,6 +258,10 @@ function onSingleChapterLoaded(error, response, body) {
             }
         }, function(error, response, body){
             var images = eval(body);
+            if (images == undefined) {
+                next(null, null);
+                return;
+            }
             var id = 'pic' + n;
             var obj = {
                 imgurl: images[0],
