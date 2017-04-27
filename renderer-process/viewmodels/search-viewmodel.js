@@ -100,6 +100,7 @@ function searchResponse(result, host) {
 
     // Update subscribe status
     subscribe_viewmodel.updateUI();
+    search-search_viewcontroller.updateSearchResult();
 }
 
 

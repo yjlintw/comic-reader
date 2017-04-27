@@ -331,6 +331,24 @@ h1, h2 {
     }
 }
 
+#search-filters {
+    margin-top: 1em;
+    .tag {
+        -webkit-user-select: none;
+        margin: 0 0.2em;
+        background-color: #313743;
+        color: #526c77;
+        cursor: pointer;
+        &:hover {
+            background-color: #425c77;
+        }
+        &.active {
+            background-color: #857af8;
+            color: #fff;
+        }
+    }
+}
+
 #search-results{
     // background-color: #eee;
     max-width: $container-max-width;

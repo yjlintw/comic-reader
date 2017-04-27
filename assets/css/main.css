@@ -258,6 +258,20 @@ h1, h2 {
       box-shadow: 0px;
       border: 0px; }
 
+#search-filters {
+  margin-top: 1em; }
+  #search-filters .tag {
+    -webkit-user-select: none;
+    margin: 0 0.2em;
+    background-color: #313743;
+    color: #526c77;
+    cursor: pointer; }
+    #search-filters .tag:hover {
+      background-color: #425c77; }
+    #search-filters .tag.active {
+      background-color: #857af8;
+      color: #fff; }
+
 #search-results {
   max-width: 960px; }
   @media only screen and (min-width: 769px) {
