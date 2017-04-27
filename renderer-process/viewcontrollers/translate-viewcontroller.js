@@ -39,12 +39,12 @@ $(document).ready(function () {
     zhconvert.onclick = function () {
         if (zhconvert.dataset.zh == "tw") {
             to_traditional_chinese = false;
-            setTimeout(function () { zhconvert.textContent = "簡"; }, 250);
+            setTimeout(function () { $('.convert span').toggleClass('icon-zhtw icon-zhcn'); }, 250);
             zhconvert.dataset.zh = "cn";
 
         } else {
             to_traditional_chinese = true;
-            setTimeout(function () { zhconvert.textContent = "繁"; }, 250);
+            setTimeout(function () { $('.convert span').toggleClass('icon-zhcn icon-zhtw'); }, 250);
             zhconvert.dataset.zh = "tw";
         }
         translate();
