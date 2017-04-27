@@ -675,6 +675,13 @@ h1, h2 {
       top: calc(#{$titlebar-height} + 10px);
       z-index: 99;
       width: 160px;
+      transition: opacity 1.5s;
+      opacity: 0;
+
+      &.is-visible{
+        transition: opacity 1.5s;
+        opacity: 1;
+      }
       @media #{$info-mobile} {
           display: none;
       }
