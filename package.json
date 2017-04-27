@@ -2,7 +2,7 @@
   "name": "comic-reader",
   "productName:": "Comic Reader",
   "author": "Team Comic Reader",
-  "version": "0.1.11",
+  "version": "0.1.12",
   "description": "A simple comic reader app",
   "main": "main.js",
   "devDependencies": {

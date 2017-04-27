@@ -176,7 +176,9 @@ function onSingleChapterLoaded(result, ch_group, ch_key) {
     if (comic_data.lastread_ch_key != ch_key) {
         lastpage = 0;
     }
+    console.log("scroll to page: comicparse");
     read_viewcontroller.scrollToPage(lastpage);
+    read_viewcontroller.showToolTips();
     // console.log("read");
     comic_data.chapters[ch_group][ch_key].read = true;
     comic_data.lastread = comic_data.chapters[ch_group][ch_key].name;
