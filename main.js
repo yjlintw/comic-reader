@@ -6,6 +6,8 @@ require('electron-debug')({showDevTools: false});
 console.log(app.getAppPath())
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
+require('electron-context-menu')();
+
 let win;
 
 function createWindow () {
