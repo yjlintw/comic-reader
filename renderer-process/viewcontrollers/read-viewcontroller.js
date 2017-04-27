@@ -379,10 +379,46 @@ function createComicPage(imguri, id, idx) {
         view.attr("id", id);
         view.attr("idx", idx);
         view.find("img").attr("src", imguri);
-        view.click(function() {
+        // var is_dragging = false;
+        // var is_zoom = false;
+        // view.find("img").mousedown(function() {
+        //     is_dragging = false;
+        // })
+        // .mousemove(function() {
+        //     is_dragging = true;
+        // })
+        // .mouseup(function() {
+        //     var was_dragging = is_dragging;
+        //     is_dragging = false;
+        //     if (!was_dragging) {
+        //         console.log('drag:' + was_dragging);
+        //         current_page_idx = idx;
+        //         nextPic();
+        //     }
+        // });
+
+        view.find('.zoom-btn').click(function() {
+            view.zoom({
+                on:'click',
+                magnify: '1.5',
+                callback: function() {
+                    view.trigger('click');
+                },
+                onZoomOut: function() {
+                    view.trigger('zoom.destroy');
+                }
+            })
+            
+        });
+        view.find("img").click(function() {
             current_page_idx = idx;
             nextPic();
         });
+        
+        // view.zoom({
+        //         on:'grab',
+        //         magnify: '2'
+        //     })
         return view;
 }
 
