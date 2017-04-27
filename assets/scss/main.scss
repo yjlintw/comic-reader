@@ -735,11 +735,28 @@ h1, h2 {
         .comic-page-container {
             // height: 100vh;
             // background-color: #aaa;
+            position: relative;
+            -webkit-user-select: none;
             margin-bottom: 1em;
             img {
                 height: calc(100vh - #{$titlebar-height});
                 display: block;
                 margin: 0 auto;
+            }
+            .zoom-btn {
+                // z-index: 10000;
+                // visibility: hidden;
+                opacity: 0.1;
+                font-size: 1.5em;
+                position: absolute;
+                padding: 0.5em 0.8em 0.4em;
+                background-color: rgba(0,0,0,0.8);
+                &:hover {
+                    // visibility: visible;
+                    opacity: 1;
+                    transition: opacity 0.2s ease-out;
+                }
+                
             }
         }
     }
