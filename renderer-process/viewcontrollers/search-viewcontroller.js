@@ -7,6 +7,7 @@
  *      ./search-controller.js
  */
 const util = require('../util');
+const values = require('../models/values');
 module.exports = {
     createResultView: createResultView,
     getSearchQuery: getSearchQuery,
@@ -14,6 +15,7 @@ module.exports = {
     appendNewResult: appendNewResult,
     loadingUI: loadingUI,
     updateSubscribeUI: updateSubscribeUI,
+    updateSearchResult: updateSearchResult,
     bindSearch: bindSearch,
     bindSubscribe: bindSubscribe,
     bindSelectComic: bindSelectComic,
@@ -25,6 +27,7 @@ module.exports = {
  */
 
 var resultview_template_str = "";
+var filter_template_str = "";
 // search function
 var searchFunc;
 var subscribeFunc;
@@ -138,6 +141,22 @@ function updateSubscribeUI(all_comic_Data) {
     });
 }
 
+function updateSearchResult() {
+    var activetags = {};
+    $('#search-filters .tag').each(function() {
+        if ($(this).hasClass('active')) {
+            activetags[$(this).attr('host')] = true;
+        }
+    });
+    $('.search-result').each(function() {
+        if ($(this).attr('host') in activetags) {
+            $(this).removeClass('is-hidden');
+        } else {
+            $(this).addClass('is-hidden');
+        }
+    });
+}
+
 
 /**
  * Bind the search function
@@ -168,21 +187,46 @@ function init() {
     $.get('./sections/search-result-entry.html', function(result) {
         resultview_template_str = result;
     });
+    $.get('./sections/search-filter.html', function(result) {
+        filter_template_str = result;
+    });
 }
 
 // init when document is ready
 function lateInit() {
     // Search Header
-    $('#search-input').keyup(function(e){
+    $('#search-input').keypress(function(e){
         if(e.keyCode == 13)
         {
             $(this).trigger("enterKey");
         }
     });
 
+
     $("#search-input").bind("enterKey", searchFunc);
 
     $("#search-btn").click(searchFunc);
+    
+    // create filters
+    for (var key in values.hostnames) {
+        var view = $(filter_template_str);
+        view.text(key);
+        view.attr('host', key);
+        view.click(function () {
+            var host = $(this).attr('host');
+            var activate = $(this).hasClass('active');
+            console.log(activate);
+            activate = !activate;
+            if (!activate) {
+                $(this).removeClass('active');
+            } else {
+                $(this).addClass('active');
+            }
+            updateSearchResult();
+
+        })
+        $("#search-filters").append(view);    
+    }    
 }
 
 /**
