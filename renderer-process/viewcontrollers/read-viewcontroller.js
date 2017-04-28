@@ -100,11 +100,11 @@ function getCurrentPageIdx() {
 
 /**
  * Set selected comic's information
- * @param {string} host 
- * @param {string} titlekey 
- * @param {string} title 
- * @param {string} link 
- * @param {string} imguri 
+ * @param {string} host
+ * @param {string} titlekey
+ * @param {string} title
+ * @param {string} link
+ * @param {string} imguri
  */
 function setCurrentComic(host, titlekey, title, link, imguri) {
     current_host = host;
@@ -134,9 +134,9 @@ function updateSubscribeUI(all_comic_data) {
     var dom = $("#comic-header");
     var host = dom.attr("host");
     var titlekey = dom.attr("titlekey");
-    
-    var isSubscribed = all_comic_data[host] 
-        && all_comic_data[host][titlekey] 
+
+    var isSubscribed = all_comic_data[host]
+        && all_comic_data[host][titlekey]
         && all_comic_data[host][titlekey].subscribed;
 
     if (isSubscribed) {
@@ -148,14 +148,14 @@ function updateSubscribeUI(all_comic_data) {
 
 /**
  * update chapter list
- * @param {Object} all_comic_data 
+ * @param {Object} all_comic_data
  */
 function updateChapterList(comic_data) {
     // console.log(comicData);
     $(".chapter-entry").each(function(i, e) {
         var ch_key = $(e).attr("chKey");
         var ch_group = $(e).attr("chGroup");
-        
+
         if (comic_data.chapters[ch_group][ch_key].read) {
             $(e).addClass("read");
         }
@@ -179,8 +179,8 @@ function prevPic() {
     }
     current_page_idx--;
     if (current_page_idx < 0) current_page_idx = 0;
-    
-    if ($("#" + page_id_list[current_page_idx]).offset() !== undefined ) { 
+
+    if ($("#" + page_id_list[current_page_idx]).offset() !== undefined ) {
         // $('#read-area').animate({
         //     scrollTop: current_page_idx * height
         // }, 100);
@@ -199,7 +199,7 @@ function nextPic() {
         current_page_idx = Math.floor(pos / height);
     }
     current_page_idx++;
-    
+
     if (current_page_idx >= page_id_list.length) current_page_idx = page_id_list.length -1;
     if ($("#" + page_id_list[current_page_idx]).offset() !== undefined) {
         // $('#read-area').animate({
@@ -243,8 +243,9 @@ function scrollToPage(page_idx) {
     $('#read-area').animate({
         scrollTop: current_page_idx * height
     }, 100)
-    
+
 }
+
 
 /**
  * Scroll the chapter selector, so the active chapter
@@ -325,7 +326,7 @@ function selectChapter(ch_link, ch_group, ch_key, last_page = 0) {
             return false;
         }
     });
-    
+
     // if (last_page != 0) {
     //     setTimeout(function() {
     //         scrollToPage(last_page);
@@ -497,6 +498,7 @@ $(function(){
         }
     });
 });
+
 
 /**
  *      Main Scripts
