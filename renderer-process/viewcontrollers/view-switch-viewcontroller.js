@@ -7,13 +7,14 @@
 
 // var subscriber = require('../subscribe-viewmodel'); 
 var read_viewcontroller = require('./read-viewcontroller');
-module.exports = {
-    tabswitch: tabswitch,
-    bindUpdateAllUI: bindUpdateAllUI
-    
-}
+
 // Variable definition
 var updateAllUIFunc;
+var TAB_NAME = {
+        FAVORITE: 0,
+        SEARCH: 1,
+        READ: 2
+    };
 
 // Scroll behavior
 
@@ -65,13 +66,13 @@ function hasScrolled() {
  */
 function tabswitch(index) {
     switch (index) {
-        case 0:
+        case TAB_NAME.FAVORITE:
             $("#tab-favorite").trigger("click");
             break;
-        case 1:
+        case TAB_NAME.SEARCH:
             $("#tab-search").trigger("click");
             break;
-        case 2:
+        case TAB_NAME.READ:
             $("#tab-read").trigger("click");
             
             break;
@@ -100,3 +101,12 @@ function onTabEntryClick() {
 $(document).ready(function() {
     $(".sidebar .entry").click(onTabEntryClick);
 });
+
+
+module.exports = {
+    TAB_NAME: TAB_NAME,
+    tabswitch: tabswitch,
+    bindUpdateAllUI: bindUpdateAllUI,
+    
+    
+}

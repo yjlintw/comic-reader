@@ -28,7 +28,8 @@ module.exports = {
     register: register,
     subscribe: subscribe,
     updateUI: updateSubscribeUIStatus,
-    checkUpdate: checkUpdate
+    checkUpdate: checkUpdate,
+    hasSubscription: hasSubscription
 }
 
 /**
@@ -212,7 +213,7 @@ function updateSubscribeUIStatus() {
         settings.set('comic', all_comic_data);
     }
     search_viewcontroller.updateSubscribeUI(all_comic_data);
-    favorite_viewcontroller.updateSubscribeUI(all_comic_data);
+    favorite_viewcontroller.updateSubscribeUI(all_comic_data, hasSubscription());
     read_viewcontroller.updateSubscribeUI(all_comic_data);
     translate_viewcontroller.translate();
 
@@ -224,6 +225,21 @@ function updateSubscribeUIStatus() {
         all_comic_data[host][titlekey].lastpage = page_idx;
         settings.set('comic', all_comic_data);
     }
+}
+
+function hasSubscription() {
+    all_comic_data = settings.get('comic');
+    if (all_comic_data == undefined) return false;
+
+    for (var host in all_comic_data) {
+        for (var comic in all_comic_data[host]) {
+            if (all_comic_data[host][comic].subscribed) {
+                return true;
+            }
+        }
+    }
+
+    return false;
 }
 
 /**

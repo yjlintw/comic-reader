@@ -19,6 +19,7 @@ module.exports = {
 //
 
 var favorite_entry_template_str = "";
+var favorite_empty_template_str = "";
 
 /**
  * Action Binding
@@ -47,26 +48,31 @@ function bindSelectComic(func) {
 /**
  * Update subscription indicator UI
  */
-function updateSubscribeUI(all_comic_data) {
+function updateSubscribeUI(all_comic_data, has_subscription = true) {
     $("#favorite-contents").html("");
 
-    for (var host in all_comic_data) {
-        for (var titlekey in all_comic_data[host]) {
-            var comic_data = all_comic_data[host][titlekey];
-            if (comic_data.subscribed) {
-                var link = comic_data.link;
-                var imguri = comic_data.thumbnail;
-                var title = comic_data.title;
-                var lastread = comic_data.lastread;
-                var newest = comic_data.newestchapter;
-                var view = createFavEntry(link, titlekey, imguri, title, host, lastread, newest);
+    if (has_subscription) {
+        for (var host in all_comic_data) {
+            for (var titlekey in all_comic_data[host]) {
+                var comic_data = all_comic_data[host][titlekey];
+                if (comic_data.subscribed) {
+                    var link = comic_data.link;
+                    var imguri = comic_data.thumbnail;
+                    var title = comic_data.title;
+                    var lastread = comic_data.lastread;
+                    var newest = comic_data.newestchapter;
+                    var view = createFavEntry(link, titlekey, imguri, title, host, lastread, newest);
 
-                if (all_comic_data[host][titlekey].hasupdate) {
-                    view.addClass("hasupdate");
+                    if (all_comic_data[host][titlekey].hasupdate) {
+                        view.addClass("hasupdate");
+                    }
+                    $("#favorite-contents").append(view);
                 }
-                $("#favorite-contents").append(view);
             }
         }
+    } else {
+        var view = $(favorite_empty_template_str);
+        $("#favorite-contents").append(view);
     }
 
 }
@@ -129,6 +135,10 @@ function createFavEntry(link, titlekey, imguri, title, host, lastread, newest)  
 function init () {
     $.get('./sections/favorite-entry.html', function(result) {
         favorite_entry_template_str = result;
+    })
+
+    $.get('./sections/favorite-empty.html', function(result) {
+        favorite_empty_template_str = result;
     })
 }
 

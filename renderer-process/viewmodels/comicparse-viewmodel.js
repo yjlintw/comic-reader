@@ -54,7 +54,7 @@ function selectComic(host, link, title, titlekey, imguri) {
     // update the subscription indicators' UI
     subscribe_viewmodel.updateUI();
     // Make read-view active
-    viewswitch_viewcontroller.tabswitch(2);
+    viewswitch_viewcontroller.tabswitch(viewswitch_viewcontroller.TAB_NAME.READ);
 
 
 }
