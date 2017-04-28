@@ -455,7 +455,7 @@ h1, h2 {
     .content p {
         margin: 10px 0;
         font-size: 14px;
-        color: ##8a8a90;
+        color: #8a8a90;
         &.comic-host, &.comic-update-info {
             margin: 5px 0 0 0;
             color:#698aca;
@@ -529,7 +529,22 @@ h1, h2 {
     .media-content{
       color: #fff;
     }
+    .icon-help{
+      color: #e4ff67;
+      font-size: 150px;
+      text-align: center;
+      width:  150px;
+      display: block;
+      margin: 100px auto 10px;
+    }
+    .messages{
+      color:  #fff;
+      text-align: center;
+      font-size: 25px;
+      width:  100%;
+    }
 }
+
 
 .favorite-entry.media {
     @extend .search-result.media;
