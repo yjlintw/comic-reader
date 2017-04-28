@@ -432,6 +432,7 @@ h1, h2 {
     .thumb{
       width: 115px;
       height: 160px;
+      border-radius: 3px;
     }
     .comic-name{
       font-size: 23px;
@@ -453,8 +454,8 @@ h1, h2 {
         }
     .content p {
         margin: 10px 0;
-        font-size: 15px;
-        color: #fff;
+        font-size: 14px;
+        color: ##8a8a90;
         &.comic-host, &.comic-update-info {
             margin: 5px 0 0 0;
             color:#698aca;
@@ -539,12 +540,12 @@ h1, h2 {
     position: relative;
     margin: 3px;
     background: #373f4e;
-    border-top: 10px solid #3c4659;
+    border-top: 7px solid #3c4659;
     &:hover{
       background: #303744;
     }
     .media-left {
-        margin-right: 0.2em;
+        margin-right: 5px;
     }
     .media-right {
       position: absolute;
@@ -561,6 +562,7 @@ h1, h2 {
     .thumb{
       width: 115px;
       height: 160px;
+      border-radius: 3px;
     }
     .comic-name{
       font-size: 20px;
@@ -570,8 +572,8 @@ h1, h2 {
       width : 150px;
       line-height: 25px;
       padding: 15px 0 5px 0;
-      border-bottom: 1px solid #242e40;
-      color: #fff;
+      border-bottom: 2px dotted #676c75;
+      color: #b1dad8;
       small{
         font-family: 'Roboto Condensed',"文泉驛正黑","WenQuanYi Zen Hei","黑體-繁","Heiti TC","微軟正黑體","Microsoft JhengHei",sans-serif;
         font-weight: 600;
