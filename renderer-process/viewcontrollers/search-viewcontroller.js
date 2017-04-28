@@ -194,19 +194,28 @@ function init() {
 
 // init when document is ready
 function lateInit() {
+  // SearchAnimate
+
+  $("#search-btn").click(function() {
+    $('#search-header h2').addClass('active');
+    $('#search-results').addClass('active');
+  });
+
     // Search Header
     $('#search-input').keypress(function(e){
         if(e.keyCode == 13)
         {
             $(this).trigger("enterKey");
+            $('#search-header h2').addClass('active');
+            $('#search-results').addClass('active');
         }
     });
 
-
+    
     $("#search-input").bind("enterKey", searchFunc);
 
     $("#search-btn").click(searchFunc);
-    
+
     // create filters
     for (var key in values.hostnames) {
         var view = $(filter_template_str);
@@ -225,8 +234,8 @@ function lateInit() {
             updateSearchResult();
 
         })
-        $("#search-filters").append(view);    
-    }    
+        $("#search-filters").append(view);
+    }
 }
 
 /**

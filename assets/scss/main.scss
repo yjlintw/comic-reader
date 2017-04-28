@@ -2,7 +2,7 @@
  *      Import
  **/
 @import "loading";
-@import url('https://fonts.googleapis.com/css?family=Raleway');
+@import url('https://fonts.googleapis.com/css?family=Raleway:100,400');
 @import url('https://fonts.googleapis.com/css?family=Roboto+Condensed');
 
 
@@ -38,7 +38,7 @@ $sidebar-bg-color: #1f2b3d;
 $sidebar-divider-color: #2b3b55;
 $sidebar-icon-color: #fff;
 $sidebar-entry-hover-bg-color: #26344b;
-$sidebar-entry-active-bg-color: #17C4BB;
+$sidebar-entry-active-bg-color: #1f2631;
 
 /**
   *     Search View
@@ -47,7 +47,7 @@ $sidebar-entry-active-bg-color: #17C4BB;
 $search-result-thumbnail-width: 100px;
 
 // color
-$search-header-bg-color: #34495e;
+$search-header-bg-color: #222935;
 $search-result-bg-color: #373f4e;
 $search-result-hover-bg-color: #303744;
 
@@ -85,8 +85,20 @@ body, html, .whole-view {
 h1, h2 {
     margin: 0;
 }
+::-webkit-scrollbar {
+    width: 10px;
+}
 
+::-webkit-scrollbar-track {
+    border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb {
+    border-radius: 3px;
+    background-color: #63676d;
+}
 .whole-view {
+    padding-top: 25px;
     @media #{$info-mobile} {
         display: flex;
         flex-direction: column;
@@ -95,9 +107,9 @@ h1, h2 {
         margin: 0;
         min-height: calc(100vh - #{$titlebar-height});
         height: calc(100vh - #{$titlebar-height});
-        width: 100vw;
+        width: calc(100vw - 10px);
         position: fixed;
-        top: $titlebar-height;
+        top: 0;
     }
 }
 
@@ -117,7 +129,7 @@ h1, h2 {
         // margin-top: $titlebar-height;
         margin-left: $sidebar-width;
     }
-    height: calc(100vh - #{$titlebar-height});
+    height: 100vh;
     overflow-y: auto;
 }
 
@@ -125,7 +137,7 @@ h1, h2 {
  *     Title Bar
  **/
 .titlebar {
-    background-color: $sidebar-bg-color;
+    background-color: #3c4659;
     position: fixed;
     z-index: 10000;
     width: 100%;
@@ -140,7 +152,6 @@ h1, h2 {
 .titlebar-fullscreen {
   width: 12px;
 	height: 12px;
-  text-indent: -9999px
 }
 
 .titlebar-close {
@@ -172,7 +183,6 @@ h1, h2 {
 .titlebar-fullscreen {
   width: 12px;
 	height: 12px;
-  text-indent: -9999px
 }
 
 .titlebar-close {
@@ -230,6 +240,7 @@ h1, h2 {
         flex-grow: 0;
         flex-shrink: 0;
         flex-basis: $sidebar-width;
+        top: 25px;
         height: 100vh;
         flex-direction: column;
         position:fixed;
@@ -280,6 +291,7 @@ h1, h2 {
         &.active {
             background-color: $sidebar-entry-active-bg-color;
             border: 0px;
+            color: #00ffc0;
         }
     }
 }
@@ -287,12 +299,23 @@ h1, h2 {
 /* ---- Search Panel ---- */
 #search-view {
     h2{
-      font-size: 35px;
+      font-size: 80px;
       font-family: 'Raleway', sans-serif;
-      color: #4991fc;
-
+      color: #17c4bb;
+      width: 600px;
+      margin-top: 80px;
+      margin-left: calc(50% - 300px);
+      font-weight: 100;
+      transition: all 1s ease;
+      text-align: left;
       span{
-        color: #fc5fa1;
+        color: #e4ff67;
+      }
+      &.active{
+        font-size: 30px;
+        font-weight: 400;
+        margin: 0;
+        width: 300px;
       }
     }
     .input{
@@ -316,12 +339,11 @@ h1, h2 {
       }
     }
     .loading-bg {
-        background-color: #333;
+        background-color: #222935;
         display: flex;
         flex: 1 1 auto;
         align-items: center;
         justify-content: center;
-
         @media #{$info-mobile} {
             height: calc(100vh - #{$sidebar-width} - 68px);
         }
@@ -384,10 +406,16 @@ h1, h2 {
 }
 
 #search-results{
-    // background-color: #eee;
-    max-width: $container-max-width;
+    width: 100%;
+    background: url(../img/ground.png) 0 calc(100% - 25px) repeat-x;
+    transition: all 1s ease;
+    padding: 0;
     @media #{$info-tablet} {
-        padding: 0.5em;
+        padding: 0;
+    }
+    &.active{
+      background-image: none;
+      max-width: $container-max-width;
     }
 
 }
@@ -462,6 +490,12 @@ h1, h2 {
     background: #222935;
     height: 100vh;
     padding: 2em 0;
+    &:after{
+      content: ('.');
+      height: 50px;
+      display: block;
+
+    }
     // max-width: 960px
     @media #{$info-mobile} {
         padding: 0.5em 0;
@@ -556,6 +590,7 @@ h1, h2 {
       padding: 0;
       font-size: 13px;
       color: #fff;
+      justify-content: inherit;
 
       &.last-read, &.newest{
         display: block;
@@ -582,6 +617,7 @@ h1, h2 {
 
 #read-view {
     .middle-panel {
+                  z-index: 0;
         @media #{$info-mobile} {
             height: calc(100vh - #{$sidebar-width});
             width: 100vw;
@@ -594,12 +630,13 @@ h1, h2 {
             position: fixed;
             overflow-y: auto;
             left: $sidebar-width;
-            z-index: 2;
             overflow-x: hidden;
         }
         position: fixed;
         -webkit-user-select: none;
         #comic-header {
+            border-left: 7px solid #e4ff67;
+            padding-left: 15px;
             @media #{$info-mobile} {
                 &.float-menu {
                     position: fixed;
@@ -614,7 +651,7 @@ h1, h2 {
                 }
             }
             @media #{$info-tablet} {
-                width: #{$chapter-selector-width};
+                width: calc(#{$chapter-selector-width} - 10px);
                 position: fixed;
                 left: calc($sidebar-widt + 1);
                 height: $sidebar-width;
@@ -675,6 +712,7 @@ h1, h2 {
                 cursor: pointer;
                 background: #373e4a;
                 border-bottom: 1px solid #313743;
+                padding-left: 25px;
                 &:hover {
                     background-color: #2f3640;
                 }
@@ -684,14 +722,23 @@ h1, h2 {
                 &.active {
                     background-color: #2f3640;
                     border-bottom: 2px solid #17c4bb;
+                    &:before{
+                      color: #17c4bb;
+                    }
+                }
+                &:before{
+                  content:"• ";
+                  font-size: 22px;
+                  line-height: 22px;
+                  letter-spacing: 3px;
                 }
             }
         }
     }
     .controlTips{
       position: absolute;
-      left: 320px;
-      top: calc(#{$titlebar-height} + 10px);
+      left: 325px;
+      top: 35px;
       z-index: 99;
       width: 160px;
       transition: opacity 1.5s;
@@ -709,7 +756,7 @@ h1, h2 {
         width: 50px;
         height: 50px;
         font-size: 50px;
-        color: #fff;
+        color: #17c4bb;
         line-height: 50px;
         text-align: center;
         position: absolute;
