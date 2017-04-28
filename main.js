@@ -6,6 +6,8 @@ require('electron-debug')({showDevTools: false});
 console.log(app.getAppPath())
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
+require('electron-context-menu')();
+
 let win;
 
 function createWindow () {
@@ -17,9 +19,10 @@ function createWindow () {
     h = settings.get("system.windowsize.height");
   }
   win = new BrowserWindow({
-    width: w, 
+    width: w,
     height: h,
     frame: false,
+    transparent: true,
     icon: path.join(__dirname, 'assets/icons/icon.icns'),
     webPreferences: {
       blinkFeatures: 'OverlayScrollbars'
@@ -81,4 +84,3 @@ app.on('activate', () => {
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
-

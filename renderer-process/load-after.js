@@ -13,7 +13,12 @@ var viewswitch_viewcontroller = require('./viewcontrollers/view-switch-viewcontr
 
 var scheduledTask;
 $(document).ready(function() {
-    viewswitch_viewcontroller.tabswitch(0);
+    console.log(viewswitch_viewcontroller)
+    if (subscriber.hasSubscription()) {
+        viewswitch_viewcontroller.tabswitch(viewswitch_viewcontroller.TAB_NAME.FAVORITE);
+    } else {
+        viewswitch_viewcontroller.tabswitch(viewswitch_viewcontroller.TAB_NAME.SEARCH);
+    }
     subscriber.checkUpdate();
     // console.log(scheduledTask);
     if (!scheduledTask) {
