@@ -305,6 +305,7 @@ h1, h2 {
   margin-top: 1em; }
   #search-filters .tag {
     -webkit-user-select: none;
+    font-size: 13px;
     margin: 0 0.2em;
     background-color: #313743;
     color: #526c77;
