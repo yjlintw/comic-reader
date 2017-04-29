@@ -72,7 +72,8 @@ body, html, .whole-view {
   font-family: 'Roboto Condensed',"文泉驛正黑","WenQuanYi Zen Hei","黑體-繁","Heiti TC","微軟正黑體","Microsoft JhengHei",sans-serif;
   background: #222935;
   height: 100%;
-  margin: 0; }
+  margin: 0;
+  overflow-y: hidden; }
   @media only screen and (max-width: 768px) {
     body, html, .whole-view {
       height: 100%; } }
@@ -84,25 +85,24 @@ h1, h2 {
   width: 10px; }
 
 ::-webkit-scrollbar-track {
-  border-radius: 3px; }
+  border-radius: 3px;
+  background: #333c4a; }
 
 ::-webkit-scrollbar-thumb {
   border-radius: 3px;
   background-color: #63676d; }
 
-.whole-view {
-  padding-top: 25px; }
-  @media only screen and (max-width: 768px) {
-    .whole-view {
-      display: flex;
-      flex-direction: column; } }
-  .whole-view.tile.is-ancestor#whole-view {
-    margin: 0;
-    min-height: calc(100vh - 25px);
-    height: calc(100vh - 25px);
-    width: calc(100vw - 10px);
-    position: fixed;
-    top: 0; }
+@media only screen and (max-width: 768px) {
+  .whole-view {
+    display: flex;
+    flex-direction: column; } }
+
+.whole-view.tile.is-ancestor#whole-view {
+  margin: 0;
+  height: 100vh;
+  width: 100vw;
+  position: fixed;
+  top: 25px; }
 
 #main-view {
   height: 100vh;
@@ -305,6 +305,7 @@ h1, h2 {
   margin-top: 1em; }
   #search-filters .tag {
     -webkit-user-select: none;
+    font-size: 13px;
     margin: 0 0.2em;
     background-color: #313743;
     color: #526c77;
@@ -323,6 +324,10 @@ h1, h2 {
   @media only screen and (min-width: 769px) {
     #search-results {
       padding: 0; } }
+  #search-results:after {
+    content: ".";
+    height: 50px;
+    display: block; }
   #search-results.active {
     background-image: none;
     max-width: 960px; }
@@ -358,7 +363,7 @@ h1, h2 {
   .search-result.media .content p, .favorite-entry.media .content p {
     margin: 10px 0;
     font-size: 14px;
-    color: #fff; }
+    color: #8a8a90; }
     .search-result.media .content p.comic-host, .favorite-entry.media .content p.comic-host, .search-result.media .content p.comic-update-info, .favorite-entry.media .content p.comic-update-info {
       margin: 5px 0 0 0;
       color: #698aca;
@@ -412,6 +417,18 @@ h1, h2 {
         width: 1294px; } }
   #favorite-view .media-content {
     color: #fff; }
+  #favorite-view .icon-help {
+    color: #e4ff67;
+    font-size: 150px;
+    text-align: center;
+    width: 150px;
+    display: block;
+    margin: 100px auto 10px; }
+  #favorite-view .messages {
+    color: #fff;
+    text-align: center;
+    font-size: 25px;
+    width: 100%; }
 
 .favorite-entry.media {
   overflow: hidden;
@@ -420,7 +437,7 @@ h1, h2 {
   position: relative;
   margin: 3px;
   background: #373f4e;
-  border-top: 10px solid #3c4659; }
+  border-top: 7px solid #3c4659; }
   .favorite-entry.media:hover {
     background: #303744; }
   .favorite-entry.media .media-left {
@@ -446,8 +463,8 @@ h1, h2 {
     width: 150px;
     line-height: 25px;
     padding: 15px 0 5px 0;
-    border-bottom: 1px solid #242e40;
-    color: #fff; }
+    border-bottom: 2px dotted #676c75;
+    color: #b1dad8; }
     .favorite-entry.media .comic-name small {
       font-family: 'Roboto Condensed',"文泉驛正黑","WenQuanYi Zen Hei","黑體-繁","Heiti TC","微軟正黑體","Microsoft JhengHei",sans-serif;
       font-weight: 600;
@@ -620,7 +637,7 @@ h1, h2 {
 #read-view #read-area {
   height: calc(100vh - 25px);
   overflow-y: auto;
-  background-color: #333638;
+  background-color: #222935;
   color: #fff;
   padding: 0; }
   @media only screen and (max-width: 768px) {
