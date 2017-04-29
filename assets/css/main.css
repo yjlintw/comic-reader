@@ -72,7 +72,8 @@ body, html, .whole-view {
   font-family: 'Roboto Condensed',"文泉驛正黑","WenQuanYi Zen Hei","黑體-繁","Heiti TC","微軟正黑體","Microsoft JhengHei",sans-serif;
   background: #222935;
   height: 100%;
-  margin: 0; }
+  margin: 0;
+  overflow-y: hidden; }
   @media only screen and (max-width: 768px) {
     body, html, .whole-view {
       height: 100%; } }
@@ -84,25 +85,24 @@ h1, h2 {
   width: 10px; }
 
 ::-webkit-scrollbar-track {
-  border-radius: 3px; }
+  border-radius: 3px;
+  background: #333c4a; }
 
 ::-webkit-scrollbar-thumb {
   border-radius: 3px;
   background-color: #63676d; }
 
-.whole-view {
-  padding-top: 25px; }
-  @media only screen and (max-width: 768px) {
-    .whole-view {
-      display: flex;
-      flex-direction: column; } }
-  .whole-view.tile.is-ancestor#whole-view {
-    margin: 0;
-    min-height: calc(100vh - 25px);
-    height: calc(100vh - 25px);
-    width: calc(100vw - 10px);
-    position: fixed;
-    top: 0; }
+@media only screen and (max-width: 768px) {
+  .whole-view {
+    display: flex;
+    flex-direction: column; } }
+
+.whole-view.tile.is-ancestor#whole-view {
+  margin: 0;
+  height: 100vh;
+  width: 100vw;
+  position: fixed;
+  top: 25px; }
 
 #main-view {
   height: 100vh;
@@ -323,6 +323,10 @@ h1, h2 {
   @media only screen and (min-width: 769px) {
     #search-results {
       padding: 0; } }
+  #search-results:after {
+    content: ".";
+    height: 50px;
+    display: block; }
   #search-results.active {
     background-image: none;
     max-width: 960px; }
@@ -632,7 +636,7 @@ h1, h2 {
 #read-view #read-area {
   height: calc(100vh - 25px);
   overflow-y: auto;
-  background-color: #333638;
+  background-color: #222935;
   color: #fff;
   padding: 0; }
   @media only screen and (max-width: 768px) {

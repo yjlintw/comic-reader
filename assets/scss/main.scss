@@ -80,6 +80,7 @@ body, html, .whole-view {
     }
     height: 100%;
     margin: 0;
+    overflow-y: hidden;
 }
 
 h1, h2 {
@@ -91,6 +92,7 @@ h1, h2 {
 
 ::-webkit-scrollbar-track {
     border-radius: 3px;
+    background: #333c4a
 }
 
 ::-webkit-scrollbar-thumb {
@@ -98,18 +100,16 @@ h1, h2 {
     background-color: #63676d;
 }
 .whole-view {
-    padding-top: 25px;
     @media #{$info-mobile} {
         display: flex;
         flex-direction: column;
     }
     &.tile.is-ancestor#whole-view {
         margin: 0;
-        min-height: calc(100vh - #{$titlebar-height});
-        height: calc(100vh - #{$titlebar-height});
-        width: calc(100vw - 10px);
+        height: 100vh;
+        width: 100vw;
         position: fixed;
-        top: 0;
+        top: 25px;
     }
 }
 
@@ -412,6 +412,12 @@ h1, h2 {
     padding: 0;
     @media #{$info-tablet} {
         padding: 0;
+    }
+    &:after{
+      content: ('.');
+      height: 50px;
+      display: block;
+
     }
     &.active{
       background-image: none;
@@ -808,7 +814,7 @@ h1, h2 {
         }
         height: calc(100vh - #{$titlebar-height});
         overflow-y: auto;
-        background-color: #333638;
+        background-color: #222935;
         color: #fff;
         padding: 0;
         .comic-page-container {

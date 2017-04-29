@@ -211,7 +211,7 @@ function lateInit() {
         }
     });
 
-    
+
     $("#search-input").bind("enterKey", searchFunc);
 
     $("#search-btn").click(searchFunc);
