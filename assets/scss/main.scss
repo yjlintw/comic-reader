@@ -640,8 +640,67 @@ h1, h2 {
 }
 
 #read-view {
+  transition: all .8s ease;
+  .chapToggle{
+    color: #b1cece;
+    font-size: 16px;
+    width: $chapter-selector-width;
+    display: inline-block;
+    background: #1f232a;
+    padding: 6px 0 0 30px;
+    cursor: pointer;
+    position: relative;
+    z-index: 9999;
+    height: 40px;
+    span{
+        font-size: 28px;
+        float: left;
+        margin-left: calc(50% - 40px)
+        }
+    p{
+      line-height: 27px;
+      display: block;
+      padding: 0;
+      opacity: 0;
+    }
+    &:hover{
+      p{
+        opacity: 1;
+        padding: 0 0 0 35px;
+        transition: .3s ease-in-out;
+      }
+      span{
+        margin: 0;
+        transition: .3s ease-in-out;
+      }
+    }
+  }
+  .toggleTag {
+    position: absolute;
+    left: 0px;
+    bottom: 25px;
+    z-index: 2;
+    width: 40px;
+    height: 40px;
+    background: #415983;
+    border-radius: 0 3px 3px 0;
+    box-shadow: 2px 0px 5px 0px rgba(0,0,0,0.3);
+    color: #fff;
+    font-size: 28px;
+    text-align: center;
+    cursor: pointer;
+    display: block;
+    transition: all 1s ease;
+
+    &.active{
+      left: 60px;
+      transition: all 1s ease;
+    }
+    &:hover{
+      background: #0cffc0;
+    }
+  }
     .middle-panel {
-                  z-index: 0;
         @media #{$info-mobile} {
             height: calc(100vh - #{$sidebar-width});
             width: 100vw;
@@ -649,13 +708,18 @@ h1, h2 {
 
         }
         @media #{$info-tablet} {
-            height: calc(100vh - #{$titlebar-height};
+            height: 100vh;
             width: $chapter-selector-width;
             position: fixed;
             overflow-y: auto;
             left: $sidebar-width;
             overflow-x: hidden;
         }
+        &.active{
+          left: -190px;
+        }
+        transition: all .8s ease;
+        z-index: 0;
         position: fixed;
         -webkit-user-select: none;
         #comic-header {
@@ -728,7 +792,9 @@ h1, h2 {
             }
             @media #{$info-tablet} {
                 width: $chapter-selector-width;
+                overflow-y: scroll;
             }
+            height: calc(100vh - 125px);
             margin-top: $sidebar-width;
             padding: 0;
             color: #cecece;
@@ -812,6 +878,9 @@ h1, h2 {
             margin-left: $chapter-selector-width;
             // margin-top: 22px;
             min-height: calc(100vh - #{$titlebar-height});
+        }
+        &.active{
+          margin-left: 60px;
         }
         height: calc(100vh - #{$titlebar-height});
         overflow-y: auto;
