@@ -287,11 +287,22 @@ function lateInit() {
             // toggle chapter selector
             toggleChapterSelector();
         }
-    })
+    });
 
     $("#comic-header .subscribe-btn").click(function(e) {
         e.stopPropagation();
         subscribeFunc(current_host, current_titlekey, current_title, current_link, current_imguri);
+    });
+    $('#change').click(function(){
+			$('.content').css("background-color","#FF0000");
+			$('.content').css("color","#FFF");
+		});
+
+    $(".chapToggle").click(function(e) {
+        $('.middle-panel, #read-area, .toggleTag').addClass("active");
+    });
+    $(".toggleTag").click(function(e) {
+        $('.middle-panel, #read-area, .toggleTag').removeClass("active");
     });
 }
 
@@ -409,13 +420,13 @@ function createComicPage(imguri, id, idx) {
                     view.trigger('zoom.destroy');
                 }
             })
-            
+
         });
         view.find("img").click(function() {
             current_page_idx = idx;
             nextPic();
         });
-        
+
         // view.zoom({
         //         on:'grab',
         //         magnify: '2'
