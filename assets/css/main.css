@@ -569,9 +569,14 @@ h1, h2 {
       left: -190px; }
     #read-view .middle-panel #comic-header {
       border-left: 7px solid #e4ff67;
-      padding-left: 15px;
+      padding-left: 0px;
+      width: 250px;
+      position: fixed;
+      left: calc($sidebar-widt + 1);
+      height: 60px;
+      box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.3);
+      font-size: 16px;
       background-color: #4d5769;
-      border-bottom: 1px solid #313743;
       color: #fff;
       display: flex; }
       @media only screen and (max-width: 768px) {
@@ -583,14 +588,6 @@ h1, h2 {
           top: 60px; }
           #read-view .middle-panel #comic-header.float-menu.nav-up {
             top: -60px; } }
-      @media only screen and (min-width: 769px) {
-        #read-view .middle-panel #comic-header {
-          width: calc(250px - 10px);
-          position: fixed;
-          left: calc($sidebar-widt + 1);
-          height: 60px;
-          box-shadow: 0px 2px 3px 0px rgba(0, 0, 0, 0.3);
-          font-size: 18px; } }
       #read-view .middle-panel #comic-header .level-item {
         margin: 0; }
       #read-view .middle-panel #comic-header .subscribe-btn {
@@ -622,7 +619,7 @@ h1, h2 {
         left: calc(50% - 2em); }
     #read-view .middle-panel #chapter-selector {
       height: calc(100vh - 125px);
-      margin-top: 60px;
+      margin-top: calc(60px + 1px);
       padding: 0;
       color: #cecece; }
       @media only screen and (max-width: 768px) {
@@ -637,7 +634,7 @@ h1, h2 {
         cursor: pointer;
         background: #373e4a;
         border-bottom: 1px solid #313743;
-        padding-left: 25px; }
+        padding: 0.73rem 0.72rem 0.73rem 25px; }
         #read-view .middle-panel #chapter-selector .chapter-entry:hover {
           background-color: #2f3640; }
         #read-view .middle-panel #chapter-selector .chapter-entry.read {
@@ -702,7 +699,9 @@ h1, h2 {
         margin-left: 250px;
         min-height: calc(100vh - 25px); } }
     #read-view #read-area.active {
-      margin-left: 60px; }
+      margin-left: -45px; }
+      #read-view #read-area.active .zoom-btn {
+        left: 47px; }
     #read-view #read-area .comic-page-container {
       position: relative;
       -webkit-user-select: none;
@@ -712,11 +711,12 @@ h1, h2 {
         display: block;
         margin: 0 auto; }
       #read-view #read-area .comic-page-container .zoom-btn {
-        opacity: 0.1;
+        opacity: 0.3;
         font-size: 1.5em;
         position: absolute;
         padding: 0.5em 0.8em 0.4em;
-        background-color: rgba(0, 0, 0, 0.8); }
+        background-color: rgba(0, 0, 0, 0.8);
+        border-radius: 0 0 5px 5px; }
         #read-view #read-area .comic-page-container .zoom-btn:hover {
           opacity: 1;
           transition: opacity 0.2s ease-out; }
