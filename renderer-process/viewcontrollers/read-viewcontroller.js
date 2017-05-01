@@ -252,15 +252,15 @@ function scrollToPage(page_idx) {
  * will always be visible
  */
 function scrollMiddlePanel() {
-    var scroll_bottom = $(".middle-panel").height() - $("#comic-header").height() + $("#titlebar").outerHeight();
+    var scroll_bottom = $("#chapter-selector").height() + $("#titlebar").outerHeight();
     var e = $(chapter_list[current_chapter_idx]);
     if (e.offset() && e.offset().top  + e.height() >= scroll_bottom) {
-        $(".middle-panel").animate({
-            scrollTop: $(".middle-panel").scrollTop() + e.offset().top - $("#comic-header").outerHeight() - $("#titlebar").outerHeight()
+        $("#chapter-selector").animate({
+            scrollTop: $("#chapter-selector").scrollTop() + e.offset().top - $("#comic-header").outerHeight() - $("#titlebar").outerHeight()
         }, 100)
     } else if (e.offset() && e.offset().top < $("#comic-header").outerHeight() + $("#titlebar").outerHeight()) {
-        $(".middle-panel").animate({
-            scrollTop: $(".middle-panel").scrollTop() - $(".middle-panel").height() + $("#comic-header").outerHeight() + e.offset().top - $("#titlebar").outerHeight()
+        $("#chapter-selector").animate({
+            scrollTop: $("#chapter-selector").scrollTop() - $("#chapter-selector").height() + e.offset().top - $("#titlebar").outerHeight()
         }, 100)
     }
 }
