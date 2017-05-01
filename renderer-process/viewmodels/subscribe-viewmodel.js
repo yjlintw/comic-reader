@@ -12,7 +12,6 @@
 // 3rd party library
 var async = require('async');
 const settings = require("electron-settings");
-var notifier = require('node-notifier');
 
 // model
 const values = require("../models/values");
@@ -165,11 +164,11 @@ function onChaptersGrabbed(result, newest) {
     // console.log(result.length + ":" + comic.chapters_count);
     if (result.length != comic.chapters_count) {
         comic.hasupdate = true;
-        notifier.notify({
-            title: 'Comic Reader',
-            message: comic.title + ' has new updates',
-            wait: false
-        })
+        new Notification("Comic Reader", {
+            title: "Comic Reader",
+            body: comic.title + ' has new updates: ' + newest,
+            icon: comic.thumbnail
+        });
     }
     
     for (var index in result) {
