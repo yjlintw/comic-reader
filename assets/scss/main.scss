@@ -792,12 +792,15 @@ h1, h2 {
             }
             @media #{$info-tablet} {
                 width: $chapter-selector-width;
-                overflow-y: scroll;
             }
+            overflow: hidden;
             height: calc(100vh - 125px);
             margin-top: calc(#{$sidebar-width} + 1px);
             padding: 0;
             color: #cecece;
+            &:hover{
+              overflow-y: scroll;
+            }
             .chapter-entry {
                 cursor: pointer;
                 background: #373e4a;

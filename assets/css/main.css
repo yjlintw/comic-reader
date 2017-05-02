@@ -618,6 +618,7 @@ h1, h2 {
         top: 50%;
         left: calc(50% - 2em); }
     #read-view .middle-panel #chapter-selector {
+      overflow: hidden;
       height: calc(100vh - 125px);
       margin-top: calc(60px + 1px);
       padding: 0;
@@ -628,8 +629,9 @@ h1, h2 {
           overflow-y: auto; } }
       @media only screen and (min-width: 769px) {
         #read-view .middle-panel #chapter-selector {
-          width: 250px;
-          overflow-y: scroll; } }
+          width: 250px; } }
+      #read-view .middle-panel #chapter-selector:hover {
+        overflow-y: scroll; }
       #read-view .middle-panel #chapter-selector .chapter-entry {
         cursor: pointer;
         background: #373e4a;
