@@ -215,7 +215,6 @@ function updateSubscribeUIStatus() {
     favorite_viewcontroller.updateSubscribeUI(all_comic_data, hasSubscription());
     read_viewcontroller.updateSubscribeUI(all_comic_data);
     translate_viewcontroller.translate();
-
     var page_idx = read_viewcontroller.getCurrentPageIdx();
     var titlekey = read_viewcontroller.getCurTitleKey();
     var host = read_viewcontroller.getCurHost();

@@ -145,6 +145,11 @@ h1, h2 {
     top: 0;
     -webkit-app-region: drag;
     margin: 0;
+    #titlebar-title {
+        text-align: center;
+        line-height: $titlebar-height;
+        color: white;
+    }
 }
 
 .titlebar-close,

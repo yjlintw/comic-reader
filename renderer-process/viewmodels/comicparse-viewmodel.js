@@ -21,6 +21,7 @@ var favorite_viewcontroller = require('../viewcontrollers/favorite-viewcontrolle
 var read_viewcontroller = require('../viewcontrollers/read-viewcontroller');
 var viewswitch_viewcontroller = require("../viewcontrollers/view-switch-viewcontroller");
 var translate_viewcontroller = require("../viewcontrollers/translate-viewcontroller");
+var titlebar_viewcontroller = require("../viewcontrollers/titlebar-viewcontroller");
 
 module.exports = {
     selectComic: selectComic
@@ -196,6 +197,7 @@ function updateChapterList() {
     read_viewcontroller.updateChapterList(comic_data);
     var keypath = "comic." + read_viewcontroller.getCurHost() + "." + read_viewcontroller.getCurTitleKey();
     settings.set(keypath, comic_data);
+    titlebar_viewcontroller.updateTitle();
 }
 
 /**
