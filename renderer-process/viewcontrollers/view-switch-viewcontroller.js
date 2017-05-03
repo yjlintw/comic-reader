@@ -7,6 +7,7 @@
 
 // var subscriber = require('../subscribe-viewmodel'); 
 var read_viewcontroller = require('./read-viewcontroller');
+var titlebar_viewcontroller = require('./titlebar-viewcontroller');
 
 // Variable definition
 var updateAllUIFunc;
@@ -95,6 +96,8 @@ function onTabEntryClick() {
     if ($(this).attr('id') == "tab-read") {
         read_viewcontroller.scrollToPage(-1);
     }
+
+    titlebar_viewcontroller.updateTitle();
 }
 
 
