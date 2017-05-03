@@ -4,4 +4,4 @@ node_modules/
 legacy/
 dist/
 build/
-npm-debug.log
+npm-debug.log*
