@@ -1,0 +1,7 @@
+*-darwin-*/
+node_modules/
+*.zip
+legacy/
+dist/
+build/
+npm-debug.log
