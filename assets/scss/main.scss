@@ -787,13 +787,12 @@ h1, h2 {
         }
         #chapter-selector {
             @media #{$info-mobile} {
-                height: calc(100vh - #{$sidebar-width}*2);
-                overflow-y: auto;
+                height: calc(100vh - #{$sidebar-width}*2);    
             }
             @media #{$info-tablet} {
                 width: $chapter-selector-width;
             }
-            overflow: hidden;
+            overflow-y: auto;
             height: calc(100vh - 125px);
             margin-top: calc(#{$sidebar-width} + 1px);
             padding: 0;

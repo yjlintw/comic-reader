@@ -618,15 +618,14 @@ h1, h2 {
         top: 50%;
         left: calc(50% - 2em); }
     #read-view .middle-panel #chapter-selector {
-      overflow: hidden;
+      overflow-y: auto;
       height: calc(100vh - 125px);
       margin-top: calc(60px + 1px);
       padding: 0;
       color: #cecece; }
       @media only screen and (max-width: 768px) {
         #read-view .middle-panel #chapter-selector {
-          height: calc(100vh - 60px*2);
-          overflow-y: auto; } }
+          height: calc(100vh - 60px*2); } }
       @media only screen and (min-width: 769px) {
         #read-view .middle-panel #chapter-selector {
           width: 250px; } }
