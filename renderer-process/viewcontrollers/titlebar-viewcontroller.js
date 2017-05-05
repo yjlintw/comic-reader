@@ -1,6 +1,9 @@
-var titlebar = require('titlebar')();
 var pjson = require('../../package.json');
 const remote = require('electron').remote;
+var titlebar = require('../components/titlebar')({
+    iswin: process.platform == 'win32'
+    // iswin: true
+});
 
 module.exports = {
     updateTitle: updateTitle
@@ -46,13 +49,12 @@ function lateInit() {
         })
         .on('maximize', function() {
             var window = remote.getCurrentWindow();
-            window.maximize();
+            if (window.isMaximized()) {
+                window.unmaximize();
+            } else {
+                window.maximize();
+            }
         });
-
-    var div = document.createElement('div');
-    div.id = 'titlebar-title';
-    titlebar.element.appendChild(div);
-
     setTitle(pjson.productName);
 }
 
