@@ -283,7 +283,7 @@ function init() {
 function lateInit() {
     // comic header click behavior in mobile view
     $("#comic-header").click(function(e) {
-        if ($("#comic-header").css("top") == "50px") {
+        if ($("#comic-header").css("top") == "85px") {
             // toggle chapter selector
             toggleChapterSelector();
         }
@@ -441,8 +441,11 @@ function toggleChapterSelector() {
     var chapter_selector = $("#chapter-selector");
     if (chapter_selector.hasClass("is-hidden-mobile")) {
         chapter_selector.removeClass("is-hidden-mobile");
+        $('.zoom-btn').css("z-index","2");
+
     } else {
         chapter_selector.addClass("is-hidden-mobile");
+        $('.zoom-btn').css("z-index","99");
     }
 }
 

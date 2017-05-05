@@ -88,6 +88,9 @@ h1, h2 {
 }
 ::-webkit-scrollbar {
     width: 10px;
+    @media #{$info-mobile} {
+        display: none;
+    }
 }
 
 ::-webkit-scrollbar-track {
@@ -110,13 +113,16 @@ h1, h2 {
         width: 100vw;
         position: fixed;
         top: 25px;
+        @media #{$info-mobile} {
+            height: calc(100vh - #{$titlebar-height});
+        }
     }
 }
 
 #main-view {
     @media #{$info-mobile} {
         display: flex;
-        margin-top: calc(#{$titlebar-height} + #{$sidebar-width});
+        margin-top: #{$sidebar-width};
         // flex: 1 1 auto;
         // position: relative;
         // overflow-y: auto;
@@ -148,7 +154,8 @@ h1, h2 {
     #titlebar-title {
         text-align: center;
         line-height: $titlebar-height;
-        color: white;
+        color: #fff;
+        padding: 0 60px 0 0;
     }
 }
 
@@ -230,7 +237,7 @@ h1, h2 {
             // flex: 0 0 auto
             position: fixed;
             z-index: 10000;
-            top: 0;
+            top: $titlebar-height;
             transition: top 0.2s;
 
             &.nav-up {
@@ -303,6 +310,17 @@ h1, h2 {
 
 /* ---- Search Panel ---- */
 #search-view {
+    @media #{$info-mobile} {
+        min-height: 100%;
+        // height: 100%;
+        // display: block;
+        &:after{
+            content: ('.');
+            height: 50px;
+            display: block;
+        }
+    }
+
     h2{
       font-size: 80px;
       font-family: 'Raleway', sans-serif;
@@ -511,7 +529,8 @@ h1, h2 {
     }
     // max-width: 960px
     @media #{$info-mobile} {
-        padding: 0.5em 0;
+        padding: 0.2em 0;
+        height: calc(100vh - #{$titlebar-height} - 0.8em);
     }
     h2{
       font-size: 38px;
@@ -647,6 +666,9 @@ h1, h2 {
 #read-view {
   transition: all .8s ease;
   .chapToggle{
+    @media #{$info-mobile} {
+        display: none;
+    }
     color: #b1cece;
     font-size: 16px;
     width: $chapter-selector-width;
@@ -707,9 +729,10 @@ h1, h2 {
   }
     .middle-panel {
         @media #{$info-mobile} {
-            height: calc(100vh - #{$sidebar-width});
+            height: calc(100vh - #{$sidebar-width} - #{$titlebar-height});
             width: 100vw;
-            top: $sidebar-width;
+            top: calc( #{$titlebar-height} + #{$sidebar-width});
+            z-index: 3;
 
         }
         @media #{$info-tablet} {
@@ -736,8 +759,9 @@ h1, h2 {
                     height: $sidebar-width;
                     width: 100%;
                     transition: top 0.2s;
-                    top: $sidebar-width;
-                    // margin-top: $sidebar-width;
+                    top: calc(#{$sidebar-width} + #{$titlebar-height});
+                    cursor: pointer;
+                    padding: 0 0 0 25px;
                     &.nav-up {
                         top: -#{$sidebar-width};
                     }
@@ -792,7 +816,8 @@ h1, h2 {
         }
         #chapter-selector {
             @media #{$info-mobile} {
-                height: calc(100vh - #{$sidebar-width}*2);    
+                height: calc(100vh - #{$sidebar-width}*2);
+                margin-top: $sidebar-width
             }
             @media #{$info-tablet} {
                 width: $chapter-selector-width;
@@ -806,6 +831,10 @@ h1, h2 {
               overflow-y: scroll;
             }
             .chapter-entry {
+                @media #{$info-mobile} {
+                    position: relative;
+                    z-index: 1000;
+                }
                 cursor: pointer;
                 background: #373e4a;
                 border-bottom: 1px solid #313743;
@@ -879,7 +908,7 @@ h1, h2 {
     #read-area {
         @media #{$info-mobile} {
             margin-top: $sidebar-width;
-            min-height: calc(100vh - #{$sidebar-width} * 2);
+            min-height: calc(100vh - #{$sidebar-width} * 2 - #{$titlebar-height});
         }
         @media #{$info-tablet} {
             margin-left: $chapter-selector-width;
@@ -907,6 +936,9 @@ h1, h2 {
                 height: calc(100vh - #{$titlebar-height});
                 display: block;
                 margin: 0 auto;
+                @media #{$info-mobile} {
+                    height: calc(100vh - #{$titlebar-height} - #{$sidebar-width} * 2)
+                }
             }
             .zoom-btn {
                 // z-index: 10000;
@@ -917,6 +949,7 @@ h1, h2 {
                 padding: 0.5em 0.8em 0.4em;
                 background-color: rgba(0,0,0,0.8);
                 border-radius: 0 0 5px 5px;
+                z-index:99;
                 &:hover {
                     // visibility: visible;
                     opacity: 1;
