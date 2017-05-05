@@ -23,11 +23,15 @@ function createWindow () {
     height: h,
     frame: false,
     transparent: true,
+    // resizable: true,
+    // maximizable: true,
     icon: path.join(__dirname, 'assets/icons/icon.icns'),
     webPreferences: {
       blinkFeatures: 'OverlayScrollbars'
     }
   })
+
+  // win.setMaximizable(true);
   // console.log(win.getBounds());
   // and load the index.html of the app.
   win.loadURL(url.format({

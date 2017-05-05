@@ -307,6 +307,7 @@ h1, h2 {
     .titlebar-stoplight {
         float:right;
         text-align:left;
+        -webkit-app-region: no-drag;
         &:after {
             content: ' ';
             display: table;

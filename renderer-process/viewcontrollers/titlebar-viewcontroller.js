@@ -49,6 +49,8 @@ function lateInit() {
         })
         .on('maximize', function() {
             var window = remote.getCurrentWindow();
+            // console.log(window.isMaximized());
+            // console.log(window.isMaximizable());
             if (window.isMaximized()) {
                 window.unmaximize();
             } else {

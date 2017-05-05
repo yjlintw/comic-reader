@@ -243,7 +243,8 @@ h1, h2 {
     padding: 0 60px 0 0; }
   .titlebar.is-win .titlebar-stoplight {
     float: right;
-    text-align: left; }
+    text-align: left;
+    -webkit-app-region: no-drag; }
     .titlebar.is-win .titlebar-stoplight:after {
       content: ' ';
       display: table;
