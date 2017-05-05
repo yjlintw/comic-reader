@@ -83,6 +83,9 @@ h1, h2 {
 
 ::-webkit-scrollbar {
   width: 10px; }
+  @media only screen and (max-width: 768px) {
+    ::-webkit-scrollbar {
+      display: none; } }
 
 ::-webkit-scrollbar-track {
   border-radius: 3px;
@@ -103,6 +106,9 @@ h1, h2 {
   width: 100vw;
   position: fixed;
   top: 25px; }
+  @media only screen and (max-width: 768px) {
+    .whole-view.tile.is-ancestor#whole-view {
+      height: calc(100vh - 25px); } }
 
 #main-view {
   height: 100vh;
@@ -110,7 +116,7 @@ h1, h2 {
   @media only screen and (max-width: 768px) {
     #main-view {
       display: flex;
-      margin-top: calc(25px + 60px); } }
+      margin-top: 60px; } }
   @media only screen and (min-width: 769px) {
     #main-view {
       min-height: 100vh;
@@ -133,7 +139,8 @@ h1, h2 {
   .titlebar #titlebar-title {
     text-align: center;
     line-height: 25px;
-    color: white; }
+    color: #fff;
+    padding: 0 60px 0 0; }
 
 .titlebar-close,
 .titlebar-minimize,
@@ -187,7 +194,7 @@ h1, h2 {
       width: 100%;
       position: fixed;
       z-index: 10000;
-      top: 0;
+      top: 25px;
       transition: top 0.2s; }
       .sidebar.float-menu.nav-up {
         top: -60px; } }
@@ -231,6 +238,14 @@ h1, h2 {
       color: #00ffc0; }
 
 /* ---- Search Panel ---- */
+@media only screen and (max-width: 768px) {
+  #search-view {
+    min-height: 100%; }
+    #search-view:after {
+      content: ".";
+      height: 50px;
+      display: block; } }
+
 #search-view h2 {
   font-size: 80px;
   font-family: 'Raleway', sans-serif;
@@ -398,7 +413,8 @@ h1, h2 {
     display: block; }
   @media only screen and (max-width: 768px) {
     #favorite-view {
-      padding: 0.5em 0; } }
+      padding: 0.2em 0;
+      height: calc(100vh - 25px - 0.8em); } }
   #favorite-view h2 {
     font-size: 38px;
     font-family: 'Raleway', sans-serif;
@@ -514,6 +530,9 @@ h1, h2 {
     position: relative;
     z-index: 9999;
     height: 40px; }
+    @media only screen and (max-width: 768px) {
+      #read-view .chapToggle {
+        display: none; } }
     #read-view .chapToggle span {
       font-size: 28px;
       float: left;
@@ -558,9 +577,10 @@ h1, h2 {
     -webkit-user-select: none; }
     @media only screen and (max-width: 768px) {
       #read-view .middle-panel {
-        height: calc(100vh - 60px);
+        height: calc(100vh - 60px - 25px);
         width: 100vw;
-        top: 60px; } }
+        top: calc( 25px + 60px);
+        z-index: 3; } }
     @media only screen and (min-width: 769px) {
       #read-view .middle-panel {
         height: 100vh;
@@ -589,7 +609,9 @@ h1, h2 {
           height: 60px;
           width: 100%;
           transition: top 0.2s;
-          top: 60px; }
+          top: calc(60px + 25px);
+          cursor: pointer;
+          padding: 0 0 0 25px; }
           #read-view .middle-panel #comic-header.float-menu.nav-up {
             top: -60px; } }
       #read-view .middle-panel #comic-header .level-item {
@@ -629,7 +651,8 @@ h1, h2 {
       color: #cecece; }
       @media only screen and (max-width: 768px) {
         #read-view .middle-panel #chapter-selector {
-          height: calc(100vh - 60px*2); } }
+          height: calc(100vh - 60px*2);
+          margin-top: 60px; } }
       @media only screen and (min-width: 769px) {
         #read-view .middle-panel #chapter-selector {
           width: 250px; } }
@@ -640,6 +663,10 @@ h1, h2 {
         background: #373e4a;
         border-bottom: 1px solid #313743;
         padding: 0.73rem 0.72rem 0.73rem 25px; }
+        @media only screen and (max-width: 768px) {
+          #read-view .middle-panel #chapter-selector .chapter-entry {
+            position: relative;
+            z-index: 1000; } }
         #read-view .middle-panel #chapter-selector .chapter-entry:hover {
           background-color: #2f3640; }
         #read-view .middle-panel #chapter-selector .chapter-entry.read {
@@ -698,7 +725,7 @@ h1, h2 {
     @media only screen and (max-width: 768px) {
       #read-view #read-area {
         margin-top: 60px;
-        min-height: calc(100vh - 60px * 2); } }
+        min-height: calc(100vh - 60px * 2 - 25px); } }
     @media only screen and (min-width: 769px) {
       #read-view #read-area {
         margin-left: 250px;
@@ -715,13 +742,17 @@ h1, h2 {
         height: calc(100vh - 25px);
         display: block;
         margin: 0 auto; }
+        @media only screen and (max-width: 768px) {
+          #read-view #read-area .comic-page-container img {
+            height: calc(100vh - 25px - 60px * 2); } }
       #read-view #read-area .comic-page-container .zoom-btn {
         opacity: 0.3;
         font-size: 1.5em;
         position: absolute;
         padding: 0.5em 0.8em 0.4em;
         background-color: rgba(0, 0, 0, 0.8);
-        border-radius: 0 0 5px 5px; }
+        border-radius: 0 0 5px 5px;
+        z-index: 99; }
         #read-view #read-area .comic-page-container .zoom-btn:hover {
           opacity: 1;
           transition: opacity 0.2s ease-out; }
