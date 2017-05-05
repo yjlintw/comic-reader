@@ -365,7 +365,7 @@ function createChapterEntry(ch_group, ch_key, ch_name, ch_link, domid, index) {
 
     view.html(ch_name);
     view.click(function(){
-        if ($("#comic-header").css("top") == "50px") {
+        if ($("#comic-header").css("top") == "85px") {
             // toggle chapter selector
             toggleChapterSelector();
         }
@@ -441,11 +441,13 @@ function toggleChapterSelector() {
     var chapter_selector = $("#chapter-selector");
     if (chapter_selector.hasClass("is-hidden-mobile")) {
         chapter_selector.removeClass("is-hidden-mobile");
-        $('.zoom-btn').css("z-index","2");
+        $('#read-area').find('.zoom-btn').css("z-index","0");
+        $('#read-view').find('.middle-panel').css("z-index", 3);
 
     } else {
         chapter_selector.addClass("is-hidden-mobile");
-        $('.zoom-btn').css("z-index","99");
+        $('#read-area').find('.zoom-btn').css("z-index","99");
+        $('#read-view').find('.middle-panel').css("z-index", 0);
     }
 }
 
