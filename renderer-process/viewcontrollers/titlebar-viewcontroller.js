@@ -51,6 +51,7 @@ function lateInit() {
             var window = remote.getCurrentWindow();
             console.log(window.isMaximized());
             // console.log(window.isMaximizable());
+            _is_maximized == process.platform == 'win32' ? _is_maximized : window.isMaximized();
             if (_is_maximized) {
                 window.unmaximize();
                 _is_maximized = false;
