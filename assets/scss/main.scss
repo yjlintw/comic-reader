@@ -144,7 +144,7 @@ h1, h2 {
  **/
 
 
- 
+
 .titlebar.is-mac {
     padding: 0 3px;
     background-color: #3c4659;
@@ -183,14 +183,14 @@ h1, h2 {
         }
 
         &:hover {
-            svg, 
-            svg.fullscreen-svg, 
+            svg,
+            svg.fullscreen-svg,
             svg.maximize-svg {
                 opacity: 1;
             }
         }
 
-        
+
     }
     .titlebar-close,
     .titlebar-minimize,
@@ -266,7 +266,7 @@ h1, h2 {
         opacity: 0;
         display: none;
     }
-    
+
     &.alt svg.fullscreen-svg {
         display: none;
     }
@@ -277,7 +277,7 @@ h1, h2 {
 }
 
 .titlebar.is-win {
-    padding: 0 3px;
+    padding: 0px;
     background-color: #3c4659;
     position: fixed;
     z-index: 100000;
@@ -286,6 +286,7 @@ h1, h2 {
     top: 0;
     -webkit-app-region: drag;
     margin: 0;
+    height: 32px;
 
     &.webkit-draggable {
         -webkit-app-region: drag;
@@ -299,7 +300,7 @@ h1, h2 {
 
     #titlebar-title {
         text-align: center;
-        line-height: $titlebar-height;
+        line-height: 32px;
         color: #fff;
         padding: 0 60px 0 0;
     }
@@ -313,91 +314,72 @@ h1, h2 {
             display: table;
             clear: both;
         }
-
-        // &:hover {
-        //     svg, 
-        //     svg.fullscreen-svg, 
-        //     svg.maximize-svg {
-        //         opacity: 1;
-        //     }
-        // }
     }
 
     .titlebar-close,
     .titlebar-minimize,
     .titlebar-fullscreen {
-        float: left;
-        border-radius: 50%;
-        margin: 6px 4px;
-        line-height: 0;
-        width: 12px;
-        height: 12px;
+      float: left;
+      width: 45px;
+      height: 31px;
+      margin: 1px 1px 0 0;
+      text-align: center;
+      line-height: 29px;
+      transition: background-color .2s;
+    }
+    .titlebar-close svg,
+    .titlebar-minimize svg,
+    .titlebar-fullscreen  svg{
+      width: 10px;
+      height: 10px;
+      shape-rendering: crispEdges;
     }
 
-    .titlebar-close {
-        border: 1px solid #e2463f;
-        background-color: #ff5f57;
-        margin-left: 6px;
-        &:hover, :active {
-            border-color: #ad3934;
-            background-color: #bf4943;
+    .titlebar-close svg polygon{
+      transition: fill .2s;
         }
-
-        svg {
-            width: 6px;
-            height: 6px;
-            margin-top: 2px;
-            margin-left: 2px;
-            opacity: 1;
-        }
-
+    .titlebar:not(.fullscreen) svg.maximize-svg {
+        display: none;
+    }
+    .titlebar.fullscreen svg.fullscreen-svg {
+    display: none;
     }
 
-    .titlebar-minimize {
-        border: 1px solid #e1a116;
-        background-color: #ffbd2e;
-        &:hover, :active {
-            border-color: #ad7d15;
-            background-color: #bf9123;
-        }
-        svg {
-            width: 8px;
-            height: 8px;
-            margin-top: 1px;
-            margin-left: 1px;
-            opacity: 1;
-        }
+    .titlebar-minimize:hover,
+    .titlebar-resize:hover,
+    .titlebar-fullscreen:hover {
+      background-color: rgba(255, 255, 255, 0.1);
     }
 
-
-    .titlebar-fullscreen,
-    .titlebar-maximize {
-        border: 1px solid #12ac28;
-        background-color: #28c940;
-
-        &:hover, :active {
-            border-color: #128622;
-            background-color: #1f9a31;
-        }
+    .titlebar-light .titlebar-minimize:hover,
+    .titlebar-light .titlebar-resize:hover,
+    .titlebar-light .titlebar-fullscreen:hover {
+        background-color: rgba(0, 0, 0, 0.1);
     }
 
-    svg.maximize-svg {
-        width: 8px;
-        height: 8px;
-        margin-top: 1px;
-        margin-left: 1px;
-        opacity: 1;
-        display: block;
+    .titlebar-close:hover {
+        background-color: rgba(232, 17, 35, 0.9);
     }
+
+    .titlebar-close:hover svg polygon {
+        fill: rgba(255, 255, 255, 1);
+    }
+
+    .titlebar-light .titlebar-close:hover {
+        fill: rgba(0, 0, 0, 1);
+    }
+
+    .titlebar-light svg polygon,
+    .titlebar-light svg rect,
+    .titlebar-light svg > path {
+        fill: rgba(255, 255, 255, 1);
+    }
+
+    .titlebar-light .titlebar-close:hover {
+        background-color: rgba(232, 17, 35, 0.9);
+    }
+
 }
-
-
-
-
-
-
-
-
 
 /* ---- Side Bar ---- */
 // Tabview switcher

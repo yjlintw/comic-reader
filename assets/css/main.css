@@ -221,7 +221,7 @@ h1, h2 {
     display: block; }
 
 .titlebar.is-win {
-  padding: 0 3px;
+  padding: 0px;
   background-color: #3c4659;
   position: fixed;
   z-index: 100000;
@@ -229,7 +229,8 @@ h1, h2 {
   height: 25px;
   top: 0;
   -webkit-app-region: drag;
-  margin: 0; }
+  margin: 0;
+  height: 32px; }
   .titlebar.is-win.webkit-draggable {
     -webkit-app-region: drag; }
   .titlebar.is-win:after {
@@ -238,7 +239,7 @@ h1, h2 {
     clear: both; }
   .titlebar.is-win #titlebar-title {
     text-align: center;
-    line-height: 25px;
+    line-height: 32px;
     color: #fff;
     padding: 0 60px 0 0; }
   .titlebar.is-win .titlebar-stoplight {
@@ -253,52 +254,44 @@ h1, h2 {
   .titlebar.is-win .titlebar-minimize,
   .titlebar.is-win .titlebar-fullscreen {
     float: left;
-    border-radius: 50%;
-    margin: 6px 4px;
-    line-height: 0;
-    width: 12px;
-    height: 12px; }
-  .titlebar.is-win .titlebar-close {
-    border: 1px solid #e2463f;
-    background-color: #ff5f57;
-    margin-left: 6px; }
-    .titlebar.is-win .titlebar-close:hover, .titlebar.is-win .titlebar-close :active {
-      border-color: #ad3934;
-      background-color: #bf4943; }
-    .titlebar.is-win .titlebar-close svg {
-      width: 6px;
-      height: 6px;
-      margin-top: 2px;
-      margin-left: 2px;
-      opacity: 1; }
-  .titlebar.is-win .titlebar-minimize {
-    border: 1px solid #e1a116;
-    background-color: #ffbd2e; }
-    .titlebar.is-win .titlebar-minimize:hover, .titlebar.is-win .titlebar-minimize :active {
-      border-color: #ad7d15;
-      background-color: #bf9123; }
-    .titlebar.is-win .titlebar-minimize svg {
-      width: 8px;
-      height: 8px;
-      margin-top: 1px;
-      margin-left: 1px;
-      opacity: 1; }
-  .titlebar.is-win .titlebar-fullscreen,
-  .titlebar.is-win .titlebar-maximize {
-    border: 1px solid #12ac28;
-    background-color: #28c940; }
-    .titlebar.is-win .titlebar-fullscreen:hover, .titlebar.is-win .titlebar-fullscreen :active,
-    .titlebar.is-win .titlebar-maximize:hover,
-    .titlebar.is-win .titlebar-maximize :active {
-      border-color: #128622;
-      background-color: #1f9a31; }
-  .titlebar.is-win svg.maximize-svg {
-    width: 8px;
-    height: 8px;
-    margin-top: 1px;
-    margin-left: 1px;
-    opacity: 1;
-    display: block; }
+    width: 45px;
+    height: 31px;
+    margin: 1px 1px 0 0;
+    text-align: center;
+    line-height: 29px;
+    transition: background-color .2s; }
+  .titlebar.is-win .titlebar-close svg,
+  .titlebar.is-win .titlebar-minimize svg,
+  .titlebar.is-win .titlebar-fullscreen svg {
+    width: 10px;
+    height: 10px;
+    shape-rendering: crispEdges; }
+  .titlebar.is-win .titlebar-close svg polygon {
+    transition: fill .2s; }
+  .titlebar.is-win .titlebar:not(.fullscreen) svg.maximize-svg {
+    display: none; }
+  .titlebar.is-win .titlebar.fullscreen svg.fullscreen-svg {
+    display: none; }
+  .titlebar.is-win .titlebar-minimize:hover,
+  .titlebar.is-win .titlebar-resize:hover,
+  .titlebar.is-win .titlebar-fullscreen:hover {
+    background-color: rgba(255, 255, 255, 0.1); }
+  .titlebar.is-win .titlebar-light .titlebar-minimize:hover,
+  .titlebar.is-win .titlebar-light .titlebar-resize:hover,
+  .titlebar.is-win .titlebar-light .titlebar-fullscreen:hover {
+    background-color: rgba(0, 0, 0, 0.1); }
+  .titlebar.is-win .titlebar-close:hover {
+    background-color: rgba(232, 17, 35, 0.9); }
+  .titlebar.is-win .titlebar-close:hover svg polygon {
+    fill: white; }
+  .titlebar.is-win .titlebar-light .titlebar-close:hover {
+    fill: black; }
+  .titlebar.is-win .titlebar-light svg polygon,
+  .titlebar.is-win .titlebar-light svg rect,
+  .titlebar.is-win .titlebar-light svg > path {
+    fill: white; }
+  .titlebar.is-win .titlebar-light .titlebar-close:hover {
+    background-color: rgba(232, 17, 35, 0.9); }
 
 /* ---- Side Bar ---- */
 .sidebar {
