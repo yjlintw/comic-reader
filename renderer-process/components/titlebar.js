@@ -53,9 +53,9 @@ TitleBar.prototype.appendTo = function(target) {
 	if(typeof target === 'string') target = $(target)[0];
 
 	var $element = $(this.element);
-    
+
 	$window.on('keydown', this._onkeydown = function(e) {
-        
+
 		if(e.keyCode === 18) {
             $element.addClass('alt');
         }
