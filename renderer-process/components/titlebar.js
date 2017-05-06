@@ -30,7 +30,13 @@ var TitleBar = function(options) {
 
     $element.on('click', function(e) {
 		var target = e.target;
-		if(close.contains(target)) self.emit('close', e);
+		if(close.contains(target)) {
+        if (options.iswin) {
+            self.emit('win-close', e);
+          } else {
+            self.emit('close', e);
+          }
+        }
 		else if(minimize.contains(target)) self.emit('minimize', e);
 		else if(fullscreen.contains(target)) {
             if (options.iswin) {

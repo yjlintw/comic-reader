@@ -46,6 +46,10 @@ function lateInit() {
         .on('close', function() {
             window.close();
         })
+        .on('win-close', function() {
+            window.unmaximize();
+            window.close();
+        })
         .on('minimize', function() {
             window.minimize();
         })
