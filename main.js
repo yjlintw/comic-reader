@@ -1,7 +1,9 @@
-const {app, BrowserWindow} = require('electron');
+const electron = require('electron');
+const {app, BrowserWindow} = electron;
 const path = require('path');
 const url = require('url');
 const settings = require('electron-settings');
+
 require('electron-debug')({showDevTools: false});
 console.log(app.getAppPath())
 // Keep a global reference of the window object, if you don't, the window will
@@ -11,12 +13,18 @@ require('electron-context-menu')();
 let win;
 
 function createWindow () {
+  const {width, height} = electron.screen.getPrimaryDisplay().workAreaSize
   // Create the browser window.
   var w = 1400;
   var h = 700;
   if (settings.has("system.windowsize")) {
     w = settings.get("system.windowsize.width");
     h = settings.get("system.windowsize.height");
+    if (process.platform == "win32" && w == width && h == height) {
+      w -= 10;
+      h -= 10;
+    }
+    
   }
   win = new BrowserWindow({
     width: w,
