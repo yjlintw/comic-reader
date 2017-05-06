@@ -9,7 +9,7 @@ module.exports = {
     updateTitle: updateTitle
 }
 
-
+var _is_maximized = false;
 
 function updateTitle() {
     if ($('#read-view').hasClass('is-hidden')) {
@@ -49,12 +49,16 @@ function lateInit() {
         })
         .on('maximize', function() {
             var window = remote.getCurrentWindow();
-            // console.log(window.isMaximized());
+            console.log(window.isMaximized());
             // console.log(window.isMaximizable());
-            if (window.isMaximized()) {
+            _is_maximized == process.platform == 'win32' ? _is_maximized : window.isMaximized();
+            if (_is_maximized) {
                 window.unmaximize();
+                _is_maximized = false;
             } else {
                 window.maximize();
+                _is_maximized = true;
+                console.log(window.isMaximized());
             }
         });
     setTitle(pjson.productName);
