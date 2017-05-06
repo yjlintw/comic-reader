@@ -1,5 +1,6 @@
 var pjson = require('../../package.json');
 const remote = require('electron').remote;
+var window = remote.getCurrentWindow();
 var titlebar = require('../components/titlebar')({
     iswin: process.platform == 'win32'
     // iswin: true
@@ -8,8 +9,6 @@ var titlebar = require('../components/titlebar')({
 module.exports = {
     updateTitle: updateTitle
 }
-
-
 
 function updateTitle() {
     if ($('#read-view').hasClass('is-hidden')) {
@@ -31,33 +30,37 @@ function setTitle(name, options) {
     $("#titlebar-title").text(result);
 }
 
+function maxiWin() {
+    var show = $('#maximize').hasClass('active');
+    // alert(show);
+    if (show == true) {
+      window.unmaximize();
+      } else {
+        window.maximize();
+        }
+}
 
 function lateInit() {
+
     titlebar.appendTo(document.querySelector('#titlebar'))
         .on('close', function() {
-            var window = remote.getCurrentWindow();
             window.close();
         })
         .on('minimize', function() {
-            var window = remote.getCurrentWindow();
             window.minimize();
         })
         .on('fullscreen', function() {
-            var window = remote.getCurrentWindow();
             window.setFullScreen(!window.isFullScreen());
-        
+
         })
-        .on('maximize', function() {
-            var window = remote.getCurrentWindow();
-            // console.log(window.isMaximized());
-            // console.log(window.isMaximizable());
-            if (window.isMaximized()) {
-                window.unmaximize();
-            } else {
-                window.maximize();
-            }
-        });
+
     setTitle(pjson.productName);
+
+    $("#maximize").click(function(e) {
+        maxiWin();
+        $("#maximize").toggleClass("active");
+    });
+
 }
 
 

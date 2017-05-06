@@ -5,6 +5,7 @@ var domify = require('domify');
 var $ = require("dombo");
 
 var $window = $(window);
+
 var html_mac = fs.readFileSync(__dirname + '/../../sections/titlebar-mac.html', 'utf-8');
 var html_win = fs.readFileSync(__dirname + '/../../sections/titlebar-win.html', 'utf-8');
 // console.log(html);
@@ -21,9 +22,11 @@ var TitleBar = function(options) {
     this.element = element;
 
     var self = this;
-	var close = $('.titlebar-close', element)[0];
-	var minimize = $('.titlebar-minimize', element)[0];
-	var fullscreen = $('.titlebar-fullscreen', element)[0];
+	  var close = $('.titlebar-close', element)[0];
+	  var minimize = $('.titlebar-minimize', element)[0];
+	  var fullscreen = $('.titlebar-fullscreen', element)[0];
+
+
 
     $element.on('click', function(e) {
 		var target = e.target;
