@@ -306,7 +306,7 @@ h1, h2 {
         text-align: center;
         line-height: 32px;
         color: #fff;
-        padding: 0 60px 0 0;
+        padding: 0 0 0 110px;
     }
 
     .titlebar-stoplight {
@@ -492,6 +492,12 @@ h1, h2 {
       font-weight: 100;
       transition: all 1s ease;
       text-align: left;
+      @media #{$info-mobile} {
+          font-size: 35px;
+          width: 100%;
+          text-align: center;
+          margin: 15% 0 auto;
+      }
       span{
         color: #e4ff67;
       }
@@ -500,6 +506,10 @@ h1, h2 {
         font-weight: 400;
         margin: 0;
         width: 300px;
+        @media #{$info-mobile} {
+            width: 100%;
+            text-align: center;
+        }
       }
     }
     .input{
@@ -596,6 +606,9 @@ h1, h2 {
     background: url(../img/ground.png) 0 calc(100% - 25px) repeat-x;
     transition: all 1s ease;
     padding: 0;
+    @media #{$info-mobile} {
+        background-image: none;
+    }
     @media #{$info-tablet} {
         padding: 0;
     }
