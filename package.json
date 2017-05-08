@@ -2,7 +2,7 @@
   "name": "comic-reader",
   "productName": "Comic Reader",
   "author": "Team Comic Reader",
-  "version": "0.1.25",
+  "version": "0.1.26",
   "description": "A simple comic reader app",
   "main": "main.js",
   "devDependencies": {
@@ -44,7 +44,8 @@
     "mac": {
       "category": "public.app-category.entertainment",
       "target": [
-        "dmg"
+        "dmg",
+        "zip"
       ],
       "icon": "assets/icons/icon.icns"
     },
