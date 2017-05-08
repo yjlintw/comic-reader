@@ -1,44 +1,137 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>Comic Reader</title>
-    <link rel="stylesheet" href="./assets/css/bulma.css">
-    <link rel="stylesheet" href="./assets/css/font-comic-reader.css">
-    <link rel="stylesheet" href="./assets/css/main.css">
+<!doctype html>
+<html lang="en">
+<head>
 
-    <!-- Stylesheets -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A layout example that shows off a responsive product landing page.">
+    <title> The best move to read comic. &ndash; Comic Reader</title>
+    <link rel='shortcut icon' href='img/favicon.ico'/>
+    <link rel="stylesheet" href="css/pure-min.css">
+    <link rel="stylesheet" href="css/grids-responsive-min.css">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/font-comic-reader.css">
+    <script src="js/jquery-3.2.1.min.js"></script>
+    <script src="js/main.js"></script>
 
-  </head>
-  <body>
-    <div class="titlebar" id="titlebar"></div>
-    <div class="tile is-ancestor whole-view" id="whole-view">
-      <aside class="tile sidebar float-menu" id="sidebar">
-      </aside>
-      <div class="tile is-vertical" id="main-view">
+</head>
+<body>
 
-      </div>
+<div class="header">
+    <div class="home-menu pure-menu pure-menu-horizontal pure-menu-fixed">
+        <a class="pure-menu-heading" href=""><img class="logo-small" src="img/logo.svg" alt=""> COMIC READER</a>
+
+        <ul class="pure-menu-list">
+            <li class="pure-menu-item"><a id="btn01" href="javascript:void(0)" class="pure-menu-link">Features</a></li>
+            <li class="pure-menu-item"><a id="btn02" href="javascript: void(0)" class="pure-menu-link">GetStarted</a></li>
+            <li class="pure-menu-item"><a id="btn03" href="https://github.com/yjlintw/comic-reader/releases" class="pure-menu-link" target="_blank">ChangeLog</a></li>
+            <li class="pure-menu-item"><a id="btn04" href="javascript: void(0)" class="pure-menu-link">Download</a></li>
+        </ul>
     </div>
-    <script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
-    <script src="./assets/js/jquery-3.2.1.min.js"></script>
-    <script src="./assets/js/jquery.zoom.js"></script>
+</div>
 
-    <script>
-      require("./renderer-process/viewcontrollers/titlebar-viewcontroller")
-      require("./renderer-process/content-loader");
-      require("./renderer-process/viewcontrollers/view-switch-viewcontroller");
-      require("./renderer-process/viewcontrollers/translate-viewcontroller")
-      require("./renderer-process/viewcontrollers/search-viewcontroller")
-      require("./renderer-process/viewcontrollers/favorite-viewcontroller");
-      require("./renderer-process/viewcontrollers/read-viewcontroller")
-      require("./renderer-process/viewmodels/search-viewmodel");
-      require("./renderer-process/viewmodels/subscribe-viewmodel");
+<div class="splash-container">
+    <div class="splash">
+        <img class="logo-large" src="img/logo.svg" alt="">
+        <h1 class="splash-head">Gomu Gomu no Gatling !!</h1>
+        <p class="splash-subhead">
+            Quickly, smoothly and great reading experience. The best move to reading comics.
+        </p>
+        <div class="splash-sample">
+          <img src="img/sample.png" alt="">
+        </div>
+    </div>
+</div>
 
-      // last things to load
-      require("./renderer-process/load-after");
-    </script>
+<div class="content-wrapper">
+    <div id="feature" class="content divide">
+        <h2 class="content-head is-center">FEATURES</h2>
+
+        <div class="pure-g">
+            <div class="feature pure-u-lg-1-3 pure-u-md-1-2 pure-u-1">
+              <span class="icon-search main-color-1"></span>
+              <div class="column">
+                <h3 class="content-subhead">Search</h3>
+                <p>Keywords to search comic books inside the app, instanly.</p>
+              </div>
+
+            </div>
+            <div class="feature pure-u-lg-1-3 pure-u-md-1-2 pure-u-1">
+              <span class="icon-storage main-color-1"></span>
+              <div class="column">
+                <h3 class="content-subhead">Favorite</h3>
+                <p>Quick and easy to add comics into favorite list..</p>
+              </div>
+            </div>
+            <div class="feature pure-u-lg-1-3 pure-u-md-1-2 pure-u-1">
+              <span class="icon-image main-color-1"></span>
+              <div class="column">
+                <h3 class="content-subhead">Single page</h3>
+                <p>Read each episode in a single scrolling page.</p>
+              </div>
+            </div>
+            <div class="feature pure-u-lg-1-3 pure-u-md-1-2 pure-u-1">
+              <span class="icon-bell main-color-2"></span>
+              <div class="column">
+                <h3 class="content-subhead">Nortification</h3>
+                <p>Desktop Notification when subscribed comics has new update.</p>
+              </div>
+            </div>
+            <div class="feature pure-u-lg-1-3 pure-u-md-1-2 pure-u-1">
+              <span class="icon-heart main-color-2"></span>
+              <div class="column">
+                <h3 class="content-subhead">Friendly</h3>
+                <p>Desktop Notification when subscribed comics has new update.</p>
+              </div>
+            </div>
+            <div class="feature pure-u-lg-1-3 pure-u-md-1-2 pure-u-1">
+              <span class="icon-play main-color-2"></span>
+              <div class="column">
+                <h3 class="content-subhead">Keyboard Navigation</h3>
+                <p>Use keyboard navigation to turn pages and chapters.</p>
+              </div>
+            </div>
+            <div class="feature pure-u-lg-1-3 pure-u-md-1-2 pure-u-1">
+              <span class="icon-watch main-color-3"></span>
+              <div class="column">
+                <h3 class="content-subhead">History</h3>
+                <p>Record and show your read history.</p>
+              </div>
+            </div>
+            <div class="feature pure-u-md-1-3 pure-u-1">
+              <span class="icon-globe main-color-3"></span>
+              <div class="column">
+                <h3 class="content-subhead">zhTW- zhCN</h3>
+                <p>Translation between Traditional  and Simplified Chinese</p>
+              </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="getstarted" class="content">
+        <h2 class="content-head is-center">Get Started</h2>
+        <div class="getstart">
+          <div><span class="icon-download main-bg-color-1"></span>Download the app for your os.</div>
+          <div><span class="icon-play main-bg-color-2"></span>Install app and run.  </div>
+          <div><span class="icon-speech-bubble main-bg-color-3"></span>Input keywords  and search. </div>
+          <div><span class="icon-read main-bg-color-4"></span>Enjoy it.</div>
+        </div>
+        <div class="tips main-bg-color-5">If there is unidentified developers or unknown publisher problem, please open and run anyway.</div>
+    </div>
+
+    <div id="download" class="content main-bg-color-5 w100">
+        <h2 class="content-head is-center">Download</h2>
+        <div class="getstart">
+          <a href="https://github.com/yjlintw/comic-reader/releases/download/v0.1.27/comic-reader-0.1.27.dmg" class="circle main-bg-color-6"><img class="logo-med" src="img/apple.svg" alt=""><br>MAC OSX APP</a>
+          <a href="https://github.com/yjlintw/comic-reader/releases/download/v0.1.27/comic-reader-setup-0.1.27.exe" class="circle main-bg-color-6"><img class="logo-med" src="img/windows.svg" alt=""><br>WINDOWS APP</a>
+        </div>
+    </div>
+
+    </div>
+</div>
+<footer>© 2017 Comic Reader All rights reserved</footer>
 
 
-    <script src="http://localhost:35729/livereload.js?snipver=2"></script>
-    <script>if (window.module) module = window.module;</script>
-  </body>
+
+</body>
 </html>
