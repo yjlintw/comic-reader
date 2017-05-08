@@ -2,7 +2,7 @@
   "name": "comic-reader",
   "productName": "Comic Reader",
   "author": "Team Comic Reader",
-  "version": "0.1.17",
+  "version": "0.1.18",
   "description": "A simple comic reader app",
   "main": "main.js",
   "devDependencies": {
@@ -32,6 +32,7 @@
     "electron-debug": "^1.1.0",
     "electron-settings": "^3.0.14",
     "electron-titlebar-windows": "^2.1.0",
+    "electron-updater": "^1.14.4",
     "node-schedule": "^1.2.1",
     "request": "^2.81.0",
     "titlebar": "^1.4.0"
