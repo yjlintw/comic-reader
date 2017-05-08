@@ -1,12 +1,12 @@
 @import url('https://fonts.googleapis.com/css?family=Raleway:100,400,600');
+
 * {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
 }
 
-
-/* BASE STYLES */
+/* BASE */
 
 body {
   line-height: 1.7em;
@@ -24,23 +24,7 @@ h1, h2, h3, h4, h5, h6, label {
   height: auto;
 }
 
-
-/* LAYOUT STYLES */
-
-.is-center {
-  text-align: center;
-}
-
-.w100 {
-  width: 100%
-}
-
-.divide {
-  border-bottom: 1px solid #222935
-}
-
-
-/* MENU STYLES */
+/* MENU */
 
 .home-menu {
   text-align: center;
@@ -88,7 +72,7 @@ h1, h2, h3, h4, h5, h6, label {
 }
 
 
-/* SPLASH STYLES */
+/* SPLASH */
 
 .splash-container {
   background: url('../img/bg.jpg');
@@ -118,7 +102,7 @@ h1, h2, h3, h4, h5, h6, label {
 }
 
 
-/* CONTENT STYLES */
+/* CONTENT */
 
 .content-wrapper {
   width: 100%;
@@ -169,12 +153,7 @@ h1, h2, h3, h4, h5, h6, label {
 }
 
 
-/*
- * -- TABLET (AND UP) MEDIA QUERIES --
- */
-
-
-/* Colors */
+/* COLORS */
 
 .main-color-1 {
   color: #17c4bb
@@ -213,7 +192,7 @@ h1, h2, h3, h4, h5, h6, label {
 }
 
 
-/*Custom Styles*/
+/* CUSTOM */
 
 .logo-small {
   width: 46px;
@@ -289,6 +268,7 @@ h1, h2, h3, h4, h5, h6, label {
   color: #222935;
   line-height: 24px;
   height: 200px;
+  width: calc( 25% - 10px )
 }
 
 .getstart span {
@@ -333,44 +313,90 @@ footer {
   padding: 20px 0;
 }
 
+/* LAYOUT STYLES */
 
-/*MOBILE DEVICE*/
+.is-center {
+  text-align: center;
+}
 
-@media screen and (max-width: 35.5em) {
-  .splash-sample {
-    display: none;
+.w100 {
+  width: 100%
+}
+
+.divide {
+  border-bottom: 1px solid #222935
+}
+
+
+/* DESKTOP DEVICE */
+
+@media (min-width: 78em) {
+  .splash-head {
+    font-size: 300%;
   }
-  .splash {
-    margin: 50% auto;
+  .pure-g {
+    margin: 0 auto;
   }
 }
 
-@media screen and (max-width: 40em) {
+@media (min-width: 105em) {
+  .pure-g {
+    width: 75%
+  }
+}
+
+
+
+/* NOTEBOOK DEVICE */
+
+@media screen and (max-width: 80em) {
+  .logo-large {
+    width: 300px;
+    max-width: 100%;
+    max-height: 100%;
+  }
+  .splash {
+    margin: 12vh auto;
+  }
   .feature {
-    width: 100%
+    padding: 25px 0;
   }
 }
 
-@media screen and (max-width: 48em) {
-  .splash-sample {
-    display: none;
+/* TABLET DEVICE */
+
+@media screen and (max-width: 67.5em) {
+  .feature {
+    width: 50%
+  }
+}
+
+@media screen and (max-width: 64em) {
+  .logo-large {
+    width: 300px;
+    max-width: 100%;
+    max-height: 100%;
   }
   .splash {
-    margin: 30% auto;
+    margin: 25vh auto;
   }
-  .getstart span {
-    font-size: 4em;
+  .splash-head {
+    font-size: 2.5em;
   }
-  .home-menu {
-    padding: 15px 0;
+  .getstart div {
+    width: calc(50% - 10px);
   }
-  .pure-menu-item a {
-    display: none;
+  .logo-med {
+    width: 90px;
+  }
+  .circle {
+    width: 180px;
+    height: 180px;
+    padding: 25px 0;
+    display: inline-block;
+    margin: 0 20px 20px 20px;
   }
 }
-
-
-/*TABLET DEVICE*/
 
 @media (min-width: 48em) {
   body {
@@ -394,76 +420,71 @@ footer {
   }
 }
 
-@media (min-width: 64em) {
-  .getstart div {
-    width: calc(25% - 10px);
-  }
-}
+/* MOBILE DEVICE */
 
-@media screen and (max-width: 64em) {
-  .logo-large {
-    width: 300px;
-    max-width: 100%;
-    max-height: 100%;
+@media screen and (max-width: 48em) {
+  .splash-sample {
+    display: none;
   }
   .splash {
-    margin: 25% auto;
+    margin: 17vh auto 0;
   }
-  .splash-head {
-    font-size: 2.5em;
+  .getstart span {
+    font-size: 4em;
   }
-  .getstart div {
-    width: calc(50% - 10px);
+  .home-menu {
+    padding: 15px 0;
   }
-  .logo-med {
-    width: 90px;
+  .pure-menu-item a {
+    display: none;
   }
-  .circle {
-    width: 180px;
-    height: 180px;
-    padding: 25px 0;
-    display: inline-block;
-    margin: 0 20px 20px 20px;
+  .getstart div{
+    width: 100%;
+    height: 150px
   }
+
 }
 
-@media screen and (max-width: 67.5em) {
+@media screen and (max-width: 40em) {
   .feature {
-    width: 50%
+    width: 100%
   }
 }
 
-
-/*NOTEBOOK DEVICE*/
-
-@media screen and (max-width: 80em) {
-  .logo-large {
-    width: 300px;
-    max-width: 100%;
-    max-height: 100%;
+@media screen and (max-width: 35.5em) {
+  .splash-sample {
+    display: none;
   }
   .splash {
-    margin: 12% auto;
+    margin: 50vh auto;
   }
-  .feature {
-    padding: 25px 0;
+  .tips{
+    display: none;
   }
 }
 
 
-/*DESKTOP DEVICE*/
 
-@media (min-width: 78em) {
+@media screen and (max-width: 24em) {
+  .splash-sample {
+    display: none;
+  }
+  .splash {
+    margin: 50% auto;
+  }
   .splash-head {
-    font-size: 300%;
+    font-size: 1.8em;
   }
-  .pure-g {
-    margin: 0 auto;
+  .logo-large {
+    width: 230px
   }
-}
-
-@media (min-width: 105em) {
-  .pure-g {
-    width: 75%
+  .feature p{
+    font-size: 13px;
+  }
+  .feature .column{
+    width: 70%
+  }
+  .getstart span{
+    font-size: 2em;
   }
 }
