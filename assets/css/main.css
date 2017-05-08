@@ -244,7 +244,7 @@ h1, h2 {
     text-align: center;
     line-height: 32px;
     color: #fff;
-    padding: 0 60px 0 0; }
+    padding: 0 0 0 110px; }
   .titlebar.is-win .titlebar-stoplight {
     float: right;
     text-align: left;
@@ -372,6 +372,12 @@ h1, h2 {
   font-weight: 100;
   transition: all 1s ease;
   text-align: left; }
+  @media only screen and (max-width: 768px) {
+    #search-view h2 {
+      font-size: 35px;
+      width: 100%;
+      text-align: center;
+      margin: 15% 0 auto; } }
   #search-view h2 span {
     color: #e4ff67; }
   #search-view h2.active {
@@ -379,6 +385,10 @@ h1, h2 {
     font-weight: 400;
     margin: 0;
     width: 300px; }
+    @media only screen and (max-width: 768px) {
+      #search-view h2.active {
+        width: 100%;
+        text-align: center; } }
 
 #search-view .input {
   border-radius: 5px 0 0 5px;
@@ -457,6 +467,9 @@ h1, h2 {
   background: url(../img/ground.png) 0 calc(100% - 25px) repeat-x;
   transition: all 1s ease;
   padding: 0; }
+  @media only screen and (max-width: 768px) {
+    #search-results {
+      background-image: none; } }
   @media only screen and (min-width: 769px) {
     #search-results {
       padding: 0; } }
