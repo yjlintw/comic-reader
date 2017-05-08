@@ -2,7 +2,7 @@
   "name": "comic-reader",
   "productName": "Comic Reader",
   "author": "Team Comic Reader",
-  "version": "0.1.23",
+  "version": "0.1.24",
   "description": "A simple comic reader app",
   "main": "main.js",
   "devDependencies": {
@@ -50,6 +50,11 @@
     },
     "win": {
       "icon": "assets/icons/icon.ico"
-    }
+    },
+    "publish": [{
+      "provider": "github",
+      "owner": "yjlintw",
+      "repo": "comic-reader"
+    }]
   }
 }
