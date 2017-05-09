@@ -1,4 +1,5 @@
 var fs = require("fs");
+const EA = require('electron-analytics');
 
 function read(f) {
   return fs.readFileSync(f).toString();
@@ -37,6 +38,7 @@ $(document).ready(function () {
     //chinese convert
     var zhconvert = document.getElementById("zh-convert");
     zhconvert.onclick = function () {
+        EA.send("MOUSE_CLICKED_TRANSLATE");
         if (zhconvert.dataset.zh == "tw") {
             to_traditional_chinese = false;
             setTimeout(function () { $('.convert span').toggleClass('icon-zhtw icon-zhcn'); }, 250);

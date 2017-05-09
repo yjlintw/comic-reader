@@ -7,6 +7,8 @@
  *      ./subscriber.js
  */
 const util = require('../util');
+const EA = require('electron-analytics');
+
 module.exports = {
     updateSubscribeUI: updateSubscribeUI,
 
@@ -104,7 +106,7 @@ function createFavEntry(link, titlekey, imguri, title, host, lastread, newest)  
     view.attr("host", host);
 
     view.find(".subscribe-btn").click(function(e){
-        
+        EA.send("MOUSE_CLICKED_FAVORITE_SUBSCRIBE"); 
         e.stopPropagation();
         console.log(host);
         console.log(titlekey);
@@ -112,6 +114,7 @@ function createFavEntry(link, titlekey, imguri, title, host, lastread, newest)  
     });
 
     view.click(function(e){
+        EA.send("MOUSE_CLICKED_FAVORITE_ENTRY"); 
         // console.log("fav click:" + title + ", from:" + host);
         var sel = util.getSelected().toString();
         // console.log(sel);

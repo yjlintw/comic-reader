@@ -8,6 +8,8 @@
  */
 const util = require('../util');
 const values = require('../models/values');
+const EA = require("electron-analytics");
+
 module.exports = {
     createResultView: createResultView,
     getSearchQuery: getSearchQuery,
@@ -69,6 +71,7 @@ function createResultView(link, titlekey, imguri, title, host, updateinfo, descr
     view.attr("host", host);
 
     view.click(function() {
+        EA.send("MOUSE_CLICKED_SEARCH_ENTRY");
         var sel = util.getSelected();
         if (sel === '') {
             selectComicFunc(host, link, title, titlekey, imguri);
@@ -76,6 +79,7 @@ function createResultView(link, titlekey, imguri, title, host, updateinfo, descr
     })
 
     view.find(".subscribe-btn").click(function(e) {
+        EA.send("MOUSE_CLICKED_SEARCH_SUBSCRIBE");
         e.stopPropagation();
         subscribeFunc(host, titlekey, title, link, imguri);
     });
@@ -197,6 +201,7 @@ function lateInit() {
   // SearchAnimate
 
   $("#search-btn").click(function() {
+      EA.send("MOUSE_CLICKED_SEARCH_SEARCH_BTN");
     $('#search-header h2').addClass('active');
     $('#search-results').addClass('active');
   });
@@ -205,6 +210,7 @@ function lateInit() {
     $('#search-input').keypress(function(e){
         if(e.keyCode == 13)
         {
+            EA.send("KEYDOWN_SEARCH_ENTER");
             $(this).trigger("enterKey");
             $('#search-header h2').addClass('active');
             $('#search-results').addClass('active');
@@ -222,6 +228,7 @@ function lateInit() {
         view.text(key);
         view.attr('host', key);
         view.click(function () {
+            EA.send("MOUSE_CLICKED_SEARCH_FILTER");
             var host = $(this).attr('host');
             var activate = $(this).hasClass('active');
             console.log(activate);

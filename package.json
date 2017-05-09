@@ -28,6 +28,7 @@
     "async": "^2.3.0",
     "dombo": "^3.2.0",
     "domify": "^1.4.0",
+    "electron-analytics": "^0.1.2",
     "electron-context-menu": "^0.9.0",
     "electron-debug": "^1.1.0",
     "electron-log": "^2.2.4",
@@ -52,10 +53,12 @@
     "win": {
       "icon": "assets/icons/icon.ico"
     },
-    "publish": [{
-      "provider": "github",
-      "owner": "yjlintw",
-      "repo": "comic-reader"
-    }]
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "yjlintw",
+        "repo": "comic-reader"
+      }
+    ]
   }
 }

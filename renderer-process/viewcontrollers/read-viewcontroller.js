@@ -7,7 +7,7 @@
  *      ../sections/page.html,
  *      ./comic-parser.js
  */
-
+const EA = require('electron-analytics');
 
 module.exports = {
     // create new elements
@@ -290,6 +290,7 @@ function lateInit() {
     });
 
     $("#comic-header .subscribe-btn").click(function(e) {
+        EA.send("MOUSE_CLICKED_READVIEW_SUBSCRIBE");
         e.stopPropagation();
         subscribeFunc(current_host, current_titlekey, current_title, current_link, current_imguri);
     });
@@ -299,9 +300,11 @@ function lateInit() {
 		});
 
     $(".chapToggle").click(function(e) {
+        EA.send("MOUSE_CLICKED_READVIEW_CHAP_TOGGLE");
         $('.middle-panel, #read-area, .toggleTag').addClass("active");
     });
     $(".toggleTag").click(function(e) {
+        EA.send("MOUSE_CLICKED_READVIEW_TOGGLE_TAG");
         $('.middle-panel, #read-area, .toggleTag').removeClass("active");
     });
 }
@@ -365,6 +368,7 @@ function createChapterEntry(ch_group, ch_key, ch_name, ch_link, domid, index) {
 
     view.html(ch_name);
     view.click(function(){
+        EA.send("MOUSE_CLICKED_READVIEW_CHAPTER_ENTRY");
         if ($("#comic-header").css("top") == "85px") {
             // toggle chapter selector
             toggleChapterSelector();
@@ -410,6 +414,7 @@ function createComicPage(imguri, id, idx) {
         // });
 
         view.find('.zoom-btn').click(function() {
+            EA.send("MOUSE_CLICKED_READVIEW_ZOOM");
             view.zoom({
                 on:'click',
                 magnify: '1.5',
@@ -423,6 +428,7 @@ function createComicPage(imguri, id, idx) {
 
         });
         view.find("img").click(function() {
+            EA.send("MOUSE_CLICKED_READVIEW_IMAGE_CLICK");
             current_page_idx = idx;
             nextPic();
         });
@@ -472,20 +478,26 @@ function onKeydown(e) {
     if (!$('#read-view').hasClass('is-hidden')) {
         switch(e.which) {
             case 33: // pageup
+                EA.send("KEYDOWN_READVIEW_PAGE_UP");
             case 37: // left
+                EA.send("KEYDOWN_READVIEW_LEFT");
                 prevChapter();
             break;
 
             case 38: // up
+                EA.send("KEYDOWN_READVIEW_UP");
                 prevPic();
             break;
 
             case 34: // pagedown
+                EA.send("KEYDOWN_READVIEW_PAGE_DOWN");
             case 39: // right
+                EA.send("KEYDOWN_READVIEW_RIGHT");
                 nextChapter();
             break;
 
             case 40: // down
+                EA.send("KEYDOWN_READVIEW_DOWN");
                 nextPic();
             break;
 
@@ -508,6 +520,7 @@ $(function(){
             // curPageIdx = Math.round(pos / height);
             // console.log("scroll: " + height + "," + pos + "," +curPageIdx);
             // console.log("scrolled: " + curPageIdx);
+            EA.send("MOUSE_SCROLL_READVIEW");
             did_scroll = true;
             // console.log("scroll");
 
