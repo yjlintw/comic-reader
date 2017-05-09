@@ -1,16 +1,19 @@
 const electron = require('electron');
-const {app, BrowserWindow} = electron;
+const {app, BrowserWindow, dialog} = electron;
 const path = require('path');
 const url = require('url');
 const settings = require('electron-settings');
 const log = require('electron-log');
 const {autoUpdater} = require("electron-updater");
+const EA = require("electron-analytics");
+EA.init("Bkles-YA1-");
 
 require('electron-debug')({showDevTools: false});
 
 // Logging
 autoUpdater.logger = log;
 autoUpdater.logger.transports.file.level = "info";
+autoUpdater.autoDownload = false;
 log.info('App Starting');
 
 
@@ -22,10 +25,11 @@ let win;
 
 function sendStatusToWindow(text) {
   log.info(text);
-  win.webContents.send('message', text);
+  // win.webContents.send('message', text);
 }
 
 function createWindow () {
+  
   const {width, height} = electron.screen.getPrimaryDisplay().workAreaSize
   // Create the browser window.
   var w = 1400;
@@ -90,6 +94,22 @@ autoUpdater.on('checking-for-update', () => {
   sendStatusToWindow('Checking for update...');
 })
 autoUpdater.on('update-available', (ev, info) => {
+  dialog.showMessageBox({
+    type: "info",
+    message: `There is a new update available ${info.getLatestVersion()}`,
+    buttons: [
+      "Later",
+      "Update Now"
+    ]
+  }, function(response) {
+    switch (response) {
+      case 0: // Later
+      break;
+      case 1: // Update
+      autoUpdater.downloadUpdate();
+      break;
+    }
+  });
   sendStatusToWindow('Update available.');
 })
 autoUpdater.on('update-not-available', (ev, info) => {
@@ -104,15 +124,11 @@ autoUpdater.on('download-progress', (progressObj) => {
   log_message = log_message + ' (' + progressObj.transferred + "/" + progressObj.total + ')';
   sendStatusToWindow(log_message);
 })
-autoUpdater.on('update-downloaded', (ev, info) => {
-  sendStatusToWindow('Update downloaded; will install in 5 seconds');
-});
 
 autoUpdater.on('update-downloaded', (ev, info) => {
   // Wait 5 second, then quit and install
-  setTimeout(function() {
-    autoUpdater.quitAndInstall();
-  }, 5000);
+  sendStatusToWindow('Update downloaded; will install in 5 seconds');
+  autoUpdater.quitAndInstall();
 })
 
 // This method will be called when Electron has finished
