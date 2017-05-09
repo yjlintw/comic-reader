@@ -85,7 +85,7 @@ h1, h2, h3, h4, h5, h6, label {
 
 .splash {
   text-align: center;
-  margin: 8% auto;
+  margin: 18vh auto;
 }
 
 .splash-head {
@@ -456,7 +456,7 @@ footer {
     display: none;
   }
   .splash {
-    margin: 50vh auto;
+    margin: 25vh auto;
   }
   .tips{
     display: none;
@@ -470,7 +470,7 @@ footer {
     display: none;
   }
   .splash {
-    margin: 50% auto;
+    margin: 30vh auto;
   }
   .splash-head {
     font-size: 1.8em;
