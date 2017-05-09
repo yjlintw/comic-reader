@@ -42,6 +42,12 @@ $(document).ready(function() {
             var downloadCount = 0;
             for (var i = 0; i < release.assets.length; i++) {
                 downloadCount += release.assets[i].download_count;
+                if (release.assets[i].content_type === 'application/x-apple-diskimage') {
+                    mac_downloadurl = release.assets[i].browser_download_url;
+                    }
+                else if (release.assets[i].content_type === 'application/x-msdownload') {
+                    win_downloadurl = release.assets[i].browser_download_url;
+                    }
             }
             var oneHour = 60 * 60 * 1000;
             var oneDay = 24 * oneHour;
@@ -57,8 +63,8 @@ $(document).ready(function() {
             }
             var releaseInfo = release.name + " was updated " + timeAgo;
             // var releaseInfo = release.name + " was updated " + timeAgo + " and downloaded " + downloadCount.toLocaleString() + " times.";
-            // $(".mac-download").attr("href", asset.browser_download_url);
-            // $(".win-download").attr("href", asset.browser_download_url);
+            $("#mac-download").attr("href", mac_downloadurl);
+            $("#win-download").attr("href", win_downloadurl);
             $(".release-info").text(releaseInfo);
             $(".release-info").fadeIn("slow");
         });
