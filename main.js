@@ -24,7 +24,7 @@ require('electron-context-menu')();
 let win;
 
 function sendStatusToWindow(text) {
-  log.info(text);
+  log.info('', text);
   // win.webContents.send('message', text);
 }
 
@@ -127,6 +127,7 @@ autoUpdater.on('download-progress', (progressObj) => {
 
 autoUpdater.on('update-downloaded', (ev, info) => {
   // Wait 5 second, then quit and install
+  sendStatusToWindow(info);
   sendStatusToWindow('Update downloaded; will install in 5 seconds');
   autoUpdater.quitAndInstall();
 })
