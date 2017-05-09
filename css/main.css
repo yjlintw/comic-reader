@@ -1,13 +1,12 @@
 @import url('https://fonts.googleapis.com/css?family=Raleway:100,400,600');
+
 * {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
 }
 
-/*
- * -- BASE STYLES --
- */
+/* BASE */
 
 body {
   line-height: 1.7em;
@@ -25,45 +24,7 @@ h1, h2, h3, h4, h5, h6, label {
   height: auto;
 }
 
-
-/*
- * -- LAYOUT STYLES --
- */
-
-.l-box {
-  padding: 1em;
-}
-
-.l-box-lrg {
-  padding: 2em;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-}
-
-.is-center {
-  text-align: center;
-}
-
-/*
- * -- PURE BUTTON STYLES --
- */
-
-.pure-button {
-  background-color: #1f8dd6;
-  color: white;
-  padding: 0.5em 2em;
-  border-radius: 5px;
-}
-
-a.pure-button-primary {
-  background: white;
-  color: #1f8dd6;
-  border-radius: 5px;
-  font-size: 120%;
-}
-
-/*
- * -- MENU STYLES --
- */
+/* MENU */
 
 .home-menu {
   text-align: center;
@@ -74,9 +35,7 @@ a.pure-button-primary {
 }
 
 .pure-menu.pure-menu-fixed {
-  /* Fixed menus normally have a border at the bottom. */
   border-bottom: none;
-  /* I need a higher z-index here because of the scroll-over effect. */
   z-index: 4;
 }
 
@@ -107,13 +66,13 @@ a.pure-button-primary {
   color: #AECFE5;
 }
 
-.home-menu.active{
+.home-menu.active {
   background: rgba(31, 43, 61, 0.8);
   padding-top: 20px;
 }
-/*
- * -- SPLASH STYLES --
- */
+
+
+/* SPLASH */
 
 .splash-container {
   background: url('../img/bg.jpg');
@@ -121,12 +80,12 @@ a.pure-button-primary {
   z-index: 1;
   overflow: hidden;
   width: 100%;
-  height: 90vh;
+  height: 80vh;
 }
 
 .splash {
   text-align: center;
-  margin: 8% auto;
+  margin: 18vh auto;
 }
 
 .splash-head {
@@ -142,9 +101,8 @@ a.pure-button-primary {
   margin: 2% 0 0 0;
 }
 
-/*
- * -- CONTENT STYLES --
- */
+
+/* CONTENT */
 
 .content-wrapper {
   width: 100%;
@@ -164,25 +122,22 @@ a.pure-button-primary {
   text-transform: uppercase;
   letter-spacing: 0.1em;
   margin: 2em 0 2.5em 1em;
-  position:relative;
-  display:inline-block;
+  position: relative;
+  display: inline-block;
   color: #222935;
   font-size: 2em;
 }
 
-.content-head:after{
-  content:'';
-    position:absolute;
-    left:0;right:0;
-    top:100%;
-    margin: 20px auto 0;
-    width:50%;
-    height:6px;
-    background:#e4ff67;
-}
-
-.content-head-ribbon {
-  color: white;
+.content-head:after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 100%;
+  margin: 20px auto 0;
+  width: 50%;
+  height: 6px;
+  background: #e4ff67;
 }
 
 .content-subhead {
@@ -197,78 +152,52 @@ a.pure-button-primary {
   margin-right: 7px;
 }
 
-.ribbon {
-  background: #2d3e50;
-  color: #aaa;
+
+/* COLORS */
+
+.main-color-1 {
+  color: #17c4bb
 }
 
-.footer {
-  background: #111;
-  position: fixed;
-  bottom: 0;
-  width: 100%;
+.main-color-2 {
+  color: #3c4659
 }
 
-
-/*
- * -- TABLET (AND UP) MEDIA QUERIES --
- */
-
-@media (min-width: 48em) {
-  body {
-    font-size: 16px;
-  }
-  .home-menu {
-    text-align: left;
-  }
-  .home-menu ul {
-    float: right;
-  }
-  .splash {
-    width: 65%;
-    height: 50%;
-  }
-  .splash-head {
-    font-size: 250%;
-  }
-  .l-box-lrg {
-    border: none;
-  }
-
+.main-color-3 {
+  color: #8b7ff8
 }
 
-
-/*
- * -- DESKTOP (AND UP) MEDIA QUERIES --
- */
- @media (min-width: 64em) {
-   .getstart div {
-    width: calc(25% - 10px);
-   }
- }
-
-@media (min-width: 78em) {
-  .splash-head {
-    font-size: 300%;
-  }
-  .pure-g{
-    margin: 0 auto;
-  }
-
+.main-bg-color-1 {
+  background-color: #ff3838
 }
 
-@media (min-width: 105em) {
-  .pure-g{
-    width: 75%
-  }
+.main-bg-color-2 {
+  background-color: #17c4bb
+}
+
+.main-bg-color-3 {
+  background-color: #e4ff67
+}
+
+.main-bg-color-4 {
+  background-color: #8176f8
+}
+
+.main-bg-color-5 {
+  background-color: #ececec
+}
+
+.main-bg-color-6 {
+  background-color: #3c4659
 }
 
 
-/*Custom Styles*/
+/* CUSTOM */
 
 .logo-small {
   width: 46px;
 }
+
 .logo-med {
   width: 110px;
   max-width: 100%;
@@ -292,11 +221,12 @@ a.pure-button-primary {
   max-width: 100%;
   max-height: 100%;
 }
-.content-subhead span{
+
+.content-subhead span {
   font-size: 1.7em;
 }
 
-.pure-g [class*=pure-u]{
+.pure-g [class*=pure-u] {
   font-family: 'Raleway', "文泉驛正黑", "WenQuanYi Zen Hei", "黑體-繁", "Heiti TC", "微軟正黑體", "Microsoft JhengHei", sans-serif;
 }
 
@@ -305,60 +235,32 @@ a.pure-button-primary {
   padding: 25px;
 }
 
-.feature span{
+.feature span {
   font-size: 3em;
   float: left;
   margin: 0 20px 0 0;
 }
-.feature p{
+
+.feature p {
   margin: 0;
   line-height: 24px;
   font-size: 16px;
   color: #1f2b3d;
 }
 
-.feature .column{
+.feature .column {
   width: 75%;
   float: left;
 }
 
-.main-color-1{
-  color: #17c4bb
-}
-.main-color-2{
-  color: #3c4659
-}
-.main-color-3{
-  color: #8b7ff8
-}
-.main-bg-color-1{
-  background-color: #ff3838
-}
-.main-bg-color-2{
-  background-color: #17c4bb
-}
-.main-bg-color-3{
-  background-color: #e4ff67
-}
-.main-bg-color-4{
-  background-color: #8176f8
-}
-.main-bg-color-5{
-  background-color: #ececec
-}
-.main-bg-color-6{
-  background-color: #3c4659
-}
-.divide{
-  border-bottom: 1px solid #222935
-}
-.getstart{
+.getstart {
   width: 80%;
   margin: 0 auto;
   padding: 0;
   -webkit-padding-start: 0px;
 }
-.getstart div{
+
+.getstart div {
   padding: 10px;
   overflow: hidden;
   display: inline-block;
@@ -366,28 +268,29 @@ a.pure-button-primary {
   color: #222935;
   line-height: 24px;
   height: 200px;
+  width: calc( 25% - 10px )
 }
-.getstart span{
+
+.getstart span {
   display: block;
   font-size: 5em;
   text-align: center;
-  color: #222935;;
+  color: #222935;
+  ;
   border-radius: 5px;
   padding: 25px;
   margin-bottom: 10px;
   transition: all 0.8s ease;
 }
-.tips{
+
+.tips {
   width: 50%;
   margin: 30px auto;
   border-radius: 10px;
   font-size: 15px;
 }
-.w100{
-  width: 100%
-}
 
-.circle{
+.circle {
   width: 255px;
   height: 255px;
   border-radius: 50%;
@@ -398,24 +301,54 @@ a.pure-button-primary {
   text-decoration: none;
 }
 
-.circle:hover{
+.circle:hover {
   background: #8176f8;
 }
 
-
-footer{
+footer {
   text-align: center;
   font-size: 12px;
   font-family: 'arial', sans-serif;
-  color:#222935;
+  color: #222935;
   padding: 20px 0;
 }
 
-@media screen and (max-width: 67.5em){
-.feature{
-  width: 50%
+/* LAYOUT STYLES */
+
+.is-center {
+  text-align: center;
 }
+
+.w100 {
+  width: 100%
 }
+
+.divide {
+  border-bottom: 1px solid #222935
+}
+
+
+/* DESKTOP DEVICE */
+
+@media (min-width: 78em) {
+  .splash-head {
+    font-size: 300%;
+  }
+  .pure-g {
+    margin: 0 auto;
+  }
+}
+
+@media (min-width: 105em) {
+  .pure-g {
+    width: 75%
+  }
+}
+
+
+
+/* NOTEBOOK DEVICE */
+
 @media screen and (max-width: 80em) {
   .logo-large {
     width: 300px;
@@ -423,12 +356,19 @@ footer{
     max-height: 100%;
   }
   .splash {
-    margin: 12% auto;
+    margin: 12vh auto;
   }
   .feature {
     padding: 25px 0;
   }
+}
 
+/* TABLET DEVICE */
+
+@media screen and (max-width: 67.5em) {
+  .feature {
+    width: 50%
+  }
 }
 
 @media screen and (max-width: 64em) {
@@ -438,58 +378,113 @@ footer{
     max-height: 100%;
   }
   .splash {
-    margin: 25% auto;
+    margin: 25vh auto;
   }
   .splash-head {
     font-size: 2.5em;
   }
-  .getstart div{
+  .getstart div {
     width: calc(50% - 10px);
   }
   .logo-med {
     width: 90px;
   }
-  .circle{
+  .circle {
     width: 180px;
     height: 180px;
     padding: 25px 0;
     display: inline-block;
     margin: 0 20px 20px 20px;
   }
-
 }
+
+@media (min-width: 48em) {
+  body {
+    font-size: 16px;
+  }
+  .home-menu {
+    text-align: left;
+  }
+  .home-menu ul {
+    float: right;
+  }
+  .splash {
+    width: 65%;
+    height: 50%;
+  }
+  .splash-head {
+    font-size: 250%;
+  }
+  .l-box-lrg {
+    border: none;
+  }
+}
+
+/* MOBILE DEVICE */
 
 @media screen and (max-width: 48em) {
   .splash-sample {
     display: none;
   }
   .splash {
-    margin: 30% auto;
+    margin: 17vh auto 0;
   }
-  .getstart span{
+  .getstart span {
     font-size: 4em;
   }
-  .home-menu{
+  .home-menu {
     padding: 15px 0;
-
   }
-  .pure-menu-item a{
+  .pure-menu-item a {
     display: none;
   }
+  .getstart div{
+    width: 100%;
+    height: 150px
+  }
+
 }
 
 @media screen and (max-width: 40em) {
-  .feature{
+  .feature {
     width: 100%
   }
 }
-
 
 @media screen and (max-width: 35.5em) {
   .splash-sample {
     display: none;
   }
   .splash {
-    margin: 50% auto;
+    margin: 25vh auto;
+  }
+  .tips{
+    display: none;
+  }
+}
+
+
+
+@media screen and (max-width: 24em) {
+  .splash-sample {
+    display: none;
+  }
+  .splash {
+    margin: 30vh auto;
+  }
+  .splash-head {
+    font-size: 1.8em;
+  }
+  .logo-large {
+    width: 230px
+  }
+  .feature p{
+    font-size: 13px;
+  }
+  .feature .column{
+    width: 70%
+  }
+  .getstart span{
+    font-size: 2em;
   }
 }
