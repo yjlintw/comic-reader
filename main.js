@@ -96,7 +96,7 @@ autoUpdater.on('checking-for-update', () => {
 autoUpdater.on('update-available', (ev, info) => {
   dialog.showMessageBox({
     type: "info",
-    message: `There is a new update available ${info.getLatestVersion()}`,
+    message: `There is a new update available`,
     buttons: [
       "Later",
       "Update Now"
