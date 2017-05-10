@@ -3,7 +3,7 @@
   "productName": "Comic Reader",
   "author": "Team Comic Reader",
   "version": "0.1.32",
-  "description": "A simple comic reader app",
+  "description": "A simple comic reading app",
   "main": "main.js",
   "devDependencies": {
     "concurrently": "^3.4.0",

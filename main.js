@@ -6,6 +6,7 @@ const settings = require('electron-settings');
 const log = require('electron-log');
 const {autoUpdater} = require("electron-updater");
 const EA = require("electron-analytics");
+const ipc = electron.ipcMain;
 EA.init("Bkles-YA1-");
 
 require('electron-debug')({showDevTools: false});
@@ -154,6 +155,9 @@ app.on('activate', () => {
   }
 })
 
+ipc.on('check-for-update', function(event) {
+  autoUpdater.checkForUpdates();
+});
 
 
 // In this file you can include the rest of your app's specific main process
