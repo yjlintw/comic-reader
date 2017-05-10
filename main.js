@@ -118,7 +118,7 @@ autoUpdater.on('update-not-available', (ev, info) => {
   if (manualupdate) {
     dialog.showMessageBox({
       type: "info",
-      message: `Already up to dated`,
+      message: `Already up to date`,
     });
     manualupdate = true;
   }
