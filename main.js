@@ -17,6 +17,7 @@ autoUpdater.logger.transports.file.level = "info";
 autoUpdater.autoDownload = false;
 log.info('App Starting');
 
+let manualupdate = false;
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -114,6 +115,13 @@ autoUpdater.on('update-available', (ev, info) => {
   sendStatusToWindow('Update available.');
 })
 autoUpdater.on('update-not-available', (ev, info) => {
+  if (manualupdate) {
+    dialog.showMessageBox({
+      type: "info",
+      message: `Already up to dated`,
+    });
+    manualupdate = true;
+  }
   sendStatusToWindow('Update not available.');
 })
 autoUpdater.on('error', (ev, err) => {
@@ -157,6 +165,7 @@ app.on('activate', () => {
 
 ipc.on('check-for-update', function(event) {
   autoUpdater.checkForUpdates();
+  manualupdate = true;
 });
 
 
