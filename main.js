@@ -161,6 +161,7 @@ autoUpdater.on('update-downloaded', (ev, info) => {
     });
   } else {
     manualupdate = false;
+    autoUpdater.quitAndInstall();
   }
 })
 
