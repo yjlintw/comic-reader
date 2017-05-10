@@ -172,6 +172,8 @@ function onSingleChapterLoaded(result, ch_group, ch_key) {
         pageIds[obj.idx] = obj.id;
         read_viewcontroller.appendNewPage(view);
     }
+    var lastpage_view = read_viewcontroller.createLastpageNotice();
+    read_viewcontroller.appendNewPage(lastpage_view);
     read_viewcontroller.setPageIds(pageIds);
     var lastpage = comic_data.lastpage;
     if (comic_data.lastread_ch_key != ch_key) {

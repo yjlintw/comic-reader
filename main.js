@@ -14,7 +14,7 @@ require('electron-debug')({showDevTools: false});
 // Logging
 autoUpdater.logger = log;
 autoUpdater.logger.transports.file.level = "info";
-autoUpdater.autoDownload = false;
+// autoUpdater.autoDownload = false;
 log.info('App Starting');
 
 let manualupdate = false;
@@ -96,22 +96,24 @@ autoUpdater.on('checking-for-update', () => {
   sendStatusToWindow('Checking for update...');
 })
 autoUpdater.on('update-available', (ev, info) => {
-  dialog.showMessageBox({
-    type: "info",
-    message: `There is a new update available`,
-    buttons: [
-      "Later",
-      "Update Now"
-    ]
-  }, function(response) {
-    switch (response) {
-      case 0: // Later
-      break;
-      case 1: // Update
-      autoUpdater.downloadUpdate();
-      break;
-    }
-  });
+  if (manualupdate) {
+    dialog.showMessageBox({
+      type: "info",
+      message: `There is a new update available`,
+      buttons: [
+        "Later",
+        "Update Now"
+      ]
+    }, function(response) {
+      switch (response) {
+        case 0: // Later
+        break;
+        case 1: // Update
+        autoUpdater.downloadUpdate();
+        break;
+      }
+    });
+  }
   sendStatusToWindow('Update available.');
 })
 autoUpdater.on('update-not-available', (ev, info) => {
@@ -135,10 +137,29 @@ autoUpdater.on('download-progress', (progressObj) => {
 })
 
 autoUpdater.on('update-downloaded', (ev, info) => {
-  // Wait 5 second, then quit and install
-  sendStatusToWindow(info);
-  sendStatusToWindow('Update downloaded; will install in 5 seconds');
-  autoUpdater.quitAndInstall();
+  if (!manualupdate) {
+    dialog.showMessageBox({
+      type: "info",
+      message: `There is a new update available`,
+      buttons: [
+        "Later",
+        "Update Now"
+      ]
+    }, function(response) {
+      switch (response) {
+        case 0: // Later
+        break;
+        case 1: // Update
+        // Wait 5 second, then quit and install
+        sendStatusToWindow(info);
+        // sendStatusToWindow('Update downloaded; will install in 5 seconds');
+        autoUpdater.quitAndInstall();
+        break;
+      }
+    });
+  } else {
+    manualupdate = false;
+  }
 })
 
 // This method will be called when Electron has finished

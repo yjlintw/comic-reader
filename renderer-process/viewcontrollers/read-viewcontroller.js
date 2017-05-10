@@ -13,6 +13,7 @@ module.exports = {
     // create new elements
     createChapterEntry: createChapterEntry,
     createComicPage: createComicPage,
+    createLastpageNotice: createLastpageNotice,
 
     // append to the screen
     appendNewPage: appendNewPage,
@@ -50,6 +51,7 @@ module.exports = {
 // HTML DOM Template
 var chapter_entry_template_str = "";
 var page_container_template_str = "";
+var lastpage_notice_template_str = "";
 
 // Binded Function
 var subscribeFunc;
@@ -200,11 +202,12 @@ function nextPic() {
     }
     current_page_idx++;
 
-    if (current_page_idx >= page_id_list.length) current_page_idx = page_id_list.length -1;
-    if ($("#" + page_id_list[current_page_idx]).offset() !== undefined) {
-        // $('#read-area').animate({
-        //     scrollTop: current_page_idx * height
-        // }, 100)
+    if (current_page_idx >= page_id_list.length) {
+        current_page_idx = page_id_list.length;
+        scrollToPage(current_page_idx);
+         
+    } else if ($("#" + page_id_list[current_page_idx]).offset() !== undefined) {
+
         scrollToPage(current_page_idx);
     }
 }
@@ -240,8 +243,9 @@ function scrollToPage(page_idx) {
     // console.log("scroll to page: " + page_idx + ":" + current_page_idx);
     var height = $('.comic-page-container').outerHeight(true);
     // console.log("pos.top: " + pos.top);
-    $('#read-area').animate({
-        scrollTop: current_page_idx * height
+    var read_area = $('#read-area');
+    read_area.animate({
+        scrollTop: (current_chapter_idx >= page_id_list.length)? read_area[0].scrollHeight :current_page_idx * height
     }, 100)
 
 }
@@ -278,6 +282,10 @@ function init() {
     $.get('./sections/page.html', function(result) {
         page_container_template_str = result;
     })
+
+    $.get('./sections/lastpagenotice-view.html', function(result){
+        lastpage_notice_template_str = result;
+    });
 }
 
 function lateInit() {
@@ -395,24 +403,7 @@ function createComicPage(imguri, id, idx) {
         view.attr("id", id);
         view.attr("idx", idx);
         view.find("img").attr("src", imguri);
-        // var is_dragging = false;
-        // var is_zoom = false;
-        // view.find("img").mousedown(function() {
-        //     is_dragging = false;
-        // })
-        // .mousemove(function() {
-        //     is_dragging = true;
-        // })
-        // .mouseup(function() {
-        //     var was_dragging = is_dragging;
-        //     is_dragging = false;
-        //     if (!was_dragging) {
-        //         console.log('drag:' + was_dragging);
-        //         current_page_idx = idx;
-        //         nextPic();
-        //     }
-        // });
-
+        
         view.find('.zoom-btn').click(function() {
             EA.send("MOUSE_CLICKED_READVIEW_ZOOM");
             view.zoom({
@@ -433,11 +424,13 @@ function createComicPage(imguri, id, idx) {
             nextPic();
         });
 
-        // view.zoom({
-        //         on:'grab',
-        //         magnify: '2'
-        //     })
         return view;
+}
+
+
+function createLastpageNotice() {
+    var view = $(lastpage_notice_template_str);
+    return view;
 }
 
 /**

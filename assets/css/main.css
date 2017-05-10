@@ -906,6 +906,12 @@ h1, h2 {
         #read-view #read-area .comic-page-container .zoom-btn:hover {
           opacity: 1;
           transition: opacity 0.2s ease-out; }
+    #read-view #read-area .last-page {
+      border: solid 1px #aaa;
+      padding: 1em;
+      margin: 0 auto 1em;
+      width: 334px;
+      text-align: center; }
 
 /* ABOUT VIEW */
 #about-view .app-info {
