@@ -1111,6 +1111,8 @@ h1, h2 {
                 height: calc(100vh - #{$titlebar-height});
                 display: block;
                 margin: 0 auto;
+                background: url(../img/download-bg.png) center 30vh no-repeat;
+                min-width: 334px;
                 @media #{$info-mobile} {
                     height: calc(100vh - #{$titlebar-height} - #{$sidebar-width} * 2)
                 }
