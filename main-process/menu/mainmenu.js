@@ -1,7 +1,6 @@
 const {app, Menu} = require('electron')
 const path = require('path')
-var openAboutWindow = require('about-window').default;
-
+// var openAboutWindow = require('about-window').default;
 // Support only macOS for now. Don't have a windows machine to test the menu.
 if (process.platform === 'darwin') {
     const name = app.getName()
@@ -10,12 +9,25 @@ if (process.platform === 'darwin') {
         submenu: [
             {
                 label: `About ${name}`,
-                click() { 
-                    openAboutWindow({
-                        win_options: {minimizable: false, maximizable: false, fullscreen: false},
-                        icon_path: path.join('file://', __dirname, '../../assets/icons/icon.png')
-                    })
+                click: function(item, focusedWindow) { 
+                    console.log(focusedWindow.webContents);
+                    let main_web_contents = focusedWindow.webContents;
+                    main_web_contents.send("open-about");
                 }
+            },
+            { type: 'separator' },
+            {
+                label: 'Preferences',
+                accelerator: (function() {
+                    if (process.platform === 'darwin') {
+                        return 'Command+,';
+                    }
+                })(),
+                click: function(item, focusedWindow) { 
+                    console.log(focusedWindow.webContents);
+                    let main_web_contents = focusedWindow.webContents;
+                    main_web_contents.send("open-about");
+                   }
             },
             {
                 label: 'Toggle Developer Tools',
@@ -39,4 +51,5 @@ if (process.platform === 'darwin') {
     const menu = Menu.buildFromTemplate(template)
     Menu.setApplicationMenu(menu)
 }
+
 

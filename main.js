@@ -89,7 +89,9 @@ function createWindow () {
   })
 
   autoUpdater.checkForUpdates();
-  require('./main-process/menu/mainmenu')
+  let mainmenu = require('./main-process/menu/mainmenu')
+  // console.log("set main_window");
+  // mainmenu.main_window = win;
 }
 
 autoUpdater.on('checking-for-update', () => {

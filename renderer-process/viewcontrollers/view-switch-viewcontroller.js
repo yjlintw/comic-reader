@@ -9,6 +9,7 @@
 var read_viewcontroller = require('./read-viewcontroller');
 var titlebar_viewcontroller = require('./titlebar-viewcontroller');
 const EA = require("electron-analytics");
+const ipc = require('electron').ipcRenderer;
 
 // Variable definition
 var updateAllUIFunc;
@@ -108,6 +109,11 @@ function onTabEntryClick() {
 
 $(document).ready(function() {
     $(".sidebar .entry").click(onTabEntryClick);
+});
+
+ipc.on("open-about", function(event) {
+    console.log("open-about received");
+    tabswitch(TAB_NAME.ABOUT);
 });
 
 
