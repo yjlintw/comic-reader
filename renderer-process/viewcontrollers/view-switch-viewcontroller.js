@@ -15,7 +15,8 @@ var updateAllUIFunc;
 var TAB_NAME = {
         FAVORITE: 0,
         SEARCH: 1,
-        READ: 2
+        READ: 2,
+        ABOUT: 3,
     };
 
 // Scroll behavior
@@ -76,7 +77,9 @@ function tabswitch(index) {
             break;
         case TAB_NAME.READ:
             $("#tab-read").trigger("click");
-            
+            break;
+        case TAB_NAME.ABOUT:
+            $("#tab-about").trigger("click");
             break;
     }
 }
