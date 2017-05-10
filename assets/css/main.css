@@ -1,7 +1,5 @@
 @charset "UTF-8";
-/**
- *      Import
- **/
+/** Import **/
 @import url("https://fonts.googleapis.com/css?family=Raleway:100,400");
 @import url("https://fonts.googleapis.com/css?family=Roboto+Condensed");
 @keyframes spin {
@@ -48,26 +46,15 @@
     left: 12px;
     animation-delay: 500ms; }
 
-/**
- *      media query
- **/
-/**
-  *     General
-  */
-/**
-  *     Title Bar
-  */
-/**
-  *     Sidebar
-  **/
-/**
-  *     Search View
-  **/
-/**
-  *     Read View
-  */
+/** media query **/
+/** General */
+/** Title Bar */
+/** Sidebar **/
+/** Search View **/
+/** Read View */
 /* ---- Utility ----*/
 /* ---- Overall area ----*/
+/** LAYOUT **/
 body, html, .whole-view {
   font-family: 'Roboto Condensed',"文泉驛正黑","WenQuanYi Zen Hei","黑體-繁","Heiti TC","微軟正黑體","Microsoft JhengHei",sans-serif;
   background: #222935;
@@ -127,9 +114,7 @@ h1, h2 {
 .input {
   font-family: 'Roboto Condensed',"文泉驛正黑","WenQuanYi Zen Hei","黑體-繁","Heiti TC","微軟正黑體","Microsoft JhengHei",sans-serif; }
 
-/**
- *     Title Bar
- **/
+/** TITLEBAR **/
 .titlebar.is-mac {
   padding: 0 3px;
   background-color: #3c4659;
@@ -139,7 +124,8 @@ h1, h2 {
   height: 25px;
   top: 0;
   -webkit-app-region: drag;
-  margin: 0; }
+  margin: 0;
+  overflow: hidden; }
   .titlebar.is-mac.webkit-draggable {
     -webkit-app-region: drag; }
   .titlebar.is-mac:after {
@@ -150,7 +136,8 @@ h1, h2 {
     text-align: center;
     line-height: 25px;
     color: #fff;
-    padding: 0 60px 0 0; }
+    padding: 0 60px 0 0;
+    overflow: hidden; }
   .titlebar.is-mac .titlebar-stoplight {
     float: left;
     text-align: left; }
@@ -162,9 +149,7 @@ h1, h2 {
     .titlebar.is-mac .titlebar-stoplight:hover svg.fullscreen-svg,
     .titlebar.is-mac .titlebar-stoplight:hover svg.maximize-svg {
       opacity: 1; }
-  .titlebar.is-mac .titlebar-close,
-  .titlebar.is-mac .titlebar-minimize,
-  .titlebar.is-mac .titlebar-fullscreen {
+  .titlebar.is-mac .titlebar-close, .titlebar.is-mac .titlebar-minimize, .titlebar.is-mac .titlebar-fullscreen {
     float: left;
     border-radius: 50%;
     margin: 6px 4px;
@@ -233,7 +218,8 @@ h1, h2 {
   top: 0;
   -webkit-app-region: drag;
   margin: 0;
-  height: 32px; }
+  height: 32px;
+  overflow: hidden; }
   .titlebar.is-win.webkit-draggable {
     -webkit-app-region: drag; }
   .titlebar.is-win:after {
@@ -334,7 +320,7 @@ h1, h2 {
     border-bottom: 1px solid #121b29;
     border-top: 1px solid #2b3b55;
     color: #fff;
-    font-size: 24px;
+    font-size: 22px;
     cursor: pointer;
     -webkit-app-region: no-drag;
     -webkit-user-select: none; }
@@ -352,8 +338,38 @@ h1, h2 {
       background-color: #1f2631;
       border: 0px;
       color: #00ffc0; }
+  .sidebar .func-area {
+    position: absolute;
+    bottom: 25px;
+    left: 0;
+    z-index: 10;
+    width: 100%; }
+    .sidebar .func-area .setting {
+      height: 40px;
+      font-size: 20px;
+      color: #fff;
+      width: 80%;
+      text-align: center;
+      margin: 0 auto;
+      padding: 5px 0;
+      border-top: 1px solid #2b3b55;
+      display: block;
+      border-bottom: 0px;
+      flex-basis: auto; }
+      .sidebar .func-area .setting:not(:last-child) {
+        border-top: 0px; }
+      .sidebar .func-area .setting:hover {
+        color: #857af8;
+        background: none; }
+      .sidebar .func-area .setting.active {
+        color: #857af8;
+        background: none;
+        border-top: 1px solid #2b3b55; }
+      @media only screen and (max-width: 768px) {
+        .sidebar .func-area .setting {
+          display: none; } }
 
-/* ---- Search Panel ---- */
+/* SEARCH VIEW */
 @media only screen and (max-width: 768px) {
   #search-view {
     min-height: 100%; }
@@ -533,6 +549,7 @@ h1, h2 {
       .search-result.media .subscribe-btn.subscribed:hover, .favorite-entry.media .subscribe-btn.subscribed:hover {
         color: #d55; }
 
+/** FAVORITE VIEW **/
 #favorite-view {
   background: #222935;
   height: 100vh;
@@ -647,6 +664,7 @@ h1, h2 {
     .favorite-entry.media .subscribe-btn:hover {
       color: #857af8; }
 
+/** READ VIEW **/
 #read-view {
   transition: all .8s ease; }
   #read-view .chapToggle {
@@ -888,3 +906,26 @@ h1, h2 {
         #read-view #read-area .comic-page-container .zoom-btn:hover {
           opacity: 1;
           transition: opacity 0.2s ease-out; }
+
+/* ABOUT VIEW */
+#about-view .app-info {
+  text-align: center;
+  color: #fff; }
+  #about-view .app-info img {
+    max-width: 310px;
+    margin: 15vh auto 0; }
+  #about-view .app-info .app-name {
+    font-size: 35px;
+    line-height: 1; }
+  #about-view .app-info .other-info {
+    font-size: 13px;
+    line-height: 25px; }
+    #about-view .app-info .other-info a:hover {
+      color: #857af8; }
+  #about-view .app-info .version {
+    display: inline-block;
+    padding: 0 0 10px 0; }
+  #about-view .app-info .description {
+    padding: 15px 0 0 0; }
+  #about-view .app-info .update-btn {
+    margin: 0 0 30px 0; }
