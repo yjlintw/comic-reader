@@ -236,7 +236,7 @@ function prevChapter() {
 }
 
 function scrollToPage(page_idx) {
-    // console.log("scroll to page: " + page_idx);
+    // console.log("scroll to page: " + page_idx + ":" + page_id_list.length);
     if (page_idx >= 0) {
         current_page_idx = page_idx;
     }
@@ -245,7 +245,7 @@ function scrollToPage(page_idx) {
     // console.log("pos.top: " + pos.top);
     var read_area = $('#read-area');
     read_area.animate({
-        scrollTop: (current_chapter_idx >= page_id_list.length)? read_area[0].scrollHeight :current_page_idx * height
+        scrollTop: (current_page_idx >= page_id_list.length)? read_area[0].scrollHeight :current_page_idx * height
     }, 100)
 
 }
@@ -513,7 +513,7 @@ $(function(){
             // curPageIdx = Math.round(pos / height);
             // console.log("scroll: " + height + "," + pos + "," +curPageIdx);
             // console.log("scrolled: " + curPageIdx);
-            EA.send("MOUSE_SCROLL_READVIEW");
+            // EA.send("MOUSE_SCROLL_READVIEW");
             did_scroll = true;
             // console.log("scroll");
 
