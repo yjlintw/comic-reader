@@ -11,6 +11,7 @@
 
 // 3rd party library
 var async = require('async');
+var ipc = require('electron').ipcRenderer;
 const settings = require("electron-settings");
 
 // model
@@ -199,6 +200,7 @@ function onChaptersGrabbed(result, newest) {
 function onAllComicsUpdateChecked() {
     console.log("---- All updates checked ----")
     settings.set("comic", this.all_comic_data);
+    
     updateSubscribeUIStatus();
 }
 
@@ -223,6 +225,18 @@ function updateSubscribeUIStatus() {
         all_comic_data[host][titlekey].lastpage = page_idx;
         settings.set('comic', all_comic_data);
     }
+
+    let count = 0;
+    for (var host_key in all_comic_data) {
+        for (var comic_key in all_comic_data[host_key]) {
+            var comic = all_comic_data[host_key][comic_key]; 
+            if (comic.subscribed && comic.hasupdate) {
+                count ++;
+            }
+        }
+    }
+    console.log(count);
+    ipc.send("comic-update", count);
 }
 
 function hasSubscription() {

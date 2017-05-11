@@ -31,7 +31,7 @@ function sendStatusToWindow(text) {
 }
 
 function createWindow () {
-  
+  // app.setBadgeCount(1);
   const {width, height} = electron.screen.getPrimaryDisplay().workAreaSize
   // Create the browser window.
   var w = 1400;
@@ -192,6 +192,9 @@ ipc.on('check-for-update', function(event) {
   manualupdate = true;
 });
 
+ipc.on('comic-update', function(event, count) {
+  app.setBadgeCount(count);
+})
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.

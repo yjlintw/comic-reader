@@ -259,9 +259,9 @@ function onSingleChapterLoaded(error, response, body) {
             }
 
         }, function(error, response, body) {
-            console.log(error);
-            console.log(response);
-            console.log(body);
+            // console.log(error);
+            // console.log(response);
+            // console.log(body);
             // console.log(rel_img_url);
             var id = "pic" + i;
             var obj = {
