@@ -247,7 +247,7 @@ function onSingleChapterLoaded(error, response, body) {
     var ch_group = this.ch_group;
     var ch_key = this.ch_key;
     async.times(num_pages, function(i, next) {
-        var rel_img_url = rel_img_url_template.replace(/-\d*\./g, "-" + util.pad(i+1, 3) + ".");
+        var rel_img_url = rel_img_url_template.replace(/(\d*)(\.jpg|\.png)$/g, util.pad(i+1, 3) + "$2");
         var img_url = baseuri + "/reader/" + rel_img_url;
         request({
             method:'GET',
