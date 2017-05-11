@@ -42,7 +42,7 @@ $(document).ready(function() {
             var downloadCount = 0;
             for (var i = 0; i < release.assets.length; i++) {
                 downloadCount += release.assets[i].download_count;
-                if (release.assets[i].content_type === 'application/x-apple-diskimage') {
+                if (release.assets[i].content_type === 'application/x-apple-diskimage' || release.assets[i].content_type === 'application/octet-stream') {
                     mac_downloadurl = release.assets[i].browser_download_url;
                     }
                 else if (release.assets[i].content_type === 'application/x-msdownload') {
