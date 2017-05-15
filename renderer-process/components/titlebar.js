@@ -19,6 +19,7 @@ var TitleBar = function(options) {
     var $element = $(html);
     var element = $element[0];
     this.element = element;
+	this.$element = $element;
 
     var self = this;
 	var close = $('.titlebar-close', element)[0];
@@ -53,7 +54,8 @@ TitleBar.prototype.appendTo = function(target) {
 	if(typeof target === 'string') target = $(target)[0];
 
 	var $element = this.$element;
-
+	console.log($element);
+	console.log(this.element);
 	$window.on('keydown', this._onkeydown = function(e) {
 
 		if(e.keyCode === 18) {
