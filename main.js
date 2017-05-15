@@ -43,15 +43,18 @@ function createWindow () {
       w -= 10;
       h -= 10;
     }
+
+    if (w < 10 || h < 10) {
+      w = 1400;
+      h = 700;
+    }
     
   }
   win = new BrowserWindow({
     width: w,
     height: h,
     frame: false,
-    transparent: true,
-    // resizable: true,
-    // maximizable: true,
+    // transparent: true,
     icon: path.join(__dirname, 'assets/icons/icon.icns'),
     webPreferences: {
       blinkFeatures: 'OverlayScrollbars'
