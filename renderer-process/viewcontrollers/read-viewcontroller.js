@@ -499,6 +499,15 @@ function onKeydown(e) {
                 nextPic();
             break;
 
+            case 35: // END
+                current_page_idx = page_id_list.length;
+                scrollToPage(current_page_idx);
+            break;
+            case 36: // HOME
+                current_page_idx = 0;
+                scrollToPage(current_page_idx);
+            break;
+
             default: return; // exit this handler for other keys
         }
 
