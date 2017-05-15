@@ -235,7 +235,7 @@ function prevChapter() {
     scrollMiddlePanel();
 }
 
-function scrollToPage(page_idx) {
+function scrollToPage(page_idx, use_animation = true) {
     // console.log("scroll to page: " + page_idx + ":" + page_id_list.length);
     if (page_idx >= 0) {
         current_page_idx = page_idx;
@@ -244,9 +244,14 @@ function scrollToPage(page_idx) {
     var height = $('.comic-page-container').outerHeight(true);
     // console.log("pos.top: " + pos.top);
     var read_area = $('#read-area');
-    read_area.animate({
-        scrollTop: (current_page_idx >= page_id_list.length)? read_area[0].scrollHeight :current_page_idx * height
-    }, 100)
+    if (use_animation) {
+        read_area.animate({
+            scrollTop: (current_page_idx >= page_id_list.length)? read_area[0].scrollHeight :current_page_idx * height
+        }, 100)
+    } else {
+        let value = (current_page_idx >= page_id_list.length)? read_area[0].scrollHeight :current_page_idx * height;
+        read_area.scrollTop(value);
+    }
 
 }
 
@@ -494,6 +499,15 @@ function onKeydown(e) {
                 nextPic();
             break;
 
+            case 35: // END
+                current_page_idx = page_id_list.length;
+                scrollToPage(current_page_idx);
+            break;
+            case 36: // HOME
+                current_page_idx = 0;
+                scrollToPage(current_page_idx);
+            break;
+
             default: return; // exit this handler for other keys
         }
 
@@ -517,6 +531,12 @@ $(function(){
             did_scroll = true;
             // console.log("scroll");
 
+        }
+    });
+
+    $(window).resize(function() {
+        if (!$('#read-panel').hasClass('is-hidden')){
+            scrollToPage(current_page_idx, false);
         }
     });
 });
