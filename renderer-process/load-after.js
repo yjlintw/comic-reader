@@ -10,6 +10,7 @@ var subscriber = require('./viewmodels/subscribe-viewmodel');
 
 // viewcontroller
 var viewswitch_viewcontroller = require('./viewcontrollers/view-switch-viewcontroller');
+const isDev = require('electron-is-dev');
 
 var scheduledTask;
 $(document).ready(function() {
@@ -28,5 +29,8 @@ $(document).ready(function() {
         });
     }
 
+    if (isDev) {
+        $.getScript("http://localhost:35729/livereload.js?snipver=2");
+    }
     
 });
