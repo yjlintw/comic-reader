@@ -10,23 +10,23 @@
 const values = require("../models/values");
 
 // viewmodel
-var subscribe_viewmodel = require("./subscribe-viewmodel");
-var comicparser_viewmodel = require("./comicparse-viewmodel");
+let subscribe_viewmodel = require("./subscribe-viewmodel");
+let comicparser_viewmodel = require("./comicparse-viewmodel");
 
 //view controller
-var search_viewcontroller = require("../viewcontrollers/search-viewcontroller");
+let search_viewcontroller = require("../viewcontrollers/search-viewcontroller");
 
 /**
  *      Variable Definition
  */
 // {tring} store the html template for search result
-var result_view_str_template = "";         
+let result_view_str_template = "";         
 
 // {Object} key: hostname value: boolean flag
 // Store information of the search request to every host
 // true: is searching
 // false: not searching
-var search_flag_dict = {};        
+let search_flag_dict = {};        
 
 /**
  *      Backend Functionality / View
@@ -58,7 +58,7 @@ function search() {
     if (isSearching()) return; // if still in the middle of searching, abort
     
     // get the search query from input box
-    var search_str = search_viewcontroller.getSearchQuery(); 
+    let search_str = search_viewcontroller.getSearchQuery(); 
 
     // clear the previous search results
     search_viewcontroller.clearSearchResults();
@@ -67,7 +67,7 @@ function search() {
     search_viewcontroller.loadingUI(true);
 
     // Send requests using parsers
-    for (var key in values.hosts) {
+    for (let key in values.hosts) {
         values.hosts[key].parsers.search(search_str, searchResponse)
         search_flag_dict[values.hosts[key].name] = true;
     }
@@ -90,9 +90,9 @@ function searchResponse(result, host) {
     search_flag_dict[host] = false;
 
     // construct UI element
-    for (var idx in result) {
-        var obj = result[idx];
-        var view = search_viewcontroller.createResultView(
+    for (let idx in result) {
+        let obj = result[idx];
+        let view = search_viewcontroller.createResultView(
             obj.link, obj.titlekey, obj.imguri, obj.title, obj.host, 
             obj.updateinfo, obj.description);
         search_viewcontroller.appendNewResult(view);
@@ -111,7 +111,7 @@ function searchResponse(result, host) {
  */
 // init as soon as the script loads.
 function init() {
-    for (var key in values.hosts) {
+    for (let key in values.hosts) {
         search_flag_dict[values.hosts[key].name] = false;
     }
     search_viewcontroller.bindSearch(search);

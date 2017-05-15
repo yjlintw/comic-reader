@@ -7,32 +7,28 @@
  */
 
 // 3rd party library
-var settings = require('electron-settings');
+let settings = require('electron-settings');
 
 // model
 const values = require('../models/values');
 
 // view model
-var subscribe_viewmodel = require('./subscribe-viewmodel');
+let subscribe_viewmodel = require('./subscribe-viewmodel');
 
 // view controller
-var search_viewcontroller = require('../viewcontrollers/search-viewcontroller');
-var favorite_viewcontroller = require('../viewcontrollers/favorite-viewcontroller');
-var read_viewcontroller = require('../viewcontrollers/read-viewcontroller');
-var viewswitch_viewcontroller = require("../viewcontrollers/view-switch-viewcontroller");
-var translate_viewcontroller = require("../viewcontrollers/translate-viewcontroller");
-var titlebar_viewcontroller = require("../viewcontrollers/titlebar-viewcontroller");
-
-module.exports = {
-    selectComic: selectComic
-}
+let search_viewcontroller = require('../viewcontrollers/search-viewcontroller');
+let favorite_viewcontroller = require('../viewcontrollers/favorite-viewcontroller');
+let read_viewcontroller = require('../viewcontrollers/read-viewcontroller');
+let viewswitch_viewcontroller = require("../viewcontrollers/view-switch-viewcontroller");
+let translate_viewcontroller = require("../viewcontrollers/translate-viewcontroller");
+let titlebar_viewcontroller = require("../viewcontrollers/titlebar-viewcontroller");
 
 
 /**
  *      Variable Definition
  */
-// variable to store the settings. Preventing frequently I/O operations
-var comic_data = {};
+// letiable to store the settings. Preventing frequently I/O operations
+let comic_data = {};
 
 /**
  * Set information for selected comic and grab chapters-info
@@ -73,17 +69,17 @@ function onChaptersGrabbed(result, newest){
     read_viewcontroller.clearChapterSelector();
 
     // create an empty chapter list with size of the length of the result
-    var chapter_list = new Array(result.length);
+    let chapter_list = new Array(result.length);
 
     // Get information from settings
-    var keyPath = "comic." + read_viewcontroller.getCurHost() 
+    let keyPath = "comic." + read_viewcontroller.getCurHost() 
                     + "." + read_viewcontroller.getCurTitleKey();
     comic_data = settings.get(keyPath)
-    var chapters_data = comic_data.chapters;
+    let chapters_data = comic_data.chapters;
     
-    for (var index in result) {
-        var obj = result[index];
-        var view = read_viewcontroller.createChapterEntry(obj.ch_group, obj.ch_key, obj.ch_name, obj.ch_link, obj.domid, obj.index);
+    for (let index in result) {
+        let obj = result[index];
+        let view = read_viewcontroller.createChapterEntry(obj.ch_group, obj.ch_key, obj.ch_name, obj.ch_link, obj.domid, obj.index);
         chapter_list[obj.index] = "#" + obj.domid;
         
         // if it is a new chapter, update the setting files
@@ -119,18 +115,15 @@ function onChaptersGrabbed(result, newest){
     read_viewcontroller.toggleLoadingAnimation(false);
 
     // select last chapter
-    // console.log(result);
-    if (comic_data.lastread_ch_key != undefined) {
-        // console.log("old");
-        var lastpage = comic_data.lastpage;
-        if (comic_data.lastread_ch_key != obj.ch_key) {
+    if (comic_data.lastread_ch_key !== undefined) {
+        let obj = result[result.length - 1];
+        let lastpage = comic_data.lastpage;
+        if (comic_data.lastread_ch_key !== obj.ch_key) {
             lastpage = 0;
         }
         read_viewcontroller.selectChapter(comic_data.chapters[comic_data.lastread_ch_group][comic_data.lastread_ch_key].ch_link, comic_data.lastread_ch_group, comic_data.lastread_ch_key, lastpage);
     } else {
-        var obj = result[result.length - 1];
-        // console.log("new")
-        // console.log(obj);
+        let obj = result[result.length - 1];
         read_viewcontroller.selectChapter(obj.ch_link, obj.ch_group, obj.ch_key);
     }
 }
@@ -143,10 +136,8 @@ function onChaptersGrabbed(result, newest){
  * @param {String} ch_key   : Chapter's unique key
  */
 function selectChapter(ch_link, ch_group, ch_key) {
-    // console.log("select " + ch_link + ":" + ch_group + ":" + ch_key);
     read_viewcontroller.clearReadArea();
     
-    // curPageIdx = 0;
     values.hostnames[read_viewcontroller.getCurHost()].parsers.loadChapter(ch_link, ch_group, ch_key, onSingleChapterLoaded);
     
 }
@@ -162,21 +153,21 @@ function selectChapter(ch_link, ch_group, ch_key) {
  * @param {String} ch_key   : Chapter's unique key
  */
 function onSingleChapterLoaded(result, ch_group, ch_key) {
-    if (ch_key != $(read_viewcontroller.getChapterList()[read_viewcontroller.getChIdx()]).attr("chkey")) {
+    if (ch_key !== $(read_viewcontroller.getChapterList()[read_viewcontroller.getChIdx()]).attr("chkey")) {
         return;
     }
-    var pageIds = new Array(result.length);
-    for (var index in result) {
-        var obj = result[index];
-        var view = read_viewcontroller.createComicPage(obj.imgurl, obj.id, obj.idx);
+    let pageIds = new Array(result.length);
+    for (let index in result) {
+        let obj = result[index];
+        let view = read_viewcontroller.createComicPage(obj.imgurl, obj.id, obj.idx);
         pageIds[obj.idx] = obj.id;
         read_viewcontroller.appendNewPage(view);
     }
-    var lastpage_view = read_viewcontroller.createLastpageNotice();
+    let lastpage_view = read_viewcontroller.createLastpageNotice();
     read_viewcontroller.appendNewPage(lastpage_view);
     read_viewcontroller.setPageIds(pageIds);
-    var lastpage = comic_data.lastpage;
-    if (comic_data.lastread_ch_key != ch_key) {
+    let lastpage = comic_data.lastpage;
+    if (comic_data.lastread_ch_key !== ch_key) {
         lastpage = 0;
     }
     console.log("scroll to page: comicparse");
@@ -197,7 +188,7 @@ function onSingleChapterLoaded(result, ch_group, ch_key) {
  */
 function updateChapterList() {
     read_viewcontroller.updateChapterList(comic_data);
-    var keypath = "comic." + read_viewcontroller.getCurHost() + "." + read_viewcontroller.getCurTitleKey();
+    let keypath = "comic." + read_viewcontroller.getCurHost() + "." + read_viewcontroller.getCurTitleKey();
     settings.set(keypath, comic_data);
     titlebar_viewcontroller.updateTitle();
 }
@@ -223,3 +214,8 @@ function lateInit() {
 
 init();
 $(document).ready(lateInit);
+
+
+module.exports = {
+    selectComic: selectComic
+}

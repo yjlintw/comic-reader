@@ -1,4 +1,4 @@
-var fs = require("fs");
+let fs = require("fs");
 const EA = require('electron-analytics');
 
 function read(f) {
@@ -8,12 +8,12 @@ function include(f) {
   eval.apply(global, [read(f)]);
 }
 
-var t = require('../tongwen/tongwen_core');
+let t = require('../tongwen/tongwen_core');
 const table1 = require('../tongwen/tongwen_table_ps2t.js');
 const table2 = require('../tongwen/tongwen_table_pt2s.js');
 const table3 = require('../tongwen/tongwen_table_s2t.js');
 const table4 = require('../tongwen/tongwen_table_t2s.js');
-var TongWen = t.TongWen();
+let TongWen = t.TongWen();
 TongWen.addS2TTable(table1.S2TTable);
 TongWen.addT2STable(table2.T2STable);
 TongWen.addS2TTable(table3.S2TTable);
@@ -24,7 +24,7 @@ module.exports = {
     translate: translate
 }
 
-var to_traditional_chinese = true;
+let to_traditional_chinese = true;
 
 function translate() {
     if (to_traditional_chinese) {
@@ -36,7 +36,7 @@ function translate() {
 
 $(document).ready(function () {
     //chinese convert
-    var zhconvert = document.getElementById("zh-convert");
+    let zhconvert = document.getElementById("zh-convert");
     zhconvert.onclick = function () {
         EA.send("MOUSE_CLICKED_TRANSLATE");
         if (zhconvert.dataset.zh == "tw") {

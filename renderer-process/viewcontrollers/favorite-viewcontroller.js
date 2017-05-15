@@ -8,28 +8,21 @@
  */
 const util = require('../util');
 const EA = require('electron-analytics');
+let fs = require('fs');
 
-module.exports = {
-    updateSubscribeUI: updateSubscribeUI,
-
-    // Binding functions
-    bindRegister: bindRegister,
-    bindSubscribe: bindSubscribe,
-    bindUnsubscribe: bindUnsubscribe,
-    bindSelectComic: bindSelectComic
-}
-//
-
-var favorite_entry_template_str = "";
-var favorite_empty_template_str = "";
+/**
+ * HTML String template
+ */
+const favorite_entry_template_str = fs.readFileSync(__dirname + '/../../sections/favorite-entry.html', 'utf-8');
+const favorite_empty_template_str = fs.readFileSync(__dirname + '/../../sections/favorite-empty.html', 'utf-8');
 
 /**
  * Action Binding
  */
-var registerFunc;
-var subscribeFunc;
-var unsubscribeFunc;
-var selectComicFunc;
+let registerFunc;
+let subscribeFunc;
+let unsubscribeFunc;
+let selectComicFunc;
 
 function bindRegister(func) {
     registerFunc = func;
@@ -54,16 +47,16 @@ function updateSubscribeUI(all_comic_data, has_subscription = true) {
     $("#favorite-contents").html("");
 
     if (has_subscription) {
-        for (var host in all_comic_data) {
-            for (var titlekey in all_comic_data[host]) {
-                var comic_data = all_comic_data[host][titlekey];
+        for (let host in all_comic_data) {
+            for (let titlekey in all_comic_data[host]) {
+                let comic_data = all_comic_data[host][titlekey];
                 if (comic_data.subscribed) {
-                    var link = comic_data.link;
-                    var imguri = comic_data.thumbnail;
-                    var title = comic_data.title;
-                    var lastread = comic_data.lastread;
-                    var newest = comic_data.newestchapter;
-                    var view = createFavEntry(link, titlekey, imguri, title, host, lastread, newest);
+                    let link = comic_data.link;
+                    let imguri = comic_data.thumbnail;
+                    let title = comic_data.title;
+                    let lastread = comic_data.lastread;
+                    let newest = comic_data.newestchapter;
+                    let view = createFavEntry(link, titlekey, imguri, title, host, lastread, newest);
 
                     if (all_comic_data[host][titlekey].hasupdate) {
                         view.addClass("hasupdate");
@@ -73,7 +66,7 @@ function updateSubscribeUI(all_comic_data, has_subscription = true) {
             }
         }
     } else {
-        var view = $(favorite_empty_template_str);
+        let view = $(favorite_empty_template_str);
         $("#favorite-contents").append(view);
     }
 
@@ -88,7 +81,7 @@ function updateSubscribeUI(all_comic_data, has_subscription = true) {
  * @param {String} host      : host name
  */
 function createFavEntry(link, titlekey, imguri, title, host, lastread, newest)  {
-    var view = $(favorite_entry_template_str);
+    let view = $(favorite_entry_template_str);
     view.find("img").each(function(n, img) {
             view.find(".thumb").css({
                 'background': '#fff url(' + imguri + ') center center no-repeat',
@@ -108,16 +101,12 @@ function createFavEntry(link, titlekey, imguri, title, host, lastread, newest)  
     view.find(".subscribe-btn").click(function(e){
         EA.send("MOUSE_CLICKED_FAVORITE_SUBSCRIBE"); 
         e.stopPropagation();
-        console.log(host);
-        console.log(titlekey);
         unsubscribeFunc(host, titlekey);
     });
 
     view.click(function(e){
         EA.send("MOUSE_CLICKED_FAVORITE_ENTRY"); 
-        // console.log("fav click:" + title + ", from:" + host);
-        var sel = util.getSelected().toString();
-        // console.log(sel);
+        let sel = util.getSelected().toString();
         if (sel === '') {
             selectComicFunc(host, link, title, titlekey, imguri);
         }
@@ -136,18 +125,10 @@ function createFavEntry(link, titlekey, imguri, title, host, lastread, newest)  
  */
 
 function init () {
-    $.get('./sections/favorite-entry.html', function(result) {
-        favorite_entry_template_str = result;
-    })
-
-    $.get('./sections/favorite-empty.html', function(result) {
-        favorite_empty_template_str = result;
-    })
 }
 
 // init when documen is ready
 function lateInit() {
-    // updateSubscribeUIStatus();
 }
 
 
@@ -157,3 +138,17 @@ function lateInit() {
 
 init();
 $(document).ready(lateInit);
+
+/**
+ *      Interface
+ */
+module.exports = {
+    updateSubscribeUI: updateSubscribeUI,
+
+    // Binding functions
+    bindRegister: bindRegister,
+    bindSubscribe: bindSubscribe,
+    bindUnsubscribe: bindUnsubscribe,
+    bindSelectComic: bindSelectComic
+}
+//

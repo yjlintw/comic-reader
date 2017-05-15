@@ -35,18 +35,18 @@
  * 
  */
 
-var request = require("request");
+let request = require("request");
 const util = require("../util");
-var async = require('async');
+let async = require('async');
 
 module.exports = {
     search: search,
     grabChapters: grabChapters,
     loadChapter: loadChapter
 }
-var host = "dm5";
-var searchuri = "http://www.dm5.com/search?title={search}&language=1";
-var baseuri = "http://www.dm5.com/";
+let host = "dm5";
+let searchuri = "http://www.dm5.com/search?title={search}&language=1";
+let baseuri = "http://www.dm5.com/";
 
 /**
  * Search comic books
@@ -66,7 +66,6 @@ var baseuri = "http://www.dm5.com/";
  *          description {String}
  */
 function search(search_term, callback) {
-    // console.log(encodeURI(searchuri.replace("{search}", search_term)))
     request({
         method: "GET",
         uri: encodeURI(searchuri.replace("{search}", search_term)),
@@ -75,7 +74,8 @@ function search(search_term, callback) {
 			'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36',
 			'Accept-Language': 'en-US,en;q=0.8,zh-TW;q=0.6,zh;q=0.4,ja;q=0.2',
             cookie: 'isAdult=1'
-        }
+        },
+        timeout: 5000
     }, searchResponse.bind({callback:callback}));
 }
 
@@ -84,31 +84,27 @@ function search(search_term, callback) {
  * @param see npm request module
  */
 function searchResponse(error, response, body) {
-    // console.log(body);
-    // var tmp2 = $("<div>" + body + "</div>");
-    // console.log(tmp2.html());
-    var tmp = $(".container .midBar .item", "<div>" + body + "</div>");
-    // console.log (tmp);
-    var result = [];
-    var callback = this.callback;
+    let tmp = $(".container .midBar .item", "<div>" + body + "</div>");
+    let result = [];
+    let callback = this.callback;
     async.each(tmp, function(e, callback1){
-        var title = $(e).find('a.title').text();
-        // console.log(title);
-        var rel_link = $(e).find('a.title').attr('href');
-        var titlekey = rel_link.substring(1, rel_link.length - 2);
-        var link = baseuri + rel_link;
-        var imguri = $(e).find('img').attr('src');
-        var updateinfo = "作者：" + $(e).find('dt>a:first-of-type').text();
-        // console.log(updateinfo);
-        var description = $(e).find('.info .value').text().replace(/^\s+|\s+$/g, '');
-        var obj = {};
-        obj.link = link;
-        obj.titlekey = titlekey;
-        obj.imguri = imguri;
-        obj.title = title;
-        obj.host = host;
-        obj.updateinfo = updateinfo;
-        obj.description = description;
+        let $e = $(e);
+        let title = $e.find('a.title').text();
+        let rel_link = $e.find('a.title').attr('href');
+        let titlekey = rel_link.substring(1, rel_link.length - 2);
+        let link = baseuri + rel_link;
+        let imguri = $e.find('img').attr('src');
+        let updateinfo = "作者：" + $e.find('dt>a:first-of-type').text();
+        let description = $(e).find('.info .value').text().replace(/^\s+|\s+$/g, '');
+        let obj = {
+            link: link,
+            titlekey: titlekey,
+            imguri: imguri,
+            title: title,
+            host: host,
+            updateinfo: updateinfo,
+            description: description
+        }
         result.push(obj);
         callback1();
     }, function () {
@@ -116,7 +112,6 @@ function searchResponse(error, response, body) {
         callback(result, host);
     });
 
-    // this.callback(result, host);
 }
 
 
@@ -147,32 +142,33 @@ function grabChapters(titlekey, link, callback) {
 			'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36',
 			'Accept-Language': 'en-US,en;q=0.8,zh-TW;q=0.6,zh;q=0.4,ja;q=0.2',
             cookie: 'isAdult=1'
-        }
+        },
+        timeout: 5000
     }, onChapterGrabbed.bind({callback: callback, titlekey: titlekey}));
 }
 
+/**
+ * 
+ * @param see npm request module
+ */
 function onChapterGrabbed(error, response, body) {
-    // var hostpath = response.request.host;
-    var tmp = $("<div>" + body + "</div>").find('[id^=cbc] li a');
-    var result = [];
-    var result_keys = {};
-    var newest = "";
-    var titlekey = this.titlekey;
+    // let hostpath = response.request.host;
+    let tmp = $("<div>" + body + "</div>").find('[id^=cbc] li a');
+    let result = [];
+    let result_keys = {};
+    let newest = "";
+    let titlekey = this.titlekey;
     tmp.each(function(i, e){
         if($(e).attr('href') == undefined) return;
-        var ch_name = $(e).text().replace(/.*(?:漫畫|漫画)\s*/g, '');
-        // console.log(ch_name);
-        var rel_link = $(e).attr('href');
+        let ch_name = $(e).text().replace(/.*(?:漫畫|漫画)\s*/g, '');
+        let rel_link = $(e).attr('href');
         if (rel_link.includes("javascript")) return;
-        var ch_link = baseuri + rel_link;
-        var ch_group = "cr_main";
-    //     var link_chunks = $(e).find('a').attr('href').split('/');
-    //     var lastIndex = link_chunks.length;
+        let ch_link = baseuri + rel_link;
+        let ch_group = "cr_main";
         
-        var domid = rel_link.replace(/\//g, '');
-        var ch_key = domid;
-    //     // console.log(chName + ":" + chLink + ":" + chGroup + ":" + domid);
-        var obj = {
+        let domid = rel_link.replace(/\//g, '');
+        let ch_key = domid;
+        let obj = {
             ch_name: ch_name,
             ch_link: ch_link,
             ch_group: ch_group,
@@ -180,7 +176,6 @@ function onChapterGrabbed(error, response, body) {
             domid: domid,
             index: i
         };
-        // console.log(ch_name + ":" + i + ":" + ch_key);
         if (ch_key in result_keys) {
 
         } else {
@@ -188,11 +183,6 @@ function onChapterGrabbed(error, response, body) {
             result_keys[ch_key] = true;
         }
     });
-    // for(var i = 0; i < result.length; i++) {
-    //     result[i].index = i;
-    // }
-    // console.log(this.titlekey)
-    // console.log(result);
     newest = result[0].ch_name;
 
     this.callback(result, newest);
@@ -220,7 +210,8 @@ function loadChapter(ch_link, ch_group, ch_key, callback) {
 			'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36',
 			'Accept-Language': 'en-US,en;q=0.8,zh-TW;q=0.6,zh;q=0.4,ja;q=0.2',
             cookie: 'isAdult=1'
-        }
+        },
+        timeout: 5000
     }, onSingleChapterLoaded.bind({callback:callback, ch_group: ch_group, ch_key: ch_key}))    
 
 }
@@ -232,21 +223,18 @@ function loadChapter(ch_link, ch_group, ch_key, callback) {
  * @param see npm request module
  */
 function onSingleChapterLoaded(error, response, body) {
-    var doc = body;
-    // console.log(body);
-    var tmp = $("<div>" + body + "</div>");
-    // console.log(body);
-    var script1=/<script type\=\"text\/javascript\">(.*)reseturl/.exec(body)[1];
+    let doc = body;
+    let tmp = $("<div>" + body + "</div>");
+    let script1=/<script type\=\"text\/javascript\">(.*)reseturl/.exec(body)[1];
 	eval(script1);
     
 
-    var url = response.request.href;
-    // console.log(DM5_IMAGE_COUNT);
-    var callback = this.callback;
-    var ch_group = this.ch_group;
-    var ch_key = this.ch_key;
+    let url = response.request.href;
+    let callback = this.callback;
+    let ch_group = this.ch_group;
+    let ch_key = this.ch_key;
     async.times(DM5_IMAGE_COUNT, function(n, next) {
-        var src = baseuri + "chapterfun.ashx?cid=" + DM5_CID.toString() + "&page=" + (n + 1) + "&key=&language=1";
+        let src = baseuri + "chapterfun.ashx?cid=" + DM5_CID.toString() + "&page=" + (n + 1) + "&key=&language=1";
         request({
             method: 'GET',
             uri: src,
@@ -255,15 +243,16 @@ function onSingleChapterLoaded(error, response, body) {
                 'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36',
                 'Accept-Language': 'en-US,en;q=0.8,zh-TW;q=0.6,zh;q=0.4,ja;q=0.2',
                 cookie: 'isAdult=1'
-            }
+            },
+            timeout: 5000
         }, function(error, response, body){
-            var images = eval(body);
+            let images = eval(body);
             if (images == undefined) {
                 next(null, null);
                 return;
             }
-            var id = 'pic' + n;
-            var obj = {
+            let id = 'pic' + n;
+            let obj = {
                 imgurl: images[0],
                 id: id,
                 idx: n
@@ -271,7 +260,6 @@ function onSingleChapterLoaded(error, response, body) {
             next(null, obj);
         })
     },function(err, result) {
-        // console.log(images);
         callback(result, ch_group, ch_key);
     })
    

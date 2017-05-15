@@ -35,7 +35,7 @@
  * 
  */
 
-var request = require("request");
+let request = require("request");
 const util = require("../util");
 
 
@@ -45,8 +45,8 @@ module.exports = {
     loadChapter: loadChapter
 }
 
-var host = "sfacg";
-var searchuri = "http://s.sfacg.com/?Key={search}&S=0&SS=0";
+let host = "sfacg";
+let searchuri = "http://s.sfacg.com/?Key={search}&S=0&SS=0";
 
 
 /**
@@ -69,7 +69,8 @@ var searchuri = "http://s.sfacg.com/?Key={search}&S=0&SS=0";
 function search(search_term, callback) {
     request({
         method: "GET",
-        uri: searchuri.replace("{search}", util.toUnicode(search_term))
+        uri: searchuri.replace("{search}", util.toUnicode(search_term)),
+        timeout: 5000
     }, searchResponse.bind({callback:callback}));
 }
 
@@ -78,26 +79,27 @@ function search(search_term, callback) {
  * @param see npm request module
  */
 function searchResponse(error, response, body) {
-    var tmp = $("#form1", "<div>" + body + "</div>").find("table:nth-of-type(5)");
-    var result = [];
+    let tmp = $("#form1", "<div>" + body + "</div>").find("table:nth-of-type(5)");
+    let result = [];
     tmp.find("ul").each(function(i, e){
-        var imguri = $(e).find("li:first-child img").attr("src");
-        // console.log(imguri);
-        var title = $(e).find("li:nth-child(2)").find("a").text();
-        var link = $(e).find("li:nth-child(2)").find("a").attr("href");
-        var info = $(e).find("li:nth-child(2)").text().split("\n");
+        let $e = $(e);
+        let imguri = $e.find("li:first-child img").attr("src");
+        let title = $e.find("li:nth-child(2)").find("a").text();
+        let link = $e.find("li:nth-child(2)").find("a").attr("href");
+        let info = $e.find("li:nth-child(2)").text().split("\n");
         $.map(info, $.trim);
-        var updateinfo = info[1];
-        var description = info.splice(2).join('\n').trim();
-        var titlekey = link.substr(link.lastIndexOf('/') + 1);
-        var obj = {};
-        obj.link = link;
-        obj.titlekey = titlekey;
-        obj.imguri = imguri;
-        obj.title = title;
-        obj.host =host;
-        obj.updateinfo = updateinfo;
-        obj.description = description;
+        let updateinfo = info[1];
+        let description = info.splice(2).join('\n').trim();
+        let titlekey = link.substr(link.lastIndexOf('/') + 1);
+        let obj = {
+            link: link,
+            titlekey: titlekey,
+            imguri: imguri,
+            title: title,
+            host: host,
+            updateinfo: updateinfo,
+            description: description
+        }
         result.push(obj);
     });
 
@@ -125,24 +127,29 @@ function searchResponse(error, response, body) {
 function grabChapters(titlekey, link, callback) {
     request({
         methos: 'GET',
-        uri: link
+        uri: link,
+        timeout: 5000
     }, onChapterGrabbed.bind({callback: callback, titlekey: titlekey}));
 }
 
+/**
+ * 
+ * @param see npm request module
+ */
 function onChapterGrabbed(error, response, body) {
-    var hostpath = response.request.host;
-    var tmp = $("table:nth-of-type(9)", "<div>" + body + "</div>").find("ul.serialise_list.Blue_link2");
-    var result = [];
-    var newest = "";
-    var titlekey = this.titlekey;
+    let hostpath = response.request.host;
+    let tmp = $("table:nth-of-type(9)", "<div>" + body + "</div>").find("ul.serialise_list.Blue_link2");
+    let result = [];
+    let newest = "";
+    let titlekey = this.titlekey;
     tmp.find("li").each(function(i, e) {
-        var ch_name = $(e).text();
-        var ch_link = "http://" + hostpath + $(e).find('a').attr('href');
-        var domid = "chapter" + i;
-        var ch_group = "";
-        var ch_key = "";
-        var link_chunks = ch_link.split("/");
-        // console.log(linkChunks[linkChunks.length - 3] + ":" + titleKey);
+        let $e = $(e);
+        let ch_name = $e.text();
+        let ch_link = "http://" + hostpath + $e.find('a').attr('href');
+        let domid = "chapter" + i;
+        let ch_group = "";
+        let ch_key = "";
+        let link_chunks = ch_link.split("/");
         if (link_chunks[link_chunks.length - 3] == titlekey) {
             ch_group = "cr_main";
             ch_key = link_chunks[link_chunks.length - 2];
@@ -154,7 +161,7 @@ function onChapterGrabbed(error, response, body) {
             ch_key = link_chunks[link_chunks.length - 2];
         }
 
-        var obj = {
+        let obj = {
             ch_name: ch_name,
             ch_link: ch_link,
             ch_group: ch_group,
@@ -184,7 +191,8 @@ function onChapterGrabbed(error, response, body) {
 function loadChapter(ch_link, ch_group, ch_key, callback) {
     request({
         method: 'GET',
-        uri: ch_link
+        uri: ch_link,
+        timeout: 5000
     }, onSingleChapterLoaded.bind({callback:callback, ch_group: ch_group, ch_key: ch_key}))    
 
 }
@@ -194,12 +202,13 @@ function loadChapter(ch_link, ch_group, ch_key, callback) {
  * @param see npm request module
  */
 function onSingleChapterLoaded(error, response, body) {
-    var tmp = $("<div>" + body + "</div>");
-    var scripts = tmp.find("script").eq(1).attr("src");
-    var hostpath = response.request.host;
+    let tmp = $("<div>" + body + "</div>");
+    let scripts = tmp.find("script").eq(1).attr("src");
+    let hostpath = response.request.host;
     request({
         method: 'GET',
-        uri: "http://" + hostpath + scripts
+        uri: "http://" + hostpath + scripts,
+        timeout: 5000
     }, utilParser.bind({callback:this.callback, ch_group: this.ch_group, ch_key: this.ch_key}));
 }
 
@@ -213,14 +222,14 @@ function onSingleChapterLoaded(error, response, body) {
  * @param see npm request module
  */
 function utilParser (error, response, body) {
-    var host = response.request.host;
+    let host = response.request.host;
     eval(body);
-    var pichost = hosts[0];
-    var result = [];
+    let pichost = hosts[0];
+    let result = [];
     for(idx in picAy) {
         imgurl = "http://" + host+picAy[idx];
-        var id = "pic" + idx;
-        var obj = {
+        let id = "pic" + idx;
+        let obj = {
             imgurl: imgurl,
             id: id,
             idx: idx

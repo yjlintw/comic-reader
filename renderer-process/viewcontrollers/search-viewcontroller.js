@@ -9,31 +9,19 @@
 const util = require('../util');
 const values = require('../models/values');
 const EA = require("electron-analytics");
-
-module.exports = {
-    createResultView: createResultView,
-    getSearchQuery: getSearchQuery,
-    clearSearchResults: clearSearchResults,
-    appendNewResult: appendNewResult,
-    loadingUI: loadingUI,
-    updateSubscribeUI: updateSubscribeUI,
-    updateSearchResult: updateSearchResult,
-    bindSearch: bindSearch,
-    bindSubscribe: bindSubscribe,
-    bindSelectComic: bindSelectComic,
-}
+let fs = require('fs');
 
 /**
  *      View
  *      Initialize & UI Interaction
  */
 
-var resultview_template_str = "";
-var filter_template_str = "";
+const resultview_template_str = fs.readFileSync(__dirname + '/../../sections/search-result-entry.html', 'utf-8');
+const filter_template_str = fs.readFileSync(__dirname + '/../../sections/search-filter.html', 'utf-8');
 // search function
-var searchFunc;
-var subscribeFunc;
-var selectComicFunc;
+let searchFunc;
+let subscribeFunc;
+let selectComicFunc;
 
 /**
  * Create a single search result HTML DOM
@@ -52,7 +40,7 @@ var selectComicFunc;
  * @return {jQueryObject} result view HTML DOM
  */
 function createResultView(link, titlekey, imguri, title, host, updateinfo, description) {
-    var view = $(resultview_template_str);
+    let view = $(resultview_template_str);
     view.find("img").each(function(n, img) {
             view.find(".thumb").css({
                 'background': '#fff url(' + imguri + ') center center no-repeat',
@@ -72,7 +60,7 @@ function createResultView(link, titlekey, imguri, title, host, updateinfo, descr
 
     view.click(function() {
         EA.send("MOUSE_CLICKED_SEARCH_ENTRY");
-        var sel = util.getSelected();
+        let sel = util.getSelected();
         if (sel === '') {
             selectComicFunc(host, link, title, titlekey, imguri);
         }
@@ -128,10 +116,10 @@ function loadingUI(shown) {
  */
 function updateSubscribeUI(all_comic_Data) {
     $(".search-result").each(function(i, e) {
-        var dom = $(e);
-        var host = dom.attr("host");
-        var titlekey = dom.attr("titlekey");
-        // var keyPath = "comic." + host + "." + titleKey;
+        let dom = $(e);
+        let host = dom.attr("host");
+        let titlekey = dom.attr("titlekey");
+        // let keyPath = "comic." + host + "." + titleKey;
 
         if (all_comic_Data && all_comic_Data[host]
             && all_comic_Data[host][titlekey]
@@ -146,7 +134,7 @@ function updateSubscribeUI(all_comic_Data) {
 }
 
 function updateSearchResult() {
-    var activetags = {};
+    let activetags = {};
     $('#search-filters .tag').each(function() {
         if ($(this).hasClass('active')) {
             activetags[$(this).attr('host')] = true;
@@ -188,12 +176,7 @@ function bindSelectComic(func) {
 
 // init as soon as the script loads.
 function init() {
-    $.get('./sections/search-result-entry.html', function(result) {
-        resultview_template_str = result;
-    });
-    $.get('./sections/search-filter.html', function(result) {
-        filter_template_str = result;
-    });
+
 }
 
 // init when document is ready
@@ -223,14 +206,14 @@ function lateInit() {
     $("#search-btn").click(searchFunc);
 
     // create filters
-    for (var key in values.hostnames) {
-        var view = $(filter_template_str);
+    for (let key in values.hostnames) {
+        let view = $(filter_template_str);
         view.text(key);
         view.attr('host', key);
         view.click(function () {
             EA.send("MOUSE_CLICKED_SEARCH_FILTER");
-            var host = $(this).attr('host');
-            var activate = $(this).hasClass('active');
+            let host = $(this).attr('host');
+            let activate = $(this).hasClass('active');
             console.log(activate);
             activate = !activate;
             if (!activate) {
@@ -250,3 +233,19 @@ function lateInit() {
  */
 init();
 $(document).ready(lateInit);
+
+/**
+ *      Interface
+ */
+module.exports = {
+    createResultView: createResultView,
+    getSearchQuery: getSearchQuery,
+    clearSearchResults: clearSearchResults,
+    appendNewResult: appendNewResult,
+    loadingUI: loadingUI,
+    updateSubscribeUI: updateSubscribeUI,
+    updateSearchResult: updateSearchResult,
+    bindSearch: bindSearch,
+    bindSubscribe: bindSubscribe,
+    bindSelectComic: bindSelectComic,
+}

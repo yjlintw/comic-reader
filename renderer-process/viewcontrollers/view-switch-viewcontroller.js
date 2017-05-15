@@ -5,15 +5,15 @@
  *      See: ../sections/sidebar.html
  */
 
-// var subscriber = require('../subscribe-viewmodel'); 
-var read_viewcontroller = require('./read-viewcontroller');
-var titlebar_viewcontroller = require('./titlebar-viewcontroller');
+// let subscriber = require('../subscribe-viewmodel'); 
+let read_viewcontroller = require('./read-viewcontroller');
+let titlebar_viewcontroller = require('./titlebar-viewcontroller');
 const EA = require("electron-analytics");
 const ipc = require('electron').ipcRenderer;
 
 // Variable definition
-var updateAllUIFunc;
-var TAB_NAME = {
+let updateAllUIFunc;
+let TAB_NAME = {
         FAVORITE: 0,
         SEARCH: 1,
         READ: 2,
@@ -23,10 +23,10 @@ var TAB_NAME = {
 // Scroll behavior
 
 // Hide Header on on scroll down
-var did_scroll;
-var last_scroll_top = 0;
-var delta = 5;
-var navbar_height = $('aside').outerHeight();
+let did_scroll;
+let last_scroll_top = 0;
+let delta = 5;
+let navbar_height = $('aside').outerHeight();
 $(window).scroll(function(event){
     did_scroll = ($(".sidebar.float-menu").css("flex-direction") == "row")
 });
@@ -43,7 +43,7 @@ setInterval(function() {
 }, 250);
 
 function hasScrolled() {
-    var st = $(this).scrollTop();
+    let st = $(this).scrollTop();
 
     // Make sure they scroll more than delta
     if(Math.abs(last_scroll_top - st) <= delta)

@@ -3,18 +3,18 @@
  */
 // const path = require('path');
 // 3rd party library
-var schedule = require('node-schedule');
+let schedule = require('node-schedule');
 
 // viewmodel
-var subscriber = require('./viewmodels/subscribe-viewmodel');
+let subscriber = require('./viewmodels/subscribe-viewmodel');
 
 // viewcontroller
-var viewswitch_viewcontroller = require('./viewcontrollers/view-switch-viewcontroller');
+let viewswitch_viewcontroller = require('./viewcontrollers/view-switch-viewcontroller');
 const isDev = require('electron-is-dev');
 
-var scheduledTask;
+let scheduledTask;
 $(document).ready(function() {
-    console.log(viewswitch_viewcontroller)
+    // console.log(viewswitch_viewcontroller)
     if (subscriber.hasSubscription()) {
         viewswitch_viewcontroller.tabswitch(viewswitch_viewcontroller.TAB_NAME.FAVORITE);
     } else {
