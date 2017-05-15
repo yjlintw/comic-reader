@@ -235,7 +235,7 @@ function updateSubscribeUIStatus() {
             }
         }
     }
-    console.log(count);
+    // console.log(count);
     ipc.send("comic-update", count);
 }
 
