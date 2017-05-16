@@ -1,13 +1,11 @@
 var events = require('events');
 var util = require('util');
 var fs = require('fs');
-// var domify = require('domify');
-// var $ = require("dombo");
 
 var $window = $(window);
 var html_mac = fs.readFileSync(__dirname + '/../../sections/titlebar-mac.html', 'utf-8');
 var html_win = fs.readFileSync(__dirname + '/../../sections/titlebar-win.html', 'utf-8');
-// console.log(html);
+
 var TitleBar = function(options) {
     if (!(this instanceof TitleBar)) return new TitleBar(options);
     events.EventEmitter.call(this);
@@ -19,6 +17,7 @@ var TitleBar = function(options) {
     var $element = $(html);
     var element = $element[0];
     this.element = element;
+	this.$element = $element;
 
     var self = this;
 	var close = $('.titlebar-close', element)[0];
@@ -53,7 +52,6 @@ TitleBar.prototype.appendTo = function(target) {
 	if(typeof target === 'string') target = $(target)[0];
 
 	var $element = this.$element;
-
 	$window.on('keydown', this._onkeydown = function(e) {
 
 		if(e.keyCode === 18) {
@@ -64,7 +62,6 @@ TitleBar.prototype.appendTo = function(target) {
 	$window.on('keyup', this._onkeyup = function(e) {
 		if(e.keyCode === 18) $element.removeClass('alt');
 	});
-	// console.log(typeof this.element)
 	target.appendChild(this.element);
 	return this;
 };

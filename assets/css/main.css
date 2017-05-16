@@ -55,17 +55,22 @@
 /* ---- Utility ----*/
 /* ---- Overall area ----*/
 /** LAYOUT **/
-body, html, .whole-view {
+.whole-view,
+body,
+html {
   font-family: 'Roboto Condensed',"文泉驛正黑","WenQuanYi Zen Hei","黑體-繁","Heiti TC","微軟正黑體","Microsoft JhengHei",sans-serif;
   background: #222935;
   height: 100%;
   margin: 0;
   overflow-y: hidden; }
   @media only screen and (max-width: 768px) {
-    body, html, .whole-view {
+    .whole-view,
+    body,
+    html {
       height: 100%; } }
 
-h1, h2 {
+h1,
+h2 {
   margin: 0; }
 
 ::-webkit-scrollbar {
@@ -149,7 +154,9 @@ h1, h2 {
     .titlebar.is-mac .titlebar-stoplight:hover svg.fullscreen-svg,
     .titlebar.is-mac .titlebar-stoplight:hover svg.maximize-svg {
       opacity: 1; }
-  .titlebar.is-mac .titlebar-close, .titlebar.is-mac .titlebar-minimize, .titlebar.is-mac .titlebar-fullscreen {
+  .titlebar.is-mac .titlebar-close,
+  .titlebar.is-mac .titlebar-fullscreen,
+  .titlebar.is-mac .titlebar-minimize {
     float: left;
     border-radius: 50%;
     margin: 6px 4px;
@@ -160,7 +167,8 @@ h1, h2 {
     border: 1px solid #e2463f;
     background-color: #ff5f57;
     margin-left: 6px; }
-    .titlebar.is-mac .titlebar-close:hover, .titlebar.is-mac .titlebar-close :active {
+    .titlebar.is-mac .titlebar-close:hover,
+    .titlebar.is-mac .titlebar-close :active {
       border-color: #ad3934;
       background-color: #bf4943; }
     .titlebar.is-mac .titlebar-close svg {
@@ -172,7 +180,8 @@ h1, h2 {
   .titlebar.is-mac .titlebar-minimize {
     border: 1px solid #e1a116;
     background-color: #ffbd2e; }
-    .titlebar.is-mac .titlebar-minimize:hover, .titlebar.is-mac .titlebar-minimize :active {
+    .titlebar.is-mac .titlebar-minimize:hover,
+    .titlebar.is-mac .titlebar-minimize :active {
       border-color: #ad7d15;
       background-color: #bf9123; }
     .titlebar.is-mac .titlebar-minimize svg {
@@ -185,7 +194,8 @@ h1, h2 {
   .titlebar.is-mac .titlebar-maximize {
     border: 1px solid #12ac28;
     background-color: #28c940; }
-    .titlebar.is-mac .titlebar-fullscreen:hover, .titlebar.is-mac .titlebar-fullscreen :active,
+    .titlebar.is-mac .titlebar-fullscreen:hover,
+    .titlebar.is-mac .titlebar-fullscreen :active,
     .titlebar.is-mac .titlebar-maximize:hover,
     .titlebar.is-mac .titlebar-maximize :active {
       border-color: #128622;
@@ -209,7 +219,7 @@ h1, h2 {
     display: block; }
 
 .titlebar.is-win {
-  padding: 0px;
+  padding: 0;
   background-color: #3c4659;
   position: fixed;
   z-index: 100000;
@@ -240,8 +250,8 @@ h1, h2 {
       display: table;
       clear: both; }
   .titlebar.is-win .titlebar-close,
-  .titlebar.is-win .titlebar-minimize,
-  .titlebar.is-win .titlebar-fullscreen {
+  .titlebar.is-win .titlebar-fullscreen,
+  .titlebar.is-win .titlebar-minimize {
     float: left;
     width: 45px;
     height: 31px;
@@ -250,8 +260,8 @@ h1, h2 {
     line-height: 29px;
     transition: background-color .2s; }
   .titlebar.is-win .titlebar-close svg,
-  .titlebar.is-win .titlebar-minimize svg,
-  .titlebar.is-win .titlebar-fullscreen svg {
+  .titlebar.is-win .titlebar-fullscreen svg,
+  .titlebar.is-win .titlebar-minimize svg {
     width: 10px;
     height: 10px;
     shape-rendering: crispEdges; }
@@ -261,13 +271,13 @@ h1, h2 {
     display: none; }
   .titlebar.is-win .titlebar.fullscreen svg.fullscreen-svg {
     display: none; }
+  .titlebar.is-win .titlebar-fullscreen:hover,
   .titlebar.is-win .titlebar-minimize:hover,
-  .titlebar.is-win .titlebar-resize:hover,
-  .titlebar.is-win .titlebar-fullscreen:hover {
+  .titlebar.is-win .titlebar-resize:hover {
     background-color: rgba(255, 255, 255, 0.1); }
+  .titlebar.is-win .titlebar-light .titlebar-fullscreen:hover,
   .titlebar.is-win .titlebar-light .titlebar-minimize:hover,
-  .titlebar.is-win .titlebar-light .titlebar-resize:hover,
-  .titlebar.is-win .titlebar-light .titlebar-fullscreen:hover {
+  .titlebar.is-win .titlebar-light .titlebar-resize:hover {
     background-color: rgba(0, 0, 0, 0.1); }
   .titlebar.is-win .titlebar-close:hover {
     background-color: rgba(232, 17, 35, 0.9); }
@@ -275,16 +285,16 @@ h1, h2 {
     fill: white; }
   .titlebar.is-win .titlebar-light .titlebar-close:hover {
     fill: black; }
+  .titlebar.is-win .titlebar-light svg > path,
   .titlebar.is-win .titlebar-light svg polygon,
-  .titlebar.is-win .titlebar-light svg rect,
-  .titlebar.is-win .titlebar-light svg > path {
+  .titlebar.is-win .titlebar-light svg rect {
     fill: white; }
   .titlebar.is-win .titlebar-light .titlebar-close:hover {
     background-color: rgba(232, 17, 35, 0.9); }
 
 /* ---- Side Bar ---- */
 .sidebar {
-  box-shadow: 2px 0px 5px 0px rgba(0, 0, 0, 0.3);
+  box-shadow: 2px 0 5px 0 rgba(0, 0, 0, 0.3);
   z-index: 99;
   margin: 0;
   -webkit-app-region: drag;
@@ -297,7 +307,7 @@ h1, h2 {
       position: fixed;
       z-index: 10000;
       top: 25px;
-      transition: top 0.2s; }
+      transition: top .2s; }
       .sidebar.float-menu.nav-up {
         top: -60px; } }
   @media only screen and (min-width: 769px) {
@@ -310,7 +320,8 @@ h1, h2 {
       height: 100vh;
       flex-direction: column;
       position: fixed; } }
-  .sidebar .entry, .sidebar .convert {
+  .sidebar .convert,
+  .sidebar .entry {
     height: 60px;
     flex-grow: 0;
     flex-basis: 60px;
@@ -325,18 +336,22 @@ h1, h2 {
     -webkit-app-region: no-drag;
     -webkit-user-select: none; }
     @media only screen and (max-width: 768px) {
-      .sidebar .entry, .sidebar .convert {
+      .sidebar .convert,
+      .sidebar .entry {
         width: 33.33333%;
         flex-basis: 33.33333%;
         border-bottom: none; }
-        .sidebar .entry:not(:last-child), .sidebar .convert:not(:last-child) {
+        .sidebar .convert:not(:last-child),
+        .sidebar .entry:not(:last-child) {
           border-right: 1px solid #2b3b55; } }
-    .sidebar .entry:hover, .sidebar .convert:hover {
+    .sidebar .convert:hover,
+    .sidebar .entry:hover {
       background-color: #26344b;
-      border-bottom: 0px; }
-    .sidebar .entry.active, .sidebar .convert.active {
+      border-bottom: 0; }
+    .sidebar .convert.active,
+    .sidebar .entry.active {
       background-color: #1f2631;
-      border: 0px;
+      border: 0;
       color: #00ffc0; }
   .sidebar .func-area {
     position: absolute;
@@ -354,10 +369,10 @@ h1, h2 {
       padding: 5px 0;
       border-top: 1px solid #2b3b55;
       display: block;
-      border-bottom: 0px;
+      border-bottom: 0;
       flex-basis: auto; }
       .sidebar .func-area .setting:not(:last-child) {
-        border-top: 0px; }
+        border-top: 0; }
       .sidebar .func-area .setting:hover {
         color: #857af8;
         background: none; }
@@ -412,16 +427,16 @@ h1, h2 {
   box-shadow: none;
   background: #2c3e50;
   color: #fff;
-  border: 0px; }
+  border: 0; }
   #search-view .input:hover {
-    box-shadow: 0px;
-    border: 0px; }
+    box-shadow: 0;
+    border: 0; }
   #search-view .input:focus {
-    box-shadow: 0px;
-    border: 0px; }
+    box-shadow: 0;
+    border: 0; }
   #search-view .input:active {
-    box-shadow: 0px;
-    border: 0px; }
+    box-shadow: 0;
+    border: 0; }
 
 #search-view .loading-bg {
   background-color: #222935;
@@ -448,26 +463,26 @@ h1, h2 {
     height: 40px;
     left: -6px;
     background: #2c3e50;
-    border-left: 0px;
+    border-left: 0;
     color: #425c77;
-    border: 0px;
+    border: 0;
     font-size: 25px; }
     #search-header .button:hover {
-      box-shadow: 0px;
-      border: 0px; }
+      box-shadow: 0;
+      border: 0; }
     #search-header .button:focus {
-      box-shadow: 0px;
-      border: 0px; }
+      box-shadow: 0;
+      border: 0; }
     #search-header .button:active {
-      box-shadow: 0px;
-      border: 0px; }
+      box-shadow: 0;
+      border: 0; }
 
 #search-filters {
   margin-top: 1em; }
   #search-filters .tag {
     -webkit-user-select: none;
     font-size: 14px;
-    margin: 0 0.2em;
+    margin: 0 .2em;
     background-color: #313743;
     color: #526c77;
     cursor: pointer;
@@ -480,7 +495,7 @@ h1, h2 {
 
 #search-results {
   width: 100%;
-  background: url(../img/ground.png) 0 calc(100% - 25px) repeat-x;
+  background: url("../img/ground.png") 0 calc(100% - 25px) repeat-x;
   transition: all 1s ease;
   padding: 0; }
   @media only screen and (max-width: 768px) {
@@ -515,7 +530,7 @@ h1, h2 {
     overflow: hidden;
     white-space: nowrap;
     line-height: 25px;
-    padding: 5px 0 5px 0;
+    padding: 5px 0;
     border-bottom: 1px solid #242e40;
     color: #fff; }
   .search-result.media:hover, .favorite-entry.media:hover {
@@ -523,14 +538,14 @@ h1, h2 {
   .search-result.media.subscribed, .subscribed.favorite-entry.media {
     background-color: #373f4e;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-    border-bottom: 0px;
+    border-bottom: 0;
     border-radius: 3px; }
   .search-result.media .content p, .favorite-entry.media .content p {
     margin: 10px 0;
     font-size: 14px;
     color: #8a8a90; }
     .search-result.media .content p.comic-host, .favorite-entry.media .content p.comic-host, .search-result.media .content p.comic-update-info, .favorite-entry.media .content p.comic-update-info {
-      margin: 5px 0 0 0;
+      margin: 5px 0 0;
       color: #698aca;
       font-weight: 600;
       line-height: 15px;
@@ -560,7 +575,7 @@ h1, h2 {
     display: block; }
   @media only screen and (max-width: 768px) {
     #favorite-view {
-      padding: 0.2em 0;
+      padding: .2em 0;
       height: calc(100vh - 25px - 0.8em); } }
   #favorite-view h2 {
     font-size: 38px;
@@ -629,7 +644,7 @@ h1, h2 {
     white-space: nowrap;
     width: 150px;
     line-height: 25px;
-    padding: 15px 0 5px 0;
+    padding: 15px 0 5px;
     border-bottom: 2px dotted #676c75;
     color: #b1dad8; }
     .favorite-entry.media .comic-name small {
@@ -638,7 +653,7 @@ h1, h2 {
       font-size: 13px;
       line-height: 15px; }
   .favorite-entry.media .level {
-    margin: 0.5em 0;
+    margin: .5em 0;
     font-size: 13px;
     line-height: 20px; }
   .favorite-entry.media .level-item {
@@ -699,14 +714,14 @@ h1, h2 {
       transition: .3s ease-in-out; }
   #read-view .toggleTag {
     position: absolute;
-    left: 0px;
+    left: 0;
     bottom: 25px;
     z-index: 2;
     width: 40px;
     height: 40px;
     background: #415983;
     border-radius: 0 3px 3px 0;
-    box-shadow: 2px 0px 5px 0px rgba(0, 0, 0, 0.3);
+    box-shadow: 2px 0 5px 0 rgba(0, 0, 0, 0.3);
     color: #fff;
     font-size: 28px;
     text-align: center;
@@ -741,7 +756,7 @@ h1, h2 {
       left: -190px; }
     #read-view .middle-panel #comic-header {
       border-left: 7px solid #e4ff67;
-      padding-left: 0px;
+      padding-left: 0;
       width: 250px;
       position: fixed;
       left: calc($sidebar-widt + 1);
@@ -756,7 +771,7 @@ h1, h2 {
           position: fixed;
           height: 60px;
           width: 100%;
-          transition: top 0.2s;
+          transition: top .2s;
           top: calc(60px + 25px);
           cursor: pointer;
           padding: 0 0 0 25px; }
@@ -810,7 +825,7 @@ h1, h2 {
         cursor: pointer;
         background: #373e4a;
         border-bottom: 1px solid #313743;
-        padding: 0.73rem 0.72rem 0.73rem 25px; }
+        padding: .73rem .72rem .73rem 25px; }
         @media only screen and (max-width: 768px) {
           #read-view .middle-panel #chapter-selector .chapter-entry {
             position: relative;
@@ -852,7 +867,7 @@ h1, h2 {
       line-height: 50px;
       text-align: center;
       position: absolute;
-      opacity: 0.6;
+      opacity: .6;
       background: rgba(0, 0, 0, 0.5); }
       #read-view .controlTips li:nth-child(1) {
         left: 55px; }
@@ -890,22 +905,22 @@ h1, h2 {
         height: calc(100vh - 25px);
         display: block;
         margin: 0 auto;
-        background: url(../img/download-bg.png) center 30vh no-repeat;
+        background: url("../img/download-bg.png") center 30vh no-repeat;
         min-width: 334px; }
         @media only screen and (max-width: 768px) {
           #read-view #read-area .comic-page-container img {
             height: calc(100vh - 25px - 60px * 2); } }
       #read-view #read-area .comic-page-container .zoom-btn {
-        opacity: 0.3;
+        opacity: .3;
         font-size: 1.5em;
         position: absolute;
-        padding: 0.5em 0.8em 0.4em;
+        padding: .5em .8em .4em;
         background-color: rgba(0, 0, 0, 0.8);
         border-radius: 0 0 5px 5px;
         z-index: 99; }
         #read-view #read-area .comic-page-container .zoom-btn:hover {
           opacity: 1;
-          transition: opacity 0.2s ease-out; }
+          transition: opacity .2s ease-out; }
     #read-view #read-area .last-page {
       border: solid 1px #aaa;
       padding: 1em;
@@ -923,6 +938,8 @@ h1, h2 {
   #about-view .app-info .app-name {
     font-size: 35px;
     line-height: 1; }
+  #about-view .app-info a:hover {
+    color: #857af8; }
   #about-view .app-info .other-info {
     font-size: 13px;
     line-height: 25px; }
@@ -930,8 +947,8 @@ h1, h2 {
       color: #857af8; }
   #about-view .app-info .version {
     display: inline-block;
-    padding: 0 0 10px 0; }
+    padding: 0 0 10px; }
   #about-view .app-info .description {
-    padding: 15px 0 0 0; }
+    padding: 15px 0 0; }
   #about-view .app-info .update-btn {
-    margin: 0 0 30px 0; }
+    margin: 0 0 30px; }

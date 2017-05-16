@@ -8,69 +8,34 @@
  *      ./comic-parser.js
  */
 const EA = require('electron-analytics');
-
-module.exports = {
-    // create new elements
-    createChapterEntry: createChapterEntry,
-    createComicPage: createComicPage,
-    createLastpageNotice: createLastpageNotice,
-
-    // append to the screen
-    appendNewPage: appendNewPage,
-    appendNewChapter: appendNewChapter,
-
-    // UI update / clear
-    updateSubscribeUI: updateSubscribeUI,
-    clearReadArea: clearReadArea,
-    clearChapterSelector: clearChapterSelector,
-    toggleLoadingAnimation: toggleLoadingAnimation,
-    scrollToPage: scrollToPage,
-    selectChapter: selectChapter,
-    showToolTips: showToolTips,
-
-    // Action Binding
-    bindSubscribe: bindSubscribe,
-    bindSelectChapter: bindSelectChapter,
-
-    // Getter / Setter
-    getChIdx: function() {return current_chapter_idx},
-    getCurHost: function() {return current_host},
-    getCurTitleKey: function() {return current_titlekey},
-    setPageIds: function(x) { page_id_list = x},
-    getChapterList: function() { return chapter_list },
-    setChapterList: function(x) { chapter_list = x},
-    getCurrentChapterKey: function () {return current_chapter_key},
-    setCurrentComic: setCurrentComic,
-    getCurrentPageIdx: getCurrentPageIdx,
-    updateChapterList: updateChapterList
-}
+let fs = require('fs');
 
 /**
  *      Variable Defintion
  */
 // HTML DOM Template
-var chapter_entry_template_str = "";
-var page_container_template_str = "";
-var lastpage_notice_template_str = "";
+const chapter_entry_template_str = fs.readFileSync(__dirname + '/../../sections/chapter-entry.html', 'utf-8');
+const page_container_template_str = fs.readFileSync(__dirname + '/../../sections/page.html', 'utf-8');
+const lastpage_notice_template_str = fs.readFileSync(__dirname + '/../../sections/lastpagenotice-view.html', 'utf-8');
 
 // Binded Function
-var subscribeFunc;
-var selectChapterFunc;
+let subscribeFunc;
+let selectChapterFunc;
 
 // Info
-var current_host = "";
-var current_titlekey = "";
-var current_title = "";
-var current_link = "";
-var current_imguri = "";
+let current_host = "";
+let current_titlekey = "";
+let current_title = "";
+let current_link = "";
+let current_imguri = "";
 
-var page_id_list = [];
-var chapter_list = [];
-var current_page_idx = 0;
-var current_chapter_idx = -1;
-var current_chapter_key = "";
+let page_id_list = [];
+let chapter_list = [];
+let current_page_idx = 0;
+let current_chapter_idx = -1;
+let current_chapter_key = "";
 
-var did_scroll = false;
+let did_scroll = false;
 
 
 // Action Binding
@@ -90,11 +55,15 @@ function bindSelectChapter(func) {
     selectChapterFunc = func;
 }
 
+/**
+ * Return current page idx. If the user did scroll by mouse, calculate current
+ * page index by using the scroll position and image height.
+ */
 function getCurrentPageIdx() {
-    if (did_scroll && $("#read-view").css('display') != "none") {
+    if (did_scroll && $("#read-view").css('display') !== "none") {
         did_scroll = false;
-        var height = $('.comic-page-container').outerHeight(true);
-        var pos = $('#read-area').scrollTop();
+        let height = $('.comic-page-container').outerHeight(true);
+        let pos = $('#read-area').scrollTop();
         current_page_idx = Math.ceil(pos / height);
     }
     return current_page_idx;
@@ -120,7 +89,7 @@ function setCurrentComic(host, titlekey, title, link, imguri) {
 
     // Update HTML DOM
     $("#comic-header .comic-title").html(title);
-    var header = $("#comic-header");
+    let header = $("#comic-header");
     header.attr("host", host);
     header.attr("link", link);
     header.attr("title", title);
@@ -133,11 +102,11 @@ function setCurrentComic(host, titlekey, title, link, imguri) {
  */
 function updateSubscribeUI(all_comic_data) {
     // console.log("update subscribe ui: " + current_page_idx);
-    var dom = $("#comic-header");
-    var host = dom.attr("host");
-    var titlekey = dom.attr("titlekey");
+    let dom = $("#comic-header");
+    let host = dom.attr("host");
+    let titlekey = dom.attr("titlekey");
 
-    var isSubscribed = all_comic_data[host]
+    let isSubscribed = all_comic_data[host]
         && all_comic_data[host][titlekey]
         && all_comic_data[host][titlekey].subscribed;
 
@@ -155,8 +124,8 @@ function updateSubscribeUI(all_comic_data) {
 function updateChapterList(comic_data) {
     // console.log(comicData);
     $(".chapter-entry").each(function(i, e) {
-        var ch_key = $(e).attr("chKey");
-        var ch_group = $(e).attr("chGroup");
+        let ch_key = $(e).attr("chKey");
+        let ch_group = $(e).attr("chGroup");
 
         if (comic_data.chapters[ch_group][ch_key].read) {
             $(e).addClass("read");
@@ -173,19 +142,16 @@ function updateChapterList(comic_data) {
  */
 function prevPic() {
 
-    var height = $('.comic-page-container').outerHeight(true);
+    let height = $('.comic-page-container').outerHeight(true);
     if (did_scroll) {
         did_scroll = false;
-        var pos = $('#read-area').scrollTop();
+        let pos = $('#read-area').scrollTop();
         current_page_idx = Math.ceil(pos / height);
     }
     current_page_idx--;
     if (current_page_idx < 0) current_page_idx = 0;
 
     if ($("#" + page_id_list[current_page_idx]).offset() !== undefined ) {
-        // $('#read-area').animate({
-        //     scrollTop: current_page_idx * height
-        // }, 100);
         scrollToPage(current_page_idx);
     }
 }
@@ -194,10 +160,10 @@ function prevPic() {
  * Scroll to next pic
  */
 function nextPic() {
-    var height = $('.comic-page-container').outerHeight(true);
+    let height = $('.comic-page-container').outerHeight(true);
     if (did_scroll) {
         did_scroll = false;
-        var pos = $('#read-area').scrollTop();
+        let pos = $('#read-area').scrollTop();
         current_page_idx = Math.floor(pos / height);
     }
     current_page_idx++;
@@ -216,10 +182,9 @@ function nextPic() {
  * Scroll to previous chapter
  */
 function nextChapter() {
-    if (current_chapter_idx == 0) return;
+    if (current_chapter_idx === 0) return;
     current_chapter_idx--;
     if (current_chapter_idx < 0) current_chapter_idx = 0;
-    // console.log(chapterList[curChapterIdx]);
     $(chapter_list[current_chapter_idx]).trigger('click');
     scrollMiddlePanel();
 }
@@ -228,7 +193,7 @@ function nextChapter() {
  * Scroll to next chapter
  */
 function prevChapter() {
-    if (current_chapter_idx == chapter_list.length - 1) return;
+    if (current_chapter_idx === chapter_list.length - 1) return;
     current_chapter_idx++;
     if (current_chapter_idx >= chapter_list.length) current_chapter_idx = chapter_list.length - 1;
     $(chapter_list[current_chapter_idx]).trigger('click');
@@ -236,14 +201,11 @@ function prevChapter() {
 }
 
 function scrollToPage(page_idx, use_animation = true) {
-    // console.log("scroll to page: " + page_idx + ":" + page_id_list.length);
     if (page_idx >= 0) {
         current_page_idx = page_idx;
     }
-    // console.log("scroll to page: " + page_idx + ":" + current_page_idx);
-    var height = $('.comic-page-container').outerHeight(true);
-    // console.log("pos.top: " + pos.top);
-    var read_area = $('#read-area');
+    let height = $('.comic-page-container').outerHeight(true);
+    let read_area = $('#read-area');
     if (use_animation) {
         read_area.animate({
             scrollTop: (current_page_idx >= page_id_list.length)? read_area[0].scrollHeight :current_page_idx * height
@@ -261,8 +223,8 @@ function scrollToPage(page_idx, use_animation = true) {
  * will always be visible
  */
 function scrollMiddlePanel() {
-    var scroll_bottom = $("#chapter-selector").height() + $("#titlebar").outerHeight();
-    var e = $(chapter_list[current_chapter_idx]);
+    let scroll_bottom = $("#chapter-selector").height() + $("#titlebar").outerHeight();
+    let e = $(chapter_list[current_chapter_idx]);
     if (e.offset() && e.offset().top  + e.height() >= scroll_bottom) {
         $("#chapter-selector").animate({
             scrollTop: $("#chapter-selector").scrollTop() + e.offset().top - $("#comic-header").outerHeight() - $("#titlebar").outerHeight()
@@ -280,17 +242,6 @@ function scrollMiddlePanel() {
  */
 
 function init() {
-    $.get('./sections/chapter-entry.html', function(result) {
-        chapter_entry_template_str = result;
-    });
-
-    $.get('./sections/page.html', function(result) {
-        page_container_template_str = result;
-    })
-
-    $.get('./sections/lastpagenotice-view.html', function(result){
-        lastpage_notice_template_str = result;
-    });
 }
 
 function lateInit() {
@@ -348,19 +299,11 @@ function showToolTips() {
 
 function selectChapter(ch_link, ch_group, ch_key, last_page = 0) {
     $(".chapter-entry").each(function(i, v) {
-        if ($(v).attr("link") == ch_link) {
+        if ($(v).attr("link") === ch_link) {
             $(v).trigger('click');
             return false;
         }
     });
-
-    // if (last_page != 0) {
-    //     setTimeout(function() {
-    //         scrollToPage(last_page);
-    //     }, 2000);
-    // } else {
-    //     scrollToPage(last_page);
-    // }
 }
 
 /**
@@ -372,7 +315,7 @@ function selectChapter(ch_link, ch_group, ch_key, last_page = 0) {
  * @param {int}    index   : index of selected chapter in the chapter list
  */
 function createChapterEntry(ch_group, ch_key, ch_name, ch_link, domid, index) {
-    var view = $(chapter_entry_template_str);
+    let view = $(chapter_entry_template_str);
     view.attr("link", ch_link);
     view.attr("chGroup", ch_group);
     view.attr("chKey", ch_key);
@@ -404,7 +347,7 @@ function createChapterEntry(ch_group, ch_key, ch_name, ch_link, domid, index) {
  * @param {int}    idx    : index in the pic array
  */
 function createComicPage(imguri, id, idx) {
-        var view = $(page_container_template_str);
+        let view = $(page_container_template_str);
         view.attr("id", id);
         view.attr("idx", idx);
         view.find("img").attr("src", imguri);
@@ -434,7 +377,7 @@ function createComicPage(imguri, id, idx) {
 
 
 function createLastpageNotice() {
-    var view = $(lastpage_notice_template_str);
+    let view = $(lastpage_notice_template_str);
     return view;
 }
 
@@ -442,7 +385,7 @@ function createLastpageNotice() {
  * Toggle Chapter Selector, used in mobile view only
  */
 function toggleChapterSelector() {
-    var chapter_selector = $("#chapter-selector");
+    let chapter_selector = $("#chapter-selector");
     if (chapter_selector.hasClass("is-hidden-mobile")) {
         chapter_selector.removeClass("is-hidden-mobile");
         $('#read-area').find('.zoom-btn').css("z-index","0");
@@ -460,7 +403,7 @@ function toggleChapterSelector() {
  * @param {bool} shown
  */
 function toggleLoadingAnimation(shown) {
-    var loading_bg = $(".middle-panel .loading-bg");
+    let loading_bg = $(".middle-panel .loading-bg");
     if (shown) {
         loading_bg.removeClass("is-hidden");
     } else {
@@ -521,16 +464,7 @@ function onKeydown(e) {
 $(function(){
     $(window).bind('mousewheel', function(e){
         if (!$('#read-panel').hasClass('is-hidden')){
-            // curPageIdx = 0;
-            // var height = $('.comic-page-container').outerHeight(true);
-            // var pos = $("#read-area").scrollTop();
-            // curPageIdx = Math.round(pos / height);
-            // console.log("scroll: " + height + "," + pos + "," +curPageIdx);
-            // console.log("scrolled: " + curPageIdx);
-            // EA.send("MOUSE_SCROLL_READVIEW");
             did_scroll = true;
-            // console.log("scroll");
-
         }
     });
 
@@ -550,3 +484,40 @@ init();
 $(document).ready(lateInit);
 
 $(document).keydown(onKeydown);
+
+
+module.exports = {
+    // create new elements
+    createChapterEntry: createChapterEntry,
+    createComicPage: createComicPage,
+    createLastpageNotice: createLastpageNotice,
+
+    // append to the screen
+    appendNewPage: appendNewPage,
+    appendNewChapter: appendNewChapter,
+
+    // UI update / clear
+    updateSubscribeUI: updateSubscribeUI,
+    clearReadArea: clearReadArea,
+    clearChapterSelector: clearChapterSelector,
+    toggleLoadingAnimation: toggleLoadingAnimation,
+    scrollToPage: scrollToPage,
+    selectChapter: selectChapter,
+    showToolTips: showToolTips,
+
+    // Action Binding
+    bindSubscribe: bindSubscribe,
+    bindSelectChapter: bindSelectChapter,
+
+    // Getter / Setter
+    getChIdx: function() {return current_chapter_idx},
+    getCurHost: function() {return current_host},
+    getCurTitleKey: function() {return current_titlekey},
+    setPageIds: function(x) { page_id_list = x},
+    getChapterList: function() { return chapter_list },
+    setChapterList: function(x) { chapter_list = x},
+    getCurrentChapterKey: function () {return current_chapter_key},
+    setCurrentComic: setCurrentComic,
+    getCurrentPageIdx: getCurrentPageIdx,
+    updateChapterList: updateChapterList
+}

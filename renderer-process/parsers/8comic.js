@@ -35,9 +35,9 @@
  * 
  */
 
-var request = require("request");
+let request = require("request");
 const util = require("../util");
-var async = require('async');
+let async = require('async');
 
 module.exports = {
     search: search,
@@ -45,9 +45,9 @@ module.exports = {
     loadChapter: loadChapter
 }
 
-var host = "8comic";
-var searchuri = "http://8comic.se/搜尋結果/?w={search}";
-var baseuri = "http://8comic.se";
+let host = "8comic";
+let searchuri = "http://8comic.se/搜尋結果/?w={search}";
+let baseuri = "http://8comic.se";
 
 /**
  * Search comic books
@@ -67,10 +67,10 @@ var baseuri = "http://8comic.se";
  *          description {String}
  */
 function search(search_term, callback) {
-    // console.log(encodeURI(searchuri.replace("{search}", search_term)))
     request({
         method: "GET",
-        uri: encodeURI(searchuri.replace("{search}", search_term))
+        uri: encodeURI(searchuri.replace("{search}", search_term)),
+        timeout: 5000
     }, searchResponse.bind({callback:callback}));
 }
 
@@ -79,18 +79,19 @@ function search(search_term, callback) {
  * @param see npm request module
  */
 function searchResponse(error, response, body) {
-    // console.log(body);
-    var tmp = $("#post-35 .post-list-full", "<div>" + body + "</div>").find('.data a');
-    var result = [];
-    var callback = this.callback;
+    let tmp = $("#post-35", "<div>" + body + "</div>").find('.post-list-full .data a');
+    let result = [];
+    let callback = this.callback;
     async.each(tmp, function(e, callback1){
-        var title = $(e).text();
-        var link = baseuri + $(e).attr('href');
-        var rel_link = $(e).attr('href');
-        var titlekey = $(e).attr('href').substr(1, rel_link.length - 2);
+        let $e = $(e);
+        let title = $e.text();
+        let link = baseuri + $e.attr('href');
+        let rel_link = $e.attr('href');
+        let titlekey = $e.attr('href').substr(1, rel_link.length - 2);
         request({
             method: "GET",
-            uri: link
+            uri: link,
+            timeout: 5000
         }, onDetailInfoGet.bind({
             callback: callback1,
             link: link,
@@ -108,24 +109,26 @@ function searchResponse(error, response, body) {
     this.callback(result, host);
 }
 
+/**
+ * Since 8Comic's search result does not return detail information, we will
+ * need another GET request to get those information
+ * @param see npm request module
+ */
 function onDetailInfoGet(error, response, body) {
-    var tmp = $("#content table tr:first-child", "<div>" + body + "</div>");
-    // console.log(this.title);
-    // console.log(this.titleKey);
+    let tmp = $("#content", "<div>" + body + "</div>").find('table tr:first-child');
     
-    var imguri = tmp.find('img').attr('src');
-    var description = tmp.find('p').text().replace(/^\s+|\s+$/g, '');
-    // console.log(imgurl);
-    // console.log(description);
+    let imguri = tmp.find('img').attr('src');
+    let description = tmp.find('p').text().replace(/^\s+|\s+$/g, '');
 
-    var obj = {};
-    obj.link = this.link;
-    obj.titlekey = this.titlekey;
-    obj.imguri = imguri;
-    obj.title = this.title;
-    obj.host = host;
-    obj.updateinfo = "";
-    obj.description = description;
+    let obj = {
+        link: this.link,
+        titlekey: this.titlekey,
+        imguri: imguri,
+        title: this.title,
+        host: host,
+        updateinfo: "",
+        description: description
+    }
     this.result.push(obj);
 
     this.callback();
@@ -153,28 +156,33 @@ function onDetailInfoGet(error, response, body) {
 function grabChapters(titlekey, link, callback) {
     request({
         methos: 'GET',
-        uri: link
+        uri: link,
+        timeout: 5000
     }, onChapterGrabbed.bind({callback: callback, titlekey: titlekey}));
 }
 
+/**
+ * 
+ * @param see npm request module
+ */
 function onChapterGrabbed(error, response, body) {
-    var hostpath = response.request.host;
-    var tmp = $("#content table tr:nth-child(n+3):nth-last-child(n+1)", "<div>" + body + "</div>").find('td');
-    var result = [];
-    var newest = "";
-    var titlekey = this.titlekey;
+    let hostpath = response.request.host;
+    let tmp = $("#content", "<div>" + body + "</div>").find('table tr:nth-child(n+3):nth-last-child(n+1) td');
+    let result = [];
+    let newest = "";
+    let titlekey = this.titlekey;
     tmp.each(function(i, e){
-        if($(e).find('a').attr('href') == undefined) return;
-        var ch_name = $(e).find('a').text();
-        var ch_link = $(e).find('a').attr('href');
-        var ch_group = "cr_main";
-        var link_chunks = $(e).find('a').attr('href').split('/');
-        var lastIndex = link_chunks.length;
-        var domid = link_chunks[lastIndex-1] == ""? link_chunks[lastIndex-2]:link_chunks[lastIndex-1];
-        var ch_key = domid;
-        // console.log(chName + ":" + chLink + ":" + chGroup + ":" + domid);
+        let $e = $(e);
+        if($e.find('a').attr('href') == undefined) return;
+        let ch_name = $e.find('a').text();
+        let ch_link = $e.find('a').attr('href');
+        let ch_group = "cr_main";
+        let link_chunks = $e.find('a').attr('href').split('/');
+        let lastIndex = link_chunks.length;
+        let domid = link_chunks[lastIndex-1] == ""? link_chunks[lastIndex-2]:link_chunks[lastIndex-1];
+        let ch_key = domid;
 
-        var obj = {
+        let obj = {
             ch_name: ch_name,
             ch_link: ch_link,
             ch_group: ch_group,
@@ -184,10 +192,9 @@ function onChapterGrabbed(error, response, body) {
         };
         result.unshift(obj)
     });
-    for (var i = 0; i < result.length; i++) {
+    for (let i = 0; i < result.length; i++) {
         result[i].index = i;
     }
-    // console.log(result);
     newest = result[0].ch_name;
 
     this.callback(result, newest);
@@ -209,7 +216,8 @@ function onChapterGrabbed(error, response, body) {
 function loadChapter(ch_link, ch_group, ch_key, callback) {
     request({
         method: 'GET',
-        uri: ch_link
+        uri: ch_link,
+        timeout: 5000
     }, onSingleChapterLoaded.bind({callback:callback, ch_group: ch_group, ch_key: ch_key}))    
 
 }
@@ -221,21 +229,19 @@ function loadChapter(ch_link, ch_group, ch_key, callback) {
  * @param see npm request module
  */
 function onSingleChapterLoaded(error, response, body) {
-    // console.log(this.chKey);
-    var tmp = $("<div>" + body + "</div>");
-    var find_script = tmp.find('#pull option:nth-child(2)').attr('value').split("'");
-    var chapters_num = find_script[1];
-    var num_pages = find_script[3];
-    var img_template = tmp.find("#caonima").attr("src");
-    console.log(img_template);
-    var pid = '/' + chapters_num + '/';
-    var img = img_template.split(pid);
-    var result = [];
-    for (var i = 1; i <= num_pages; i++) {
-        var src = img[0] + pid + util.pad(i, 3) + '.jpg'; 
-        // console.log(src);
-        var id = 'pic' + i;
-        var obj = {
+    let tmp = $("<div>" + body + "</div>");
+    let find_script = tmp.find('#pull').find('option:nth-child(2)').attr('value').split("'");
+    let chapters_num = find_script[1];
+    let num_pages = find_script[3];
+    let img_template = tmp.find("#caonima").attr("src");
+    
+    let pid = '/' + chapters_num + '/';
+    let img = img_template.split(pid);
+    let result = [];
+    for (let i = 1; i <= num_pages; i++) {
+        let src = img[0] + pid + util.pad(i, 3) + '.jpg'; 
+        let id = 'pic' + i;
+        let obj = {
             imgurl: src,
             id: id,
             idx: i-1

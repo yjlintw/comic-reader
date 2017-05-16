@@ -10,32 +10,25 @@
 //      Move the detailed comic subscription information to a different file
 
 // 3rd party library
-var async = require('async');
-var ipc = require('electron').ipcRenderer;
+let async = require('async');
+let ipc = require('electron').ipcRenderer;
 const settings = require("electron-settings");
 
 // model
 const values = require("../models/values");
 
 // viewcontroller
-var favorite_viewcontroller = require('../viewcontrollers/favorite-viewcontroller')
-var search_viewcontroller = require('../viewcontrollers/search-viewcontroller');
-var read_viewcontroller = require('../viewcontrollers/read-viewcontroller');
-var viewswitch_viewcontroller = require('../viewcontrollers/view-switch-viewcontroller')
+let favorite_viewcontroller = require('../viewcontrollers/favorite-viewcontroller')
+let search_viewcontroller = require('../viewcontrollers/search-viewcontroller');
+let read_viewcontroller = require('../viewcontrollers/read-viewcontroller');
+let viewswitch_viewcontroller = require('../viewcontrollers/view-switch-viewcontroller')
 const translate_viewcontroller = require('../viewcontrollers/translate-viewcontroller');
 
-module.exports = {
-    register: register,
-    subscribe: subscribe,
-    updateUI: updateSubscribeUIStatus,
-    checkUpdate: checkUpdate,
-    hasSubscription: hasSubscription
-}
 
 /**
  *      Variable Definition
  */
-var notification;
+let notification;
 
 /**
  * Register a comic. Save the info for a comic, but do not subscribe it. 
@@ -48,7 +41,7 @@ var notification;
  * @param {String} subscribed     : status of subscription
  */
 function register(host, titlekey, title, link, thumbnail_uri, subscribed=false) {
-    var key_path = "comic." + host + "." + titlekey;
+    let key_path = "comic." + host + "." + titlekey;
     if (!settings.has(key_path)) {
         settings.set(key_path, {
             "title": title,
@@ -71,8 +64,8 @@ function register(host, titlekey, title, link, thumbnail_uri, subscribed=false) 
  * @param see register(...) 
  */
 function subscribe(host, titlekey, title, link, thumbnail_uri) {
-    var keyPath = "comic." + host + "." + titlekey;
-    var comic_data = settings.get(keyPath);
+    let keyPath = "comic." + host + "." + titlekey;
+    let comic_data = settings.get(keyPath);
     if (comic_data) {
         
         comic_data.subscribed = !comic_data.subscribed;
@@ -92,8 +85,8 @@ function subscribe(host, titlekey, title, link, thumbnail_uri) {
  * @param see register(...)
  */
 function unsubscribe(host, titlekey) {
-    var key_path = "comic." + host + "." + titlekey;
-    var comicData = settings.get(key_path);
+    let key_path = "comic." + host + "." + titlekey;
+    let comicData = settings.get(key_path);
     if (comicData) {
         comicData.subscribed = false;
         settings.set(key_path, comicData);
@@ -107,8 +100,8 @@ function unsubscribe(host, titlekey) {
  * @param {String} titlekey 
  */
 function checkUpdateSingle(host, titlekey) {
-    console.log("---- Start checking for one comic's updates ----")
-    var all_comic_data = settings.get('comic');
+    console.log(`---- Start checking for ${titlekey} comic's updates ----`)
+    let all_comic_data = settings.get('comic');
     async.apply(values.hostnames[host].parsers.grabChapters(titlekey, all_comic_data[host][titlekey].link,onChaptersGrabbed.bind({
                         all_comic_data: all_comic_data,
                         host: host,
@@ -122,7 +115,7 @@ function checkUpdateSingle(host, titlekey) {
  */
 function checkUpdate() {
     console.log("---- Start checking for updates ----")
-    var all_comic_data = settings.get('comic');
+    let all_comic_data = settings.get('comic');
     async.eachOf(all_comic_data, function(hostDict, host, callback1) {
         async.eachOf(hostDict, function(comics, titlekey, callback2){
             if (all_comic_data[host][titlekey].subscribed) {
@@ -160,8 +153,8 @@ function checkUpdate() {
  */
 function onChaptersGrabbed(result, newest) {
     console.log("---One Comic Update Checked---")
-    var comic = this.all_comic_data[this.host][this.titlekey];
-    var chapters_data = comic.chapters;
+    let comic = this.all_comic_data[this.host][this.titlekey];
+    let chapters_data = comic.chapters;
     // console.log(result.length + ":" + comic.chapters_count);
     if (result.length != comic.chapters_count) {
         comic.hasupdate = true;
@@ -172,10 +165,8 @@ function onChaptersGrabbed(result, newest) {
         });
     }
     
-    for (var index in result) {
-        // console.log(result[index].chLink);
-        
-        var obj = result[index];
+    for (let index in result) {
+        let obj = result[index];
         // if is a new group
         if (!chapters_data[obj.ch_group]) {
             chapters_data[obj.ch_group] = {}
@@ -217,25 +208,23 @@ function updateSubscribeUIStatus() {
     favorite_viewcontroller.updateSubscribeUI(all_comic_data, hasSubscription());
     read_viewcontroller.updateSubscribeUI(all_comic_data);
     translate_viewcontroller.translate();
-    var page_idx = read_viewcontroller.getCurrentPageIdx();
-    var titlekey = read_viewcontroller.getCurTitleKey();
-    var host = read_viewcontroller.getCurHost();
-    // console.log(page_idx + ":" + titlekey + ":" + host); 
+    let page_idx = read_viewcontroller.getCurrentPageIdx();
+    let titlekey = read_viewcontroller.getCurTitleKey();
+    let host = read_viewcontroller.getCurHost();
     if (host && titlekey && page_idx != 0) {
         all_comic_data[host][titlekey].lastpage = page_idx;
         settings.set('comic', all_comic_data);
     }
 
     let count = 0;
-    for (var host_key in all_comic_data) {
-        for (var comic_key in all_comic_data[host_key]) {
-            var comic = all_comic_data[host_key][comic_key]; 
+    for (let host_key in all_comic_data) {
+        for (let comic_key in all_comic_data[host_key]) {
+            let comic = all_comic_data[host_key][comic_key]; 
             if (comic.subscribed && comic.hasupdate) {
                 count ++;
             }
         }
     }
-    // console.log(count);
     ipc.send("comic-update", count);
 }
 
@@ -243,8 +232,8 @@ function hasSubscription() {
     all_comic_data = settings.get('comic');
     if (all_comic_data == undefined) return false;
 
-    for (var host in all_comic_data) {
-        for (var comic in all_comic_data[host]) {
+    for (let host in all_comic_data) {
+        for (let comic in all_comic_data[host]) {
             if (all_comic_data[host][comic].subscribed) {
                 return true;
             }
@@ -277,11 +266,11 @@ function lateInit() {
 }
 
 function unload(e) {
-    console.log("test2");
-    var page_idx = read_viewcontroller.getCurrentPageIdx();
-    var titlekey = read_viewcontroller.getCurTitleKey();
-    var host = read_viewcontroller.getCurHost();
-    console.log(page_idx + ":" + titlekey + ":" + host); 
+    // console.log("test2");
+    let page_idx = read_viewcontroller.getCurrentPageIdx();
+    let titlekey = read_viewcontroller.getCurTitleKey();
+    let host = read_viewcontroller.getCurHost();
+    // console.log(page_idx + ":" + titlekey + ":" + host); 
     if (host && titlekey && page_idx != 0) {
         all_comic_data[host][titlekey].lastpage = page_idx;
         settings.set('comic', all_comic_data);
@@ -294,3 +283,12 @@ function unload(e) {
 
 init();
 $(document).ready(lateInit);
+
+
+module.exports = {
+    register: register,
+    subscribe: subscribe,
+    updateUI: updateSubscribeUIStatus,
+    checkUpdate: checkUpdate,
+    hasSubscription: hasSubscription
+}

@@ -35,13 +35,13 @@
  * 
  */
 
-var requestModule = require("request");
+let requestModule = require("request");
 const util = require("../util");
-var async = require('async');
-var jar = requestModule.jar();
+let async = require('async');
+let jar = requestModule.jar();
 
 
-var request = requestModule.defaults({jar: jar});
+let request = requestModule.defaults({jar: jar});
 
 
 module.exports = {
@@ -49,9 +49,9 @@ module.exports = {
     grabChapters: grabChapters,
     loadChapter: loadChapter
 }
-var host = "read-comicbooks-online";
-var searchuri = "http://readcomicbooksonline.net/search/node/{search}";
-var baseuri = "http://readcomicbooksonline.net";
+let host = "read-comicbooks-online";
+let searchuri = "http://readcomicbooksonline.net/search/node/{search}";
+let baseuri = "http://readcomicbooksonline.net";
 
 /**
  * Search comic books
@@ -71,10 +71,10 @@ var baseuri = "http://readcomicbooksonline.net";
  *          description {String}
  */
 function search(search_term, callback) {
-    // console.log(encodeURI(searchuri.replace("{search}", search_term)))
     request({
         method: "GET",
-        uri: encodeURI(searchuri.replace("{search}", search_term))
+        uri: encodeURI(searchuri.replace("{search}", search_term)),
+        timeout: 5000
     }, searchResponse.bind({callback:callback}));
 }
 
@@ -83,45 +83,31 @@ function search(search_term, callback) {
  * @param see npm request module
  */
 function searchResponse(error, response, body) {
-    // console.log(body);
-    // // var tmp2 = $("<div>" + body + "</div>");
-    // // console.log(tmp2.html());
-    var tmp = $("#block-system-main", "<div>" + body + "</div>").find(".search-result");
-    console.log (tmp);
-    var result = [];
-    var callback = this.callback;
+    let tmp = $("#block-system-main", "<div>" + body + "</div>").find(".search-result");
+    let result = [];
+    let callback = this.callback;
     async.each(tmp, function(e, callback1){
-        console.log(e);
         let titleinfo = e.querySelector(".title");
         let title = titleinfo.textContent.replace(/^\s+|\s+$/g, '');
-        // console.log(title);
-        var link = titleinfo.querySelector('a').getAttribute('href');
-        var titlekey = link.substr(link.lastIndexOf('/') + 1);
-        // console.log(titlekey);
-    //     var imguri = $(e).find('img').attr('src');
-    //     var updateinfo = "作者：" + $(e).find('dt>a:first-of-type').text();
-    //     // console.log(updateinfo);
-    //     var description = $(e).find('.info .value').text().replace(/^\s+|\s+$/g, '');
-        var obj = {};
-        obj.link = link;
-        obj.titlekey = titlekey;
-        // obj.imguri = imguri;
-        obj.title = title;
-        obj.host = host;
-    //     obj.updateinfo = updateinfo;
-    //     obj.description = description;
+        let link = titleinfo.querySelector('a').getAttribute('href');
+        let titlekey = link.substr(link.lastIndexOf('/') + 1);
+        let obj = {
+            link: link,
+            titlekey: titlekey,
+            title: title,
+            host: host
+        }
         request({
             method: "GET",
-            uri: link
+            uri: link,
+            timeout: 5000
         }, onDetailInfoGet.bind({
             callback: callback1,
             obj: obj,
             result: result
         }));
-        // result.push(obj);
-        // callback1();
     }, function () {
-        console.log("All Search dm5 done");
+        console.log("All Search readcomicbooksonline done");
         callback(result, host);
     });
 
@@ -129,9 +115,7 @@ function searchResponse(error, response, body) {
 }
 
 function onDetailInfoGet(error, response, body) {
-    // console.log(response);
-    var tmp = $("#infoblock", "<div>" + body + "</div>");
-    console.log(tmp);
+    let tmp = $("#infoblock", "<div>" + body + "</div>");
     this.obj.imguri = baseuri + tmp.find('img').attr('src');
     this.obj.updateinfo = tmp.find("#statsblock").find('tr:nth-child(4) .info').text();
     this.obj.description = tmp.find("#summary").children().remove().end().text();
@@ -162,34 +146,34 @@ function grabChapters(titlekey, link, callback) {
     request({
         methos: 'GET',
         uri: link,
+        timeout: 5000
     }, onChapterGrabbed.bind({callback: callback, titlekey: titlekey}));
 }
 
+/**
+ * 
+ * @param see npm request module
+ */
 function onChapterGrabbed(error, response, body) {
-    var hostpath = response.request.host;
-    var tmp = $("#chapterlist", "<div>" + body + "</div>").find(".chapter");
-    // console.log(tmp);
-    // var tmp = $("<div>" + body + "</div>").find('[id^=cbc] li a');
-    var comic_title = $("#content-wrap", "<div>" + body + "</div>").find(".page-title").text();
-    var comic_title_alt = comic_title.replace(/[^\w\s]/gi, '');
-console.log(comic_title);
-    var result = [];
-    var result_keys = {};
-    var newest = "";
-    var titlekey = this.titlekey;
+    let hostpath = response.request.host;
+    let tmp = $("#chapterlist", "<div>" + body + "</div>").find(".chapter");
+    let comic_title = $("#content-wrap", "<div>" + body + "</div>").find(".page-title").text();
+    let comic_title_alt = comic_title.replace(/[^\w\s]/gi, '');
+    let result = [];
+    let result_keys = {};
+    let newest = "";
+    let titlekey = this.titlekey;
     tmp.each(function(i, e){
-        // console.log(e);
-        var ch_name = $(e).text().replace(comic_title, '');
+        let $e = $(e);
+        let ch_name = $e.text().replace(comic_title, '');
         ch_name = ch_name.replace(comic_title_alt, "");
 
-        var ch_link = $(e).find('a').attr("href");
-        var ch_group = "cr_main";
+        let ch_link = $e.find('a').attr("href");
+        let ch_group = "cr_main";
 
-        var ch_key = ch_link.substr(ch_link.lastIndexOf('/') + 1).replace(/[^\w\s]/gi, '');;
-        var domid = ch_key;
-    //     var ch_key = domid;
-        // console.log(ch_name + ":" + ch_link + ":" + ch_group + ":" + domid + ":" + ch_key);
-        var obj = {
+        let ch_key = ch_link.substr(ch_link.lastIndexOf('/') + 1).replace(/[^\w\s]/gi, '');;
+        let domid = ch_key;
+        let obj = {
             ch_name: ch_name,
             ch_link: ch_link,
             ch_group: ch_group,
@@ -221,7 +205,8 @@ console.log(comic_title);
 function loadChapter(ch_link, ch_group, ch_key, callback) {
     request({
         method: 'GET',
-        uri: ch_link
+        uri: ch_link,
+        timeout: 5000
     }, onSingleChapterLoaded.bind({callback:callback, ch_group: ch_group, ch_key: ch_key}))    
 
 }
@@ -233,22 +218,17 @@ function loadChapter(ch_link, ch_group, ch_key, callback) {
  * @param see npm request module
  */
 function onSingleChapterLoaded(error, response, body) {
-    // var doc = body;
-    // console.log(body);
-    console.log(response.request.href);
-    var tmp = $("<div>" + body + "</div>");
-    var omv = tmp.find("#omv");
-    var num_pages = omv.find(".pager:first-child select:nth-child(2) option").length;
-    var rel_img_url_template = omv.find(".picture").attr("src");
-    // console.log(num_pages)
-    // console.log(rel_img_url_template);
-    var result = [];
-    var callback = this.callback;
-    var ch_group = this.ch_group;
-    var ch_key = this.ch_key;
+    let tmp = $("<div>" + body + "</div>");
+    let omv = tmp.find("#omv");
+    let num_pages = omv.find(".pager:first-child select:nth-child(2) option").length;
+    let rel_img_url_template = omv.find(".picture").attr("src");
+    let result = [];
+    let callback = this.callback;
+    let ch_group = this.ch_group;
+    let ch_key = this.ch_key;
     async.times(num_pages, function(i, next) {
-        var rel_img_url = rel_img_url_template.replace(/(\d*)(\.jpg|\.png)$/g, util.pad(i+1, 3) + "$2");
-        var img_url = baseuri + "/reader/" + rel_img_url;
+        let rel_img_url = rel_img_url_template.replace(/(\d*)(\.jpg|\.png)$/g, util.pad(i+1, 3) + "$2");
+        let img_url = baseuri + "/reader/" + rel_img_url;
         request({
             method:'GET',
             uri: img_url,
@@ -256,15 +236,12 @@ function onSingleChapterLoaded(error, response, body) {
                 Referer: 'http://readcomicbooksonline.net/reader/',
                 'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36',
                 cookie: 'has_js=1'
-            }
+            },
+            timeout: 5000
 
         }, function(error, response, body) {
-            // console.log(error);
-            // console.log(response);
-            // console.log(body);
-            // console.log(rel_img_url);
-            var id = "pic" + i;
-            var obj = {
+            let id = "pic" + i;
+            let obj = {
                 imgurl: img_url,
                 id: id,
                 idx: i
