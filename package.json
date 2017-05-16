@@ -2,8 +2,8 @@
   "name": "comic-reader",
   "productName": "Comic Reader",
   "author": "Team Comic Reader",
-  "version": "0.1.46",
-  "description": "Quickly, smoothly and cooler reading experience. The best move to read comics.",
+  "version": "0.1.47",
+  "description": "A quicker, smoother and cooler reading experience. The best way to read comics.",
   "main": "main.js",
   "devDependencies": {
     "concurrently": "^3.4.0",

@@ -55,6 +55,10 @@ function bindSelectChapter(func) {
     selectChapterFunc = func;
 }
 
+/**
+ * Return current page idx. If the user did scroll by mouse, calculate current
+ * page index by using the scroll position and image height.
+ */
 function getCurrentPageIdx() {
     if (did_scroll && $("#read-view").css('display') !== "none") {
         did_scroll = false;
