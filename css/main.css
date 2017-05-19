@@ -276,7 +276,7 @@ h1, h2, h3, h4, h5, h6, label {
 
 .getstart span {
   display: block;
-  font-size: 5em;
+  font-size: 4.5em;
   text-align: center;
   color: #222935;
   ;
@@ -316,10 +316,21 @@ h1, h2, h3, h4, h5, h6, label {
 
 footer {
   text-align: center;
-  font-size: 12px;
+  font-size: 13px;
   font-family: 'arial', sans-serif;
-  color: #222935;
+  color: #3a585f;;
   padding: 20px 0;
+  border-color: #e0e5e6;
+  background: #f6f8f8;
+}
+footer .content{
+  width: 65%
+}
+footer nav{
+  float: left
+}
+footer span{
+  float: right
 }
 
 /* LAYOUT STYLES */
@@ -439,7 +450,7 @@ footer {
     margin: 17vh auto 0;
   }
   .getstart span {
-    font-size: 4em;
+    font-size: 3.5em;
   }
   .home-menu {
     padding: 15px 0;
@@ -457,6 +468,12 @@ footer {
 @media screen and (max-width: 40em) {
   .feature {
     width: 100%
+  }
+  footer nav{
+    float: none
+  }
+  footer span{
+    float: none
   }
 }
 
