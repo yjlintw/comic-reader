@@ -89,3 +89,8 @@ $(function () {
             $('.topone').animate({'margin-top':'0','opacity':'1'},700).addClass('active');
           });
   }
+
+$(document).ready(function() {
+  $("#mydropdown").val("zh");
+  $.getJSON('lang/zh.json', translate);
+});
