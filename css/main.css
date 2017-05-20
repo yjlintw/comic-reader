@@ -283,7 +283,8 @@ a {
 
 #feature.content {
   width: 100%;
-  padding: 0 0 3em
+  padding: 0 0 3em;
+  overflow: hidden;
 }
 
 #feature .column-l {
