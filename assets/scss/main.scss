@@ -1220,6 +1220,7 @@ h2 {
         margin: 0 auto;
         background: url("../img/download-bg.png") center 30vh no-repeat;
         min-width: 334px;
+        object-fit: contain;
         @media #{$info-mobile} {
           height: calc(100vh - #{$titlebar-height} - #{$sidebar-width} * 2);
         }
