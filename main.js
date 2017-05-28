@@ -15,6 +15,7 @@ require('electron-debug')({showDevTools: false});
 autoUpdater.logger = log;
 autoUpdater.logger.transports.file.level = "info";
 // autoUpdater.autoDownload = false;
+autoUpdater.allowPrerelease = false;
 log.info('App Starting');
 
 let manualupdate = false;
