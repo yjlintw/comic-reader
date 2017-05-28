@@ -6,6 +6,10 @@ environment:
       secure: bCI8uVmEsVsAYCeEldSRs/kJgIA1UVty8Z2urjxPPP5YW6HI7SpeKl4aaIMY9HlR
   matrix:
     - nodejs_version: 6
+branches: 
+  only:
+    - master
+    - dev
 install:
   - ps: Install-Product node $env:nodejs_version
   - set CI=true
@@ -14,9 +18,9 @@ install:
   - npm install
 matrix:
   fast_finish: true
-build: off
+build_script:
+  - npm run dist
 version: '{build}'
 shallow_clone: true
 clone_depth: 1
-test_script:
-- npm run dist
+test: off
