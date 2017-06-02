@@ -134,7 +134,7 @@ h2 {
 .titlebar.is-mac {
   padding: 0 3px;
   background-color: #3c4659;
-  position: fixed;
+  // position: fixed;
   z-index: 10000;
   width: 100%;
   height: $titlebar-height;
@@ -272,7 +272,7 @@ h2 {
 .titlebar.is-win {
   padding: 0;
   background-color: #3c4659;
-  position: fixed;
+  // position: fixed;
   z-index: 100000;
   width: 100%;
   height: $titlebar-height;
