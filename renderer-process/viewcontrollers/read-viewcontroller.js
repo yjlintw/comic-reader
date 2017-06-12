@@ -171,7 +171,7 @@ function nextPic() {
     if (current_page_idx >= page_id_list.length) {
         current_page_idx = page_id_list.length;
         scrollToPage(current_page_idx);
-         
+
     } else if ($("#" + page_id_list[current_page_idx]).offset() !== undefined) {
 
         scrollToPage(current_page_idx);
@@ -186,7 +186,7 @@ function nextChapter() {
     current_chapter_idx--;
     if (current_chapter_idx < 0) current_chapter_idx = 0;
     $(chapter_list[current_chapter_idx]).trigger('click');
-    scrollMiddlePanel();
+    // scrollMiddlePanel();
 }
 
 /**
@@ -197,7 +197,7 @@ function prevChapter() {
     current_chapter_idx++;
     if (current_chapter_idx >= chapter_list.length) current_chapter_idx = chapter_list.length - 1;
     $(chapter_list[current_chapter_idx]).trigger('click');
-    scrollMiddlePanel();
+    // scrollMiddlePanel();
 }
 
 function scrollToPage(page_idx, use_animation = true) {
@@ -229,6 +229,7 @@ function scrollMiddlePanel() {
         $("#chapter-selector").animate({
             scrollTop: $("#chapter-selector").scrollTop() + e.offset().top - $("#comic-header").outerHeight() - $("#titlebar").outerHeight()
         }, 100)
+        console.log($("#chapter-selector").scrollTop() + " + " + e.offset().top + " - " + $("#comic-header").outerHeight() + " - " + $("#titlebar").outerHeight());
     } else if (e.offset() && e.offset().top < $("#comic-header").outerHeight() + $("#titlebar").outerHeight()) {
         $("#chapter-selector").animate({
             scrollTop: $("#chapter-selector").scrollTop() - $("#chapter-selector").height() + e.offset().top - $("#titlebar").outerHeight()
@@ -266,10 +267,13 @@ function lateInit() {
     $(".chapToggle").click(function(e) {
         EA.send("MOUSE_CLICKED_READVIEW_CHAP_TOGGLE");
         $('.middle-panel, #read-area, .toggleTag').addClass("active");
+        $('.sidebar').addClass("active");
     });
     $(".toggleTag").click(function(e) {
         EA.send("MOUSE_CLICKED_READVIEW_TOGGLE_TAG");
+        $('.sidebar').removeClass("active");
         $('.middle-panel, #read-area, .toggleTag').removeClass("active");
+
     });
 }
 
@@ -351,7 +355,7 @@ function createComicPage(imguri, id, idx) {
         view.attr("id", id);
         view.attr("idx", idx);
         view.find("img").attr("src", imguri);
-        
+
         view.find('.zoom-btn').click(function() {
             EA.send("MOUSE_CLICKED_READVIEW_ZOOM");
             view.zoom({
