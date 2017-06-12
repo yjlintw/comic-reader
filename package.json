@@ -9,7 +9,7 @@
     "concurrently": "^3.4.0",
     "devtron": "^1.4.0",
     "electron": "^1.6.5",
-    "electron-builder": "17.0.1",
+    "electron-builder": "^17.0.1",
     "livereloadx": "^0.3.9",
     "node-sass": "^4.5.2",
     "nodemon": "^1.11.0"
