@@ -171,7 +171,7 @@ function nextPic() {
     if (current_page_idx >= page_id_list.length) {
         current_page_idx = page_id_list.length;
         scrollToPage(current_page_idx);
-         
+
     } else if ($("#" + page_id_list[current_page_idx]).offset() !== undefined) {
 
         scrollToPage(current_page_idx);
@@ -266,10 +266,13 @@ function lateInit() {
     $(".chapToggle").click(function(e) {
         EA.send("MOUSE_CLICKED_READVIEW_CHAP_TOGGLE");
         $('.middle-panel, #read-area, .toggleTag').addClass("active");
+        $('.sidebar').addClass("active");
     });
     $(".toggleTag").click(function(e) {
         EA.send("MOUSE_CLICKED_READVIEW_TOGGLE_TAG");
+        $('.sidebar').removeClass("active");
         $('.middle-panel, #read-area, .toggleTag').removeClass("active");
+
     });
 }
 
@@ -351,7 +354,7 @@ function createComicPage(imguri, id, idx) {
         view.attr("id", id);
         view.attr("idx", idx);
         view.find("img").attr("src", imguri);
-        
+
         view.find('.zoom-btn').click(function() {
             EA.send("MOUSE_CLICKED_READVIEW_ZOOM");
             view.zoom({
