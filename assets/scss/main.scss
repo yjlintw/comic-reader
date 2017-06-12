@@ -120,7 +120,7 @@ h2 {
     flex-shrink: 0;
     flex-basis: calc(100% - #{$sidebar-width});
     // margin-top: $titlebar-height;
-    margin-left: $sidebar-width;
+    // margin-left: $sidebar-width;
   }
   height: 100vh;
   overflow-y: auto;
@@ -384,6 +384,11 @@ h2 {
 .sidebar {
   box-shadow: 2px 0 5px 0 rgba(0,0,0,0.3);
   z-index: 99;
+  left: 0;
+  transition: all .3s ease;
+  &.active {
+    left: -60px;
+  }
   @media #{$info-mobile} {
     &.float-menu {
       display: flex;
@@ -923,7 +928,7 @@ h2 {
     width: $chapter-selector-width;
     display: inline-block;
     background: #1f232a;
-    padding: 6px 0 0 30px;
+    padding: 6px 0 0 50px;
     cursor: pointer;
     position: relative;
     z-index: 9999;
@@ -958,7 +963,7 @@ h2 {
 
   .toggleTag {
     position: absolute;
-    left: 0;
+    left: -60px;
     bottom: 25px;
     z-index: 2;
     width: 40px;
@@ -974,7 +979,7 @@ h2 {
     transition: all 1s ease;
 
     &.active {
-      left: 60px;
+      left: 0px;
       transition: all 1s ease;
     }
 
@@ -1001,7 +1006,7 @@ h2 {
     }
 
     &.active {
-      left: -190px;
+      left: -250px;
     }
     transition: all .8s ease;
     z-index: 0;
@@ -1189,16 +1194,18 @@ h2 {
       min-height: calc(100vh - #{$sidebar-width} * 2 - #{$titlebar-height});
     }
     @media #{$info-tablet} {
-      margin-left: $chapter-selector-width;
+      margin-left: calc(#{$chapter-selector-width} +  #{$sidebar-width});
       // margin-top: 22px;
       min-height: calc(100vh - #{$titlebar-height});
     }
+    transition: all .5s ease;
 
     &.active {
       margin-left: -45px;
 
       .zoom-btn {
-        left: 47px;
+        left: 50px;
+        top: 10px;
       }
     }
     height: calc(100vh - #{$titlebar-height});
@@ -1232,9 +1239,9 @@ h2 {
         opacity: .3;
         font-size: 1.5em;
         position: absolute;
-        padding: .5em .8em .4em;
+        padding: .15em .4em;
         background-color: rgba(0,0,0,0.8);
-        border-radius: 0 0 5px 5px;
+        border-radius: 5px;
         z-index: 99;
 
         &:hover {

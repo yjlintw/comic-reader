@@ -113,8 +113,7 @@ h2 {
     #main-view {
       min-height: 100vh;
       flex-shrink: 0;
-      flex-basis: calc(100% - 60px);
-      margin-left: 60px; } }
+      flex-basis: calc(100% - 60px); } }
 
 .input {
   font-family: 'Roboto Condensed',"文泉驛正黑","WenQuanYi Zen Hei","黑體-繁","Heiti TC","微軟正黑體","Microsoft JhengHei",sans-serif; }
@@ -294,9 +293,13 @@ h2 {
 .sidebar {
   box-shadow: 2px 0 5px 0 rgba(0, 0, 0, 0.3);
   z-index: 99;
+  left: 0;
+  transition: all .3s ease;
   margin: 0;
   -webkit-app-region: drag;
   background-color: #1f2b3d; }
+  .sidebar.active {
+    left: -60px; }
   @media only screen and (max-width: 768px) {
     .sidebar.float-menu {
       display: flex;
@@ -686,7 +689,7 @@ h2 {
     width: 250px;
     display: inline-block;
     background: #1f232a;
-    padding: 6px 0 0 30px;
+    padding: 6px 0 0 50px;
     cursor: pointer;
     position: relative;
     z-index: 9999;
@@ -712,7 +715,7 @@ h2 {
       transition: .3s ease-in-out; }
   #read-view .toggleTag {
     position: absolute;
-    left: 0;
+    left: -60px;
     bottom: 25px;
     z-index: 2;
     width: 40px;
@@ -727,7 +730,7 @@ h2 {
     display: block;
     transition: all 1s ease; }
     #read-view .toggleTag.active {
-      left: 60px;
+      left: 0px;
       transition: all 1s ease; }
     #read-view .toggleTag:hover {
       background: #0cffc0; }
@@ -751,7 +754,7 @@ h2 {
         left: 60px;
         overflow-x: hidden; } }
     #read-view .middle-panel.active {
-      left: -190px; }
+      left: -250px; }
     #read-view .middle-panel #comic-header {
       border-left: 7px solid #e4ff67;
       padding-left: 0;
@@ -878,6 +881,7 @@ h2 {
         top: 55px;
         left: 110px; }
   #read-view #read-area {
+    transition: all .5s ease;
     height: calc(100vh - 25px);
     overflow-y: auto;
     background-color: #222935;
@@ -889,12 +893,13 @@ h2 {
         min-height: calc(100vh - 60px * 2 - 25px); } }
     @media only screen and (min-width: 769px) {
       #read-view #read-area {
-        margin-left: 250px;
+        margin-left: calc(250px +  60px);
         min-height: calc(100vh - 25px); } }
     #read-view #read-area.active {
       margin-left: -45px; }
       #read-view #read-area.active .zoom-btn {
-        left: 47px; }
+        left: 50px;
+        top: 10px; }
     #read-view #read-area .comic-page-container {
       position: relative;
       -webkit-user-select: none;
@@ -913,9 +918,9 @@ h2 {
         opacity: .3;
         font-size: 1.5em;
         position: absolute;
-        padding: .5em .8em .4em;
+        padding: .15em .4em;
         background-color: rgba(0, 0, 0, 0.8);
-        border-radius: 0 0 5px 5px;
+        border-radius: 5px;
         z-index: 99; }
         #read-view #read-area .comic-page-container .zoom-btn:hover {
           opacity: 1;

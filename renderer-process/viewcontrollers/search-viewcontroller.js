@@ -210,6 +210,7 @@ function lateInit() {
         let view = $(filter_template_str);
         view.text(key);
         view.attr('host', key);
+        view.append('<button class="delete is-small"></button>');
         view.click(function () {
             EA.send("MOUSE_CLICKED_SEARCH_FILTER");
             let host = $(this).attr('host');
@@ -217,9 +218,9 @@ function lateInit() {
             console.log(activate);
             activate = !activate;
             if (!activate) {
-                $(this).removeClass('active');
+                $(this).removeClass('active').find('button').remove();
             } else {
-                $(this).addClass('active');
+                $(this).addClass('active').append('<button class="delete is-small"></button>');
             }
             updateSearchResult();
 
