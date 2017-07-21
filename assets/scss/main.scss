@@ -503,6 +503,9 @@ h2 {
       @media #{$info-mobile} {
         display: none;
       }
+      &.loading {
+        border: 0;
+      }
     }
   }
 }

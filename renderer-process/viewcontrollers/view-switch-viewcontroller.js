@@ -94,6 +94,18 @@ function bindCheckUpdate(func) {
 }
 
 /**
+ *  Animation
+ */
+
+function loadingAnimate(flag) {
+    if (flag) {
+        $("#tab-refresh").addClass("loading");
+    } else {
+        $("#tab-refresh").removeClass("loading");
+    }
+}
+
+/**
  * Callback function when sidebar tab is clicked
  */
 function onTabEntryClick() {
@@ -127,5 +139,6 @@ module.exports = {
     TAB_NAME: TAB_NAME,
     tabswitch: tabswitch,
     bindUpdateAllUI: bindUpdateAllUI,
-    bindCheckUpdate: bindCheckUpdate   
+    bindCheckUpdate: bindCheckUpdate,
+    loadingAnimate: loadingAnimate
 }

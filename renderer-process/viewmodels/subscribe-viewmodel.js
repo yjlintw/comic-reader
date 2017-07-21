@@ -115,6 +115,7 @@ function checkUpdateSingle(host, titlekey) {
  */
 function checkUpdate() {
     console.log("---- Start checking for updates ----")
+    viewswitch_viewcontroller.loadingAnimate(true);
     let all_comic_data = settings.get('comic');
     async.eachOf(all_comic_data, function(hostDict, host, callback1) {
         async.eachOf(hostDict, function(comics, titlekey, callback2){
@@ -194,6 +195,7 @@ function onChaptersGrabbed(result, newest) {
  */
 function onAllComicsUpdateChecked() {
     console.log("---- All updates checked ----")
+    viewswitch_viewcontroller.loadingAnimate(false);
     settings.set("comic", this.all_comic_data);
     
     updateSubscribeUIStatus();

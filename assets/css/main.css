@@ -384,6 +384,8 @@ h2 {
       @media only screen and (max-width: 768px) {
         .sidebar .func-area .setting {
           display: none; } }
+      .sidebar .func-area .setting.loading {
+        border: 0; }
 
 /* SEARCH VIEW */
 @media only screen and (max-width: 768px) {
