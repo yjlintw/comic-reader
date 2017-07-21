@@ -137,6 +137,11 @@ function grabChapters(titlekey, link, callback) {
  * @param see npm request module
  */
 function onChapterGrabbed(error, response, body) {
+    if (error) {
+        console.error("sfacg: " + error);
+        this.callback(null, null);
+        return;
+    }
     let hostpath = response.request.host;
     let tmp = $("table:nth-of-type(9)", "<div>" + body + "</div>").find("ul.serialise_list.Blue_link2");
     let result = [];
