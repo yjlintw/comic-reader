@@ -152,6 +152,11 @@ function grabChapters(titlekey, link, callback) {
  * @param see npm request module
  */
 function onChapterGrabbed(error, response, body) {
+    if (error) {
+        console.error("dm5: " + error);
+        this.callback(null, null);
+        return;
+    }
     // let hostpath = response.request.host;
     let tmp = $("<div>" + body + "</div>").find('[id^=cbc] li a');
     let result = [];

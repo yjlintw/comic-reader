@@ -155,6 +155,11 @@ function grabChapters(titlekey, link, callback) {
  * @param see npm request module
  */
 function onChapterGrabbed(error, response, body) {
+    if (error) {
+        console.error("rco: " + error);
+        this.callback([], "");
+        return;
+    }
     let hostpath = response.request.host;
     let tmp = $("#chapterlist", "<div>" + body + "</div>").find(".chapter");
     let comic_title = $("#content-wrap", "<div>" + body + "</div>").find(".page-title").text();

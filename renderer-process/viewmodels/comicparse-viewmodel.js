@@ -65,6 +65,10 @@ function selectComic(host, link, title, titlekey, imguri) {
  *      @param {int}    index          : index in the chapter list
  */
 function onChaptersGrabbed(result, newest){
+    if (!result || !newest) {
+        alert("Sorry, the remote server is not responding. Please try again later, or report to github. Thank you.");
+        return;
+    }
     // clear the chapter selector
     read_viewcontroller.clearChapterSelector();
 

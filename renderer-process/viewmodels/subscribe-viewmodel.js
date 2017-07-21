@@ -152,6 +152,10 @@ function checkUpdate() {
  *              
  */
 function onChaptersGrabbed(result, newest) {
+    if (!result || !newest) {
+        this.callback();
+        return;
+    }
     console.log("---One Comic Update Checked---")
     let comic = this.all_comic_data[this.host][this.titlekey];
     let chapters_data = comic.chapters;

@@ -7,7 +7,6 @@
  *      ./subscriber.js
  */
 const util = require('../util');
-const EA = require('electron-analytics');
 let fs = require('fs');
 
 /**
@@ -99,13 +98,11 @@ function createFavEntry(link, titlekey, imguri, title, host, lastread, newest)  
     view.attr("host", host);
 
     view.find(".subscribe-btn").click(function(e){
-        EA.send("MOUSE_CLICKED_FAVORITE_SUBSCRIBE"); 
         e.stopPropagation();
         unsubscribeFunc(host, titlekey);
     });
 
     view.click(function(e){
-        EA.send("MOUSE_CLICKED_FAVORITE_ENTRY"); 
         let sel = util.getSelected().toString();
         if (sel === '') {
             selectComicFunc(host, link, title, titlekey, imguri);

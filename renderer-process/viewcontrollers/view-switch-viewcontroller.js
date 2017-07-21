@@ -8,7 +8,6 @@
 // let subscriber = require('../subscribe-viewmodel'); 
 let read_viewcontroller = require('./read-viewcontroller');
 let titlebar_viewcontroller = require('./titlebar-viewcontroller');
-const EA = require("electron-analytics");
 const ipc = require('electron').ipcRenderer;
 
 // Variable definition
@@ -93,7 +92,6 @@ function bindUpdateAllUI(func) {
  * Callback function when sidebar tab is clicked
  */
 function onTabEntryClick() {
-    EA.send("MOUSE_CLICKED_VIEW_SWITCH");
     updateAllUIFunc();
     $(".content-view").addClass("is-hidden");
     $($(this).attr("associate-view")).removeClass("is-hidden");
