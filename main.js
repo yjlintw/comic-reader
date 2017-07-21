@@ -13,7 +13,7 @@ require('electron-debug')({showDevTools: false});
 autoUpdater.logger = log;
 autoUpdater.logger.transports.file.level = "info";
 // autoUpdater.autoDownload = false;
-autoUpdater.allowPrerelease = false;
+// autoUpdater.allowPrerelease = false;
 log.info('App Starting');
 
 let manualupdate = false;
@@ -51,6 +51,8 @@ function createWindow () {
   }
   if (settings.has("system.update")) {
     autoUpdater.allowPrerelease = settings.get("system.update.allowbeta")
+  } else {
+    autoUpdater.allowPrerelease = false
   }
   win = new BrowserWindow({
     width: w,
