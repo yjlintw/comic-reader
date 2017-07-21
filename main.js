@@ -49,6 +49,9 @@ function createWindow () {
     }
     
   }
+  if (settings.has("system.update")) {
+    autoUpdater.allowPrerelease = settings.get("system.update.allowbeta")
+  }
   win = new BrowserWindow({
     width: w,
     height: h,

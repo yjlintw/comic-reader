@@ -12,6 +12,7 @@ const ipc = require('electron').ipcRenderer;
 
 // Variable definition
 let updateAllUIFunc;
+let checkUpdateFunc;
 let TAB_NAME = {
         FAVORITE: 0,
         SEARCH: 1,
@@ -88,6 +89,10 @@ function bindUpdateAllUI(func) {
     updateAllUIFunc = func;
 }
 
+function bindCheckUpdate(func) {
+    checkUpdateFunc = func;
+}
+
 /**
  * Callback function when sidebar tab is clicked
  */
@@ -107,6 +112,9 @@ function onTabEntryClick() {
 
 $(document).ready(function() {
     $(".sidebar .entry").click(onTabEntryClick);
+    $("#tab-refresh").click(function(e){
+        checkUpdateFunc();
+    });
 });
 
 ipc.on("open-about", function(event) {
@@ -119,6 +127,5 @@ module.exports = {
     TAB_NAME: TAB_NAME,
     tabswitch: tabswitch,
     bindUpdateAllUI: bindUpdateAllUI,
-    
-    
+    bindCheckUpdate: bindCheckUpdate   
 }

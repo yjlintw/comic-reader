@@ -261,6 +261,7 @@ function init () {
     
     read_viewcontroller.bindSubscribe(subscribe);
     viewswitch_viewcontroller.bindUpdateAllUI(updateSubscribeUIStatus);
+    viewswitch_viewcontroller.bindCheckUpdate(checkUpdate);
 }
 
 // init when documen is ready

@@ -372,7 +372,7 @@ h2 {
       display: block;
       border-bottom: 0;
       flex-basis: auto; }
-      .sidebar .func-area .setting:not(:last-child) {
+      .sidebar .func-area .setting:first-child {
         border-top: 0; }
       .sidebar .func-area .setting:hover {
         color: #857af8;
