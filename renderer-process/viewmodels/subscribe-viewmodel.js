@@ -115,6 +115,7 @@ function checkUpdateSingle(host, titlekey) {
  */
 function checkUpdate() {
     console.log("---- Start checking for updates ----")
+    viewswitch_viewcontroller.loadingAnimate(true);
     let all_comic_data = settings.get('comic');
     async.eachOf(all_comic_data, function(hostDict, host, callback1) {
         async.eachOf(hostDict, function(comics, titlekey, callback2){
@@ -152,6 +153,10 @@ function checkUpdate() {
  *              
  */
 function onChaptersGrabbed(result, newest) {
+    if (!result || !newest) {
+        this.callback();
+        return;
+    }
     console.log("---One Comic Update Checked---")
     let comic = this.all_comic_data[this.host][this.titlekey];
     let chapters_data = comic.chapters;
@@ -190,6 +195,7 @@ function onChaptersGrabbed(result, newest) {
  */
 function onAllComicsUpdateChecked() {
     console.log("---- All updates checked ----")
+    viewswitch_viewcontroller.loadingAnimate(false);
     settings.set("comic", this.all_comic_data);
     
     updateSubscribeUIStatus();
@@ -257,6 +263,7 @@ function init () {
     
     read_viewcontroller.bindSubscribe(subscribe);
     viewswitch_viewcontroller.bindUpdateAllUI(updateSubscribeUIStatus);
+    viewswitch_viewcontroller.bindCheckUpdate(checkUpdate);
 }
 
 // init when documen is ready

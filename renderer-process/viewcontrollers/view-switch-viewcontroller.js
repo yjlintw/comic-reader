@@ -8,11 +8,11 @@
 // let subscriber = require('../subscribe-viewmodel'); 
 let read_viewcontroller = require('./read-viewcontroller');
 let titlebar_viewcontroller = require('./titlebar-viewcontroller');
-const EA = require("electron-analytics");
 const ipc = require('electron').ipcRenderer;
 
 // Variable definition
 let updateAllUIFunc;
+let checkUpdateFunc;
 let TAB_NAME = {
         FAVORITE: 0,
         SEARCH: 1,
@@ -89,11 +89,26 @@ function bindUpdateAllUI(func) {
     updateAllUIFunc = func;
 }
 
+function bindCheckUpdate(func) {
+    checkUpdateFunc = func;
+}
+
+/**
+ *  Animation
+ */
+
+function loadingAnimate(flag) {
+    if (flag) {
+        $("#tab-refresh").addClass("loading");
+    } else {
+        $("#tab-refresh").removeClass("loading");
+    }
+}
+
 /**
  * Callback function when sidebar tab is clicked
  */
 function onTabEntryClick() {
-    EA.send("MOUSE_CLICKED_VIEW_SWITCH");
     updateAllUIFunc();
     $(".content-view").addClass("is-hidden");
     $($(this).attr("associate-view")).removeClass("is-hidden");
@@ -109,6 +124,9 @@ function onTabEntryClick() {
 
 $(document).ready(function() {
     $(".sidebar .entry").click(onTabEntryClick);
+    $("#tab-refresh").click(function(e){
+        checkUpdateFunc();
+    });
 });
 
 ipc.on("open-about", function(event) {
@@ -121,6 +139,6 @@ module.exports = {
     TAB_NAME: TAB_NAME,
     tabswitch: tabswitch,
     bindUpdateAllUI: bindUpdateAllUI,
-    
-    
+    bindCheckUpdate: bindCheckUpdate,
+    loadingAnimate: loadingAnimate
 }

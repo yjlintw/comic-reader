@@ -23,7 +23,7 @@ $(document).ready(function() {
     subscriber.checkUpdate();
     // console.log(scheduledTask);
     if (!scheduledTask) {
-        scheduledTask = schedule.scheduleJob('0 10 5,11,17,23 * * *', function(){
+        scheduledTask = schedule.scheduleJob('25 * * * *', function(){
             // console.log("schedule update");
             subscriber.checkUpdate();
         });

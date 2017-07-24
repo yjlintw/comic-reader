@@ -166,6 +166,11 @@ function grabChapters(titlekey, link, callback) {
  * @param see npm request module
  */
 function onChapterGrabbed(error, response, body) {
+    if (error) {
+        console.error("8comic: " + error);
+        this.callback(null, null);
+        return;
+    }
     let hostpath = response.request.host;
     let tmp = $("#content", "<div>" + body + "</div>").find('table tr:nth-child(n+3):nth-last-child(n+1) td');
     let result = [];

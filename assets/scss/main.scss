@@ -486,7 +486,7 @@ h2 {
       border-bottom: 0;
       flex-basis: auto;
 
-      &:not(:last-child) {
+      &:first-child {
         border-top: 0;
       }
 
@@ -502,6 +502,9 @@ h2 {
       }
       @media #{$info-mobile} {
         display: none;
+      }
+      &.loading {
+        border: 0;
       }
     }
   }
@@ -1308,6 +1311,9 @@ h2 {
       margin: 0 0 30px;
     }
 
+  }
+  .checkbox:hover {
+    color: #fff;
   }
 
 }

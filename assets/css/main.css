@@ -372,7 +372,7 @@ h2 {
       display: block;
       border-bottom: 0;
       flex-basis: auto; }
-      .sidebar .func-area .setting:not(:last-child) {
+      .sidebar .func-area .setting:first-child {
         border-top: 0; }
       .sidebar .func-area .setting:hover {
         color: #857af8;
@@ -384,6 +384,8 @@ h2 {
       @media only screen and (max-width: 768px) {
         .sidebar .func-area .setting {
           display: none; } }
+      .sidebar .func-area .setting.loading {
+        border: 0; }
 
 /* SEARCH VIEW */
 @media only screen and (max-width: 768px) {
@@ -956,3 +958,6 @@ h2 {
     padding: 15px 0 0; }
   #about-view .app-info .update-btn {
     margin: 0 0 30px; }
+
+#about-view .checkbox:hover {
+  color: #fff; }

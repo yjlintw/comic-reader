@@ -5,9 +5,7 @@ const url = require('url');
 const settings = require('electron-settings');
 const log = require('electron-log');
 const {autoUpdater} = require("electron-updater");
-const EA = require("electron-analytics");
 const ipc = electron.ipcMain;
-EA.init("Bkles-YA1-");
 
 require('electron-debug')({showDevTools: false});
 
@@ -15,7 +13,7 @@ require('electron-debug')({showDevTools: false});
 autoUpdater.logger = log;
 autoUpdater.logger.transports.file.level = "info";
 // autoUpdater.autoDownload = false;
-autoUpdater.allowPrerelease = false;
+// autoUpdater.allowPrerelease = false;
 log.info('App Starting');
 
 let manualupdate = false;
@@ -50,6 +48,11 @@ function createWindow () {
       h = 700;
     }
     
+  }
+  if (settings.has("system.update")) {
+    autoUpdater.allowPrerelease = settings.get("system.update.allowbeta")
+  } else {
+    autoUpdater.allowPrerelease = false
   }
   win = new BrowserWindow({
     width: w,
@@ -200,5 +203,8 @@ ipc.on('comic-update', function(event, count) {
   app.setBadgeCount(count);
 })
 
+ipc.on('update-beta', function(event, cont) {
+  autoUpdater.allowPrerelease = true;
+})
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
