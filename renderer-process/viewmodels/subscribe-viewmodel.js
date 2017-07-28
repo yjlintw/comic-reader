@@ -67,11 +67,11 @@ function subscribe(host, titlekey, title, link, thumbnail_uri) {
     let keyPath = "comic." + host + "." + titlekey;
     let comic_data = settings.get(keyPath);
     if (comic_data) {
-        
         comic_data.subscribed = !comic_data.subscribed;
         settings.set(keyPath, comic_data);
     } else {
-        comic_data = register(host, titlekey, title, link, thumbnail_uri, true)
+        comic_data = register(host, titlekey, title, link, thumbnail_uri, true);
+        settings.set(keyPath, comic_data);
     }
     if (comic_data.subscribed) {
         checkUpdateSingle(host, titlekey);
