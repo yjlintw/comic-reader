@@ -70,10 +70,14 @@ function search(search_term, callback) {
         method: "GET",
         uri: encodeURI(searchuri.replace("{search}", search_term)),
         headers: {
-            Referer: 'http://www.dm5.com/',
-			'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36',
-			'Accept-Language': 'en-US,en;q=0.8,zh-TW;q=0.6,zh;q=0.4,ja;q=0.2',
-            cookie: 'isAdult=1'
+            'Host': 'www.dm5.com',
+            'Connection':'keep-alive',
+            'Cache-Control': 'max-age=0',
+            'User-Agent': 'ozilla/5.0 (Macintosh; Intel Mac OS X 10_13_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3282.140 Safari/537.36',
+            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+            'DNT': '1',
+			'Accept-Language': 'en-US,en;q=0.9,zh-TW;q=0.8,zh;q=0.7,ja;q=0.6',
+            cookie: 'isAdult=1; frombot=1;'
         },
         timeout: 5000
     }, searchResponse.bind({callback:callback}));
@@ -84,18 +88,41 @@ function search(search_term, callback) {
  * @param see npm request module
  */
 function searchResponse(error, response, body) {
-    let tmp = $(".container .midBar .item", "<div>" + body + "</div>");
     let result = [];
-    let callback = this.callback;
-    async.each(tmp, function(e, callback1){
-        let $e = $(e);
-        let title = $e.find('a.title').text();
-        let rel_link = $e.find('a.title').attr('href');
+    let tmp = $(".container .box-body .banner_detail_form", "<div>" + body + "</div>");
+    if (body !== undefined) {
+        let rel_link = tmp.find('.info .title a').attr('href');
         let titlekey = rel_link.substring(1, rel_link.length - 2);
         let link = baseuri + rel_link;
-        let imguri = $e.find('img').attr('src');
-        let updateinfo = "作者：" + $e.find('dt>a:first-of-type').text();
-        let description = $(e).find('.info .value').text().replace(/^\s+|\s+$/g, '');
+        let imguri = tmp.find('.cover img').attr('src');
+        let title = tmp.find('.info .title a').text();
+        let updateinfo = "作者：" + tmp.find('.subtitle a').text();
+        let description = tmp.find('.info .content').text().replace(/^\s+|\s+$/g, '');
+        let obj = {
+            link: link,
+            titlekey: titlekey,
+            imguri: imguri,
+            title: title,
+            host: host,
+            updateinfo: updateinfo,
+            description: description
+        }
+        result.push(obj);
+    }
+
+    tmp = $(".container .box-body .mh-item", "<div>" + body + "</div>");
+    let callback = this.callback;
+    console.log(error);
+    async.each(tmp, function(e, callback1){
+        let $e = $(e);
+        let title = $e.find('h2.title').text();
+        let rel_link = $e.find('.mh-item-tip a').attr('href');
+        let titlekey = rel_link.substring(1, rel_link.length - 2);
+        let link = baseuri + rel_link;
+        let bg = $e.find('.mh-cover').css('background-image');
+        let imguri = bg.replace('url(','').replace(')','').replace(/\"/gi, "");
+        let updateinfo = "作者：" + $e.find('.author a:first-of-type').text();
+        let description = $(e).find('.mh-item-tip-detali .desc').text().replace(/^\s+|\s+$/g, '');
         let obj = {
             link: link,
             titlekey: titlekey,
