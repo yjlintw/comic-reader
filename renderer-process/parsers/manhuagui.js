@@ -45,9 +45,9 @@ module.exports = {
     loadChapter: loadChapter
 }
 
-let host = "8comic";
-let searchuri = "http://8comic.se/搜尋結果/?w={search}";
-let baseuri = "http://8comic.se";
+let host = "manhuagui";
+let searchuri = "https://www.manhuagui.com/s/{search}.html";
+let baseuri = "https://www.manhuagui.com";
 
 /**
  * Search comic books
@@ -70,9 +70,6 @@ function search(search_term, callback) {
     request({
         method: "GET",
         uri: encodeURI(searchuri.replace("{search}", search_term)),
-        headers: {
-        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36',
-        },
         timeout: 5000
     }, searchResponse.bind({callback:callback}));
 }
@@ -82,64 +79,35 @@ function search(search_term, callback) {
  * @param see npm request module
  */
 function searchResponse(error, response, body) {
-    //console.log(body);
-    let tmp = $("#post-35", "<div>" + body + "</div>").find('.post-list-full .data a');
+    // console.log(body);
+    let tmp = $(".w996 .book-result", "<div>" + body + "</div>").find('li');
+    // console.log(tmp);
     let result = [];
     let callback = this.callback;
     async.each(tmp, function(e, callback1){
         let $e = $(e);
-        let title = $e.text();
-        let link = baseuri + $e.attr('href');
-        let rel_link = $e.attr('href');
-        let titlekey = $e.attr('href').substr(1, rel_link.length - 2);
-        request({
-            method: "GET",
-            uri: link,
-            headers: {
-                'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36',
-            },
-            timeout: 5000
-        }, onDetailInfoGet.bind({
-            callback: callback1,
+        let title = $e.find(".book-detail dt a").attr("title");
+        // console.log(title);
+        let link = baseuri + $e.find(".book-detail dt a").attr("href");
+        let titlekey =  $e.find(".book-detail dt a").attr("href");
+        let imguri = $e.find(".book-cover img").attr("src");
+        let updateinfo = $e.find(".book-detail .status").text();
+        let description = $e.find(".book-detail .intro").text();
+        let obj = {
             link: link,
-            title: title,
             titlekey: titlekey,
-            result: result
-        }));
-
-
+            imguri: imguri,
+            title: title,
+            host: host,
+            updateinfo: updateinfo,
+            description: description
+        }
+        result.push(obj);
+        callback1();
     }, function () {
-        console.log("All Search 8COMICS done");
-        callback(result);
+        console.log("All Search manguagui done");
+        callback(result, host);
     });
-
-    this.callback(result, host);
-}
-
-/**
- * Since 8Comic's search result does not return detail information, we will
- * need another GET request to get those information
- * @param see npm request module
- */
-function onDetailInfoGet(error, response, body) {
-    let tmp = $("#content", "<div>" + body + "</div>").find('table tr:first-child');
-    
-    let imguri = tmp.find('img').attr('src');
-    let description = tmp.find('p').text().replace(/^\s+|\s+$/g, '');
-
-    let obj = {
-        link: this.link,
-        titlekey: this.titlekey,
-        imguri: imguri,
-        title: this.title,
-        host: host,
-        updateinfo: "",
-        description: description
-    }
-    this.result.push(obj);
-
-    this.callback();
-
 }
 
 
@@ -164,9 +132,6 @@ function grabChapters(titlekey, link, callback) {
     request({
         methos: 'GET',
         uri: link,
-        headers: {
-            'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36',
-        },
         timeout: 5000
     }, onChapterGrabbed.bind({callback: callback, titlekey: titlekey}));
 }
@@ -177,21 +142,29 @@ function grabChapters(titlekey, link, callback) {
  */
 function onChapterGrabbed(error, response, body) {
     if (error) {
-        console.error("8comic: " + error);
+        console.error("manhuagui: " + error);
         this.callback(null, null);
         return;
     }
     let hostpath = response.request.host;
-    //console.log(body);
-    let tmp = $("#content", "<div>" + body + "</div>").find('table tr:nth-child(n+3):nth-last-child(n+1) td');
+    
+    let tmp = [];
+    let chapter_tmps = $(".chapter-list.cf.mt10", "<div>" + body + "</div>");
+    for (var i = 0; i < chapter_tmps.length; i++) {
+        let sublist = $(chapter_tmps[i]).find('ul');
+        for (var j = sublist.length - 1; j >= 0; j--) {
+            tmp.push.apply(tmp, $(sublist[j]).find('li'));
+        }
+    }
     let result = [];
     let newest = "";
     let titlekey = this.titlekey;
-    tmp.each(function(i, e){
+    tmp.forEach(function(e, i){
         let $e = $(e);
+        // console.log(e);
         if($e.find('a').attr('href') == undefined) return;
         let ch_name = $e.find('a').text();
-        let ch_link = $e.find('a').attr('href');
+        let ch_link = baseuri + $e.find('a').attr('href');
         let ch_group = "cr_main";
         let link_chunks = $e.find('a').attr('href').split('/');
         let lastIndex = link_chunks.length;
@@ -206,11 +179,8 @@ function onChapterGrabbed(error, response, body) {
             domid: domid,
             index: i
         };
-        result.unshift(obj)
+        result.push(obj);
     });
-    for (let i = 0; i < result.length; i++) {
-        result[i].index = i;
-    }
     newest = result[0].ch_name;
 
     this.callback(result, newest);
@@ -233,9 +203,6 @@ function loadChapter(ch_link, ch_group, ch_key, callback) {
     request({
         method: 'GET',
         uri: ch_link,
-        headers: {
-            'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36',
-        },
         timeout: 5000
     }, onSingleChapterLoaded.bind({callback:callback, ch_group: ch_group, ch_key: ch_key}))    
 
@@ -248,24 +215,39 @@ function loadChapter(ch_link, ch_group, ch_key, callback) {
  * @param see npm request module
  */
 function onSingleChapterLoaded(error, response, body) {
-    let tmp = $("<div>" + body + "</div>");
-    let find_script = tmp.find('#pull').find('option:nth-child(2)').attr('value').split("'");
-    let chapters_num = find_script[1];
-    let num_pages = find_script[3];
-    let img_template = tmp.find("#caonima").attr("src");
     
-    let pid = '/' + chapters_num + '/';
-    let img = img_template.split(pid);
-    let result = [];
-    for (let i = 1; i <= num_pages; i++) {
-        let src = img[0] + pid + util.pad(i, 3) + '.jpg'; 
-        let id = 'pic' + i;
-        let obj = {
-            imgurl: src,
-            id: id,
-            idx: i-1
-        };
-        result.push(obj);
-    }
-    this.callback(result, this.ch_group, this.ch_key);
+    let tmp = $("<div>" + body + "</div>");
+    
+    // let scripts = $(tmp.find("script"));
+    // console.log(scripts);
+    // request({
+    //     method: 'GET',
+    //     uri: $(scripts[2]).attr("src"),
+    //     timeout: 5000
+    // }, utilParser.bind({callback:this.callback, ch_group: this.ch_group, ch_key: this.ch_key}));
+    // let find_script = tmp.find('#pull').find('option:nth-child(2)').attr('value').split("'");
+    // let chapters_num = find_script[1];
+    // let num_pages = find_script[3];
+    // let img_template = tmp.find("#caonima").attr("src");
+    
+    // let pid = '/' + chapters_num + '/';
+    // let img = img_template.split(pid);
+    // let result = [];
+    // for (let i = 1; i <= num_pages; i++) {
+    //     let src = img[0] + pid + util.pad(i, 3) + '.jpg'; 
+    //     let id = 'pic' + i;
+    //     let obj = {
+    //         imgurl: src,
+    //         id: id,
+    //         idx: i-1
+    //     };
+    //     result.push(obj);
+    // }
+    // this.callback(result, this.ch_group, this.ch_key);
+}
+
+
+function utilParser (error, response, body) {
+    console.log(body);
+    eval(body);
 }

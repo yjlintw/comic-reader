@@ -54,6 +54,7 @@ function isSearching() {
  * request is completed
  */
 function search() {
+    console.log(search_flag_dict);
     console.log("isSearching: " + isSearching());
     if (isSearching()) return; // if still in the middle of searching, abort
     
@@ -83,6 +84,7 @@ function search() {
  * @param {String} host: name of the host that returns the response
  */
 function searchResponse(result, host) {
+    // console.log(host);
     // Remove loading animation
     search_viewcontroller.loadingUI(false);
     
