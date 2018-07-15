@@ -112,7 +112,6 @@ function searchResponse(error, response, body) {
 
     tmp = $(".container .box-body .mh-item", "<div>" + body + "</div>");
     let callback = this.callback;
-    console.log(error);
     async.each(tmp, function(e, callback1){
         let $e = $(e);
         let title = $e.find('h2.title').text();
@@ -160,17 +159,19 @@ function searchResponse(error, response, body) {
  *            {int}    index   : index
  *      
  */
-function grabChapters(titlekey, link, callback) {
+function grabChapters(titlekey, link, callback) 
+{
+    console.log(link);
     request({
         methos: 'GET',
         uri: link,
         headers: {
-            Referer: 'http://www.dm5.com/',
+            'Host': 'www.dm5.com',
 			'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36',
 			'Accept-Language': 'en-US,en;q=0.8,zh-TW;q=0.6,zh;q=0.4,ja;q=0.2',
-            cookie: 'isAdult=1'
+            'cookie': 'isAdult=1;frombot=1; DM5_MACHINEKEY=cb420247-5948-44e8-adaa-948df2396a78; SERVERID=node1; ComicHistoryitem_zh='
         },
-        timeout: 5000
+        timeout: 10000
     }, onChapterGrabbed.bind({callback: callback, titlekey: titlekey}));
 }
 
@@ -185,14 +186,14 @@ function onChapterGrabbed(error, response, body) {
         return;
     }
     // let hostpath = response.request.host;
-    let tmp = $("<div>" + body + "</div>").find('[id^=cbc] li a');
+    let tmp = $("<div>" + body + "</div>").find('#chapterlistload li a');
     let result = [];
     let result_keys = {};
     let newest = "";
     let titlekey = this.titlekey;
     tmp.each(function(i, e){
         if($(e).attr('href') == undefined) return;
-        let ch_name = $(e).text().replace(/.*(?:漫畫|漫画)\s*/g, '');
+        let ch_name = $(e).text();//.replace(/.*(?:漫畫|漫画)\s*/g, '');
         let rel_link = $(e).attr('href');
         if (rel_link.includes("javascript")) return;
         let ch_link = baseuri + rel_link;
@@ -238,12 +239,12 @@ function loadChapter(ch_link, ch_group, ch_key, callback) {
         method: 'GET',
         uri: ch_link,
         headers: {
-            Referer: 'http://www.dm5.com/',
+            'Host': 'www.dm5.com',
 			'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36',
 			'Accept-Language': 'en-US,en;q=0.8,zh-TW;q=0.6,zh;q=0.4,ja;q=0.2',
-            cookie: 'isAdult=1'
+            'cookie': 'isAdult=1;frombot=1; DM5_MACHINEKEY=cb420247-5948-44e8-adaa-948df2396a78; SERVERID=node1; ComicHistoryitem_zh='
         },
-        timeout: 5000
+        timeout: 10000
     }, onSingleChapterLoaded.bind({callback:callback, ch_group: ch_group, ch_key: ch_key}))    
 
 }
@@ -258,6 +259,7 @@ function onSingleChapterLoaded(error, response, body) {
     let doc = body;
     let tmp = $("<div>" + body + "</div>");
     let script1=/<script type\=\"text\/javascript\">(.*)reseturl/.exec(body)[1];
+    //console.log(script1);
 	eval(script1);
     
 
@@ -265,18 +267,19 @@ function onSingleChapterLoaded(error, response, body) {
     let callback = this.callback;
     let ch_group = this.ch_group;
     let ch_key = this.ch_key;
-    async.times(DM5_IMAGE_COUNT, function(n, next) {
-        let src = baseuri + "chapterfun.ashx?cid=" + DM5_CID.toString() + "&page=" + (n + 1) + "&key=&language=1";
+    async.timesSeries(DM5_IMAGE_COUNT, function(n, next) {
+        let src = baseuri + DM5_CURL.toString().substring(1) + "chapterfun.ashx?cid=" + DM5_CID.toString() + "&page=" + (n + 1) + "&key=&language=1&gtk=6&_cid=" + DM5_CID.toString() + "&_mid=" + DM5_MID.toString() + "&_dt=" + encodeURIComponent(DM5_VIEWSIGN_DT).replace('%20', '+') + "&_sign=" + DM5_VIEWSIGN.toString();
+        console.log(src);
         request({
             method: 'GET',
             uri: src,
             headers: {
-                Referer: 'http://www.dm5.com/',
-                'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36',
-                'Accept-Language': 'en-US,en;q=0.8,zh-TW;q=0.6,zh;q=0.4,ja;q=0.2',
-                cookie: 'isAdult=1'
+                'Host': 'www.dm5.com',
+			    'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36',
+			    'Accept-Language': 'en-US,en;q=0.8,zh-TW;q=0.6,zh;q=0.4,ja;q=0.2',
+                'cookie': 'isAdult=1;frombot=1; DM5_MACHINEKEY=cb420247-5948-44e8-adaa-948df2396a78; SERVERID=node1; ComicHistoryitem_zh='
             },
-            timeout: 5000
+            timeout: 10000
         }, function(error, response, body){
             let images = eval(body);
             if (images == undefined) {

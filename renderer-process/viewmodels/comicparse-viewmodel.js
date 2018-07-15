@@ -157,11 +157,14 @@ function selectChapter(ch_link, ch_group, ch_key) {
  * @param {String} ch_key   : Chapter's unique key
  */
 function onSingleChapterLoaded(result, ch_group, ch_key) {
+    console.log("single chapter loaded: " + ch_group + ":" + ch_key);
     if (ch_key !== $(read_viewcontroller.getChapterList()[read_viewcontroller.getChIdx()]).attr("chkey")) {
+        console.log("error:" + $(read_viewcontroller.getChapterList()[read_viewcontroller.getChIdx()]).attr("chkey"));
         return;
     }
     let pageIds = new Array(result.length);
     for (let index in result) {
+        //console.log(index);
         let obj = result[index];
         let view = read_viewcontroller.createComicPage(obj.imgurl, obj.id, obj.idx);
         pageIds[obj.idx] = obj.id;

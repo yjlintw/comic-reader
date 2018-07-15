@@ -38,6 +38,11 @@
 let request = require("request");
 const util = require("../util");
 let async = require('async');
+const LZString = require('../LZS');
+
+String.prototype.splic = function (f) {
+	return LZString.decompressFromBase64(this).split(f)
+}
 
 module.exports = {
     search: search,
@@ -48,6 +53,7 @@ module.exports = {
 let host = "manhuagui";
 let searchuri = "https://www.manhuagui.com/s/{search}.html";
 let baseuri = "https://www.manhuagui.com";
+let imgbaseuri = "https://i.hamreus.com"
 
 /**
  * Search comic books
@@ -169,8 +175,8 @@ function onChapterGrabbed(error, response, body) {
         let link_chunks = $e.find('a').attr('href').split('/');
         let lastIndex = link_chunks.length;
         let domid = link_chunks[lastIndex-1] == ""? link_chunks[lastIndex-2]:link_chunks[lastIndex-1];
-        let ch_key = domid;
-
+        let ch_key = domid.split(".")[0];
+        domid = ch_key;
         let obj = {
             ch_name: ch_name,
             ch_link: ch_link,
@@ -217,37 +223,69 @@ function loadChapter(ch_link, ch_group, ch_key, callback) {
 function onSingleChapterLoaded(error, response, body) {
     
     let tmp = $("<div>" + body + "</div>");
-    
-    // let scripts = $(tmp.find("script"));
-    // console.log(scripts);
-    // request({
-    //     method: 'GET',
-    //     uri: $(scripts[2]).attr("src"),
-    //     timeout: 5000
-    // }, utilParser.bind({callback:this.callback, ch_group: this.ch_group, ch_key: this.ch_key}));
-    // let find_script = tmp.find('#pull').find('option:nth-child(2)').attr('value').split("'");
-    // let chapters_num = find_script[1];
-    // let num_pages = find_script[3];
-    // let img_template = tmp.find("#caonima").attr("src");
-    
-    // let pid = '/' + chapters_num + '/';
-    // let img = img_template.split(pid);
-    // let result = [];
-    // for (let i = 1; i <= num_pages; i++) {
-    //     let src = img[0] + pid + util.pad(i, 3) + '.jpg'; 
-    //     let id = 'pic' + i;
-    //     let obj = {
-    //         imgurl: src,
-    //         id: id,
-    //         idx: i-1
-    //     };
-    //     result.push(obj);
-    // }
-    // this.callback(result, this.ch_group, this.ch_key);
+    var scriptsHtml = /window\[\"\\x65\\x76\\x61\\x6c\"\](.*?)<\/script>/.exec(body)[1];
+    //var scriptsHtml = /p;}\((.*?),\{\}/im.exec(body)[1];
+    //console.log(scriptUrls[0]);
+    //console.log(scriptUrls[1]);
+    //console.log(scriptsHtml);
+    var p = eval(scriptsHtml);
+    p = p.replace(").preInit();", "");
+    p = p.replace("SMH.imgData(", "");
+    console.log(p);
+    var data = JSON.parse(p);
+    console.log(data);
+    var callback = this.callback;
+    var ch_group = this.ch_group;
+    var ch_key = this.ch_key;
+    var referer = 'https://www.manhuagui.com/comic/' + data.bid +"/" + data.cid + ".html";
+
+    async.times(data.len, function(n, next){
+        var imguri = encodeURI(imgbaseuri + data.path) + data.files[n] + "?cid=" + data.cid + "&md5=" + data.sl.md5;
+        console.log(imguri);
+        
+        getImage(n, imguri, referer, next);
+    }, function(err, result) {
+        callback(result, ch_group, ch_key);
+    })
 }
 
-
-function utilParser (error, response, body) {
-    console.log(body);
-    eval(body);
+function getImage(idx, imguri, referer, callback)
+{
+    request({
+        method: 'GET',
+        uri: imguri,
+        //uri: "http://www.gstatic.com/webp/gallery/1.webp",
+        encoding: 'binary',
+        headers: {
+            'Accept': 'image/webp,image/*,*/*;q=0.8',
+            'Accept-Encoding': 'gzip, deflate, sdch',
+            'Accept-Language': 'zh-CN,zh;q=0.8,en-US;q=0.6,en;q=0.4',
+            'Host': 'i.hamreus.com',
+            'Referer': referer,
+            'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36'
+        },
+        timeout: 5000
+    }, function(error, response, body) {
+        var imgdata = "";
+        if (response != null) {
+            var type = response.headers["content-type"];
+            console.log(type);
+            if (type.startsWith("image")) {
+                var prefix = "data:" + type + ";base64,";
+                var base64 = new Buffer(body, 'binary').toString('base64');
+                imgdata = prefix + base64;
+                let id = 'pic' + idx;
+                // console.log(body);
+                let obj = {
+                    imgurl: imgdata,
+                    id: id,
+                    idx: idx
+                }
+                callback(null, obj);
+                return;
+            }
+        }
+        getImage(idx, imguri, referer, callback);
+    });
+       
 }
